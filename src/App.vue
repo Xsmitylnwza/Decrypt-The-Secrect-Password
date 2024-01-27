@@ -1,54 +1,47 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+// mockup data
+let rules = [
+  {
+    ruleNumber: 2,
+    message: "Your password must include a number",
+    correct: false,
+  },
+  {
+    ruleNumber: 1,
+    message: "Your password must be at least 5 characters",
+    correct: true,
+  },
+];
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <button className="btn btn-active">Default</button>
-<button className="btn btn-active btn-neutral">Neutral</button>
-<button className="btn btn-active btn-primary">Primary</button>
-<button className="btn btn-active btn-secondary">Secondary</button>
-<button className="btn btn-active btn-accent">Accent</button>
-<button className="btn btn-active btn-ghost">Ghost</button>
-<button className="btn btn-active btn-link">Link</button>
+  <div
+    class="flex w-full min-h-screen items-center justify-center bg-rose-100 border-2 border-solid"
+  >
+    <div class="grid md:w-4/12 grid-cols-1 m-2 gap-5">
+      <div
+        v-for="rule in rules"
+        class="sm:w-full rounded-md shadow-md bg-red-300 p-0.5"
+        :key="rule.ruleNumber"
+      >
+        <div
+          :class="rule.correct ? 'bg-green-300' : 'bg-red-300'"
+          class="py-1 px-4 flex flex-row items-center gap-2"
+        >
+          <Correct
+            v-if="rule.correct"
+            class="fa-solid fa-check text-red-500 pt-1 text-2xl"
+          />
+          <i v-else class="fa-solid fa-xmark text-red-500 pt-1 text-2xl"></i>
+          <p class="text-xl">Rule {{ rule.ruleNumber }}</p>
+        </div>
+        <div :class="rule.correct ? 'bg-green-100' : 'bg-red-100'" class="p-4">
+          <p class="text-xl">{{ rule.message }}.</p>
+        </div>
+      </div>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
