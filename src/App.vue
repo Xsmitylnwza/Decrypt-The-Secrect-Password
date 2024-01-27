@@ -28,7 +28,7 @@ let rules = [
           :class="rule.correct ? 'bg-green-300' : 'bg-red-300'"
           class="py-1 px-4 flex flex-row items-center gap-2"
         >
-          <Correct
+          <i
             v-if="rule.correct"
             class="fa-solid fa-check text-red-500 pt-1 text-2xl"
           />
