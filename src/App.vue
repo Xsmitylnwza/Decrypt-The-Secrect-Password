@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref} from 'vue';
 
 // data mockup สำหรับการ test rule componant
 
