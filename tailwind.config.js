@@ -5,7 +5,12 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        itim: "'Itim', cursive",
+        istok: "'Istok Web', sans-serif"
+      }
+    },
   },
   plugins: [require("daisyui")],
 }
