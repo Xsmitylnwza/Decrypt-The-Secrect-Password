@@ -49,7 +49,11 @@ function Displaytimeformat() {
 
 // function level selector
 function levelSelector(level) {
-  console.warn(level);
+  if (level === 'hard') {
+    console.warn('HARD MODE');
+  } else if (level === 'veryhard') {
+    console.warn('VERY HARD MODE');
+  } else console.warn('HARDEST MODE!');
 }
 </script>
 
