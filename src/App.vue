@@ -2,6 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 // data mockup สำหรับการ test rule componant
+
 let rules = [
   {
     ruleNumber: 2,
@@ -14,6 +15,7 @@ let rules = [
     correct: true,
   },
 ];
+
 let isOpen = ref(false)
 
 // Timer function handle
@@ -95,3 +97,4 @@ function Displaytimeformat() {
 </template>
 
 <style scoped></style>
+
