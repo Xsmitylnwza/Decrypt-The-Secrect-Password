@@ -46,34 +46,84 @@ function Displaytimeformat() {
 
   return `${hours}:${minutes}:${seconds}`
 }
+function levelSelector(level) {
+  if (level === 'hard') {
+    console.warn('HARD MODE')
+  } else if (level === 'veryhard') {
+    console.warn('VERY HARD MODE')
+  } else console.warn('HARDEST MODE!')
+}
 </script>
 
 <template>
   <!-- rulebox componant -->
   <div
-    class="background flex flex-col w-full min-h-screen items-center"
+    class="background-color-hard flex flex-col w-full min-h-screen items-center"
   >
-    <img src="./assets/logo/IMG_5174-removebg-preview.png" class="h-2/3 w-2/3 lg:w-1/3 h-1/3 md:w-1/3 h-1/3"/>
-    <div class="flex flex-col w-11/12 h-full bg-slate-200 rounded-box p-3 ">
-      <div class="glass h-20 w-full flex justify-center items-center">level</div>
+    <img
+      src="./assets/logo/IMG_5174-removebg-preview.png"
+      class="mobile:flex w-329 h-178 my-4"
+    />
+    <div class="flex flex-col w-11/12 h-full bg-color-hard-box rounded-box p-3">
+      <section
+        id="select_level"
+        class="text-center flex justify-center w-full  text-black"
+      >
+        <div>
+          <p class="font-Saira text-white text-center font-medium">SELECT LEVEL</p>
+          <button
+            @click="levelSelector('hard')"
+            class="font-Saira text-md text-center font-medium motion-safe:hover:scale-110 text-white h-20 w-20 focus:scale-110 rounded-full btn-bg-hard  min-w-max transition-all ease-linear cursor-pointer border-2  border-black  hover:border-white"
+          >
+            HARD
+          </button>
+
+          <button
+            @click="levelSelector('veryhard')"
+            class="font-Saira text-md text-center font-medium motion-safe:hover:scale-110 text-white h-20 w-20 focus:scale-110 rounded-full bg-blue-300  min-w-max transition-all border-2 border-black hover:border-white"
+          >
+            VERY<br>HARD
+          </button>
+          <button
+            @click="levelSelector('hardest')"
+            class="font-Saira text-md text-center font-medium motion-safe:hover:scale-110 text-white h-20 w-20 focus:scale-110 rounded-full bg-emerald-400 min-w-max transition-all border-2 border-black hover:border-white"
+          >
+            HARDEST
+          </button>
+        </div>
+      </section>
       <label class="form-control w-full max-w-xs">
-  <div class="label">
-    <span class="label-text">Enter Password Here...</span>
-  </div>
-  <input type="text" placeholder="Type here" class="input input-bordered  w-full max-w-xs bg-slate-200" />
-  
-  
-</label>
-  <img class="m-4 rounded-box border-4 border-black" src="./assets/picture/2Q.png">
-  <div class="animate-bounce flex justify-center font-serif text-base pt-6">
-    HOW TO PLAY GAME 🎮
-  </div>
-  <div class=" h-screen ">
-        <a class="flex  justify-center" href="#HowtoPlay">
-          <svg class=" animate-bounce w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M19 9l-7 7-7-7"></path>
+        <div class="label">
+          <span class="label-text">Enter Password Here...</span>
+        </div>
+        <input
+          type="text"
+          placeholder="Type here"
+          class="input input-bordered w-full max-w-xs bg-slate-200"
+        />
+      </label>
+      <img
+        class="m-4 rounded-box border-4 border-black"
+        src="./assets/picture/2Q.png"
+      />
+      <div class="animate-bounce flex justify-center font-serif text-base pt-6">
+        HOW TO PLAY GAME 🎮
+      </div>
+      <div class="h-screen">
+        <a class="flex justify-center" href="#HowtoPlay">
+          <svg
+            class="animate-bounce w-8 h-8 text-gray-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
           </svg>
         </a>
         <div id="HowtoPlay" class="flex justify-center mt-3">
@@ -87,9 +137,7 @@ function Displaytimeformat() {
             Maxime aliquam eos excepturi vel.
           </p>
         </div>
-  </div>
-  
-  
+      </div>
 
       <!-- <div class="grid md:w-4/12 grid-cols-1 m-2 gap-5">
         <div
@@ -120,7 +168,7 @@ function Displaytimeformat() {
       <!-- <div class="mt-5">
         <p class="font-istok text-xl">Timer {{ Displaytimeformat() }}</p>
         button for test timer-->
-        <!-- <button
+      <!-- <button
           @click="startTimer"
           class="font-itim border border-black p-1 rounded-[5px] mr-[8px]"
         >
@@ -186,11 +234,24 @@ function Displaytimeformat() {
 </template>
 
 <style scoped>
-.background {
+.background-color-hard {
   background: linear-gradient(
     104deg,
     #6e07f0 8.15%,
     rgba(64, 22, 131, 0.44) 68.84%,
     rgba(29, 34, 45, 0) 89.63%
   );
-}</style>
+}
+.bg-color-hard-box{
+  border-radius: 31px;
+  border: 1px solid #FFF;
+  background: #590EBB;
+}
+.btn-bg-hard{
+  background: linear-gradient(
+    104deg,
+    #590ebb 6.68%,
+    rgba(0, 0, 0, 0.74) 92.15%
+  );
+}
+</style>
