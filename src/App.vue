@@ -51,7 +51,7 @@ function Displaytimeformat() {
 <template>
   <!-- rulebox componant -->
   <div
-    class="flex flex-col w-full min-h-screen items-center  bg-gradient-to-r from-indigo-500"
+    class="background flex flex-col w-full min-h-screen items-center"
   >
     <img src="./assets/logo/IMG_5174-removebg-preview.png" class="h-2/3 w-2/3 lg:w-1/3 h-1/3 md:w-1/3 h-1/3"/>
     <div class="flex flex-col w-11/12 h-full bg-slate-200 rounded-box p-3 ">
@@ -185,4 +185,12 @@ function Displaytimeformat() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.background {
+  background: linear-gradient(
+    104deg,
+    #6e07f0 8.15%,
+    rgba(64, 22, 131, 0.44) 68.84%,
+    rgba(29, 34, 45, 0) 89.63%
+  );
+}</style>
