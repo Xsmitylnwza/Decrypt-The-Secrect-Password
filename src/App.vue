@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
+
 // data mockup สำหรับการ test rule componant
 
 let rules = [
@@ -16,7 +17,7 @@ let rules = [
   },
 ]
 
-let isOpen = ref(false)
+let isOpen = ref(false);
 
 // Timer function handle
 let timer = ref(0)
@@ -52,6 +53,7 @@ function levelSelector(level) {
   } else if (level === 'veryhard') {
     console.warn('VERY HARD MODE')
   } else console.warn('HARDEST MODE!')
+
 }
 </script>
 
@@ -90,6 +92,7 @@ function levelSelector(level) {
           >
             HARDEST
           </button>
+
         </div>
       </section>
       <label class="form-control w-full max-w-xs">
