@@ -1,65 +1,61 @@
 <script setup>
-import { ref  } from "vue"
-
+import { ref } from "vue";
 
 // data mockup สำหรับการ test rule componant
 
 let rules = [
   {
     ruleNumber: 2,
-    message: 'Your password must include a number',
+    message: "Your password must include a number",
     correct: false,
   },
   {
     ruleNumber: 1,
-    message: 'Your password must be at least 5 characters',
+    message: "Your password must be at least 5 characters",
     correct: true,
   },
-]
+];
 
 let isOpen = ref(false);
 
 // Timer function handle
-let timer = ref(0)
-let timerInterval
+let timer = ref(0);
+let timerInterval;
 
 // function สำหรับจับเวลาจะอัพเดทค่าทุกๆ 1 วินาที
 function startTimer() {
   timerInterval = setInterval(() => {
-    timer.value++
-  }, 1000)
+    timer.value++;
+  }, 1000);
 }
 
 // function สำหรับหยุดจับเวลา
 function stopTimer() {
-  clearInterval(timerInterval)
+  clearInterval(timerInterval);
 }
 
 // function สำหรับแสดงผลลัพธ์ของเวลา
 function Displaytimeformat() {
   const hours = Math.floor(timer.value / 3600)
-    
+
     .toString()
-    
-    .padStart(2, "0")
+
+    .padStart(2, "0");
   const minutes = Math.floor((timer.value % 3600) / 60)
-    
+
     .toString()
-    
-    .padStart(2, "0")
-  const seconds = (timer.value % 60).toString().padStart(2, "0")
+
+    .padStart(2, "0");
+  const seconds = (timer.value % 60).toString().padStart(2, "0");
 
   return `${hours}:${minutes}:${seconds}`;
 }
-  return `${hours}:${minutes}:${seconds}`
-}
 function levelSelector(level) {
-  if (level === 'hard') {
-    console.warn('HARD MODE')
-  } else if (level === 'veryhard') {
-    console.warn('VERY HARD MODE')
-  } else console.warn('HARDEST MODE!')
-
+  if (level === "hard") {
+    console.warn("HARD MODE");
+  } else if (level === "veryhard") {
+    console.warn("VERY HARD MODE");
+  } else console.warn("HARDEST MODE!");
 }
 </script>
 
