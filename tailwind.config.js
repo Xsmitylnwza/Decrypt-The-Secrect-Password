@@ -15,7 +15,7 @@ export default {
       fontFamily: {
         itim: "'Itim', cursive",
         istok: "'Istok Web', sans-serif",
-        Saira: "'Saira Stencil One"
+        Saira: "'Saira Stencil One'"
       }
     },
   },

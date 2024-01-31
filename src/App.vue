@@ -2,7 +2,6 @@
 
 import { ref } from 'vue'
 
-
 // data mockup สำหรับการ test rule componant
 
 let rules = [
@@ -17,6 +16,7 @@ let rules = [
     correct: true,
   },
 ]
+
 
 let isOpen = ref(false)
 
@@ -61,7 +61,7 @@ function levelSelector(level) {
   <!-- rulebox componant -->
   <div class="background-color-hard flex flex-col w-full min-h-screen items-center">
     <img src="./assets/logo/IMG_5174-removebg-preview.png" class="mobile:flex w-329 h-178 my-4" />
-    <div class="flex flex-col w-11/12 h-full bg-color-hard-box rounded-box p-3">
+    <div class="flex flex-col items-center w-11/12 h-full bg-color-hard-box rounded-box p-3">
       <section id="select_level" class="text-center flex justify-center w-full  text-black">
         <div>
           <p class="font-Saira text-white text-center font-medium">SELECT LEVEL</p>
@@ -80,22 +80,33 @@ function levelSelector(level) {
           </button>
         </div>
       </section>
-      <label class="form-control w-full max-w-xs">
-        <div class="label">
-          <span class="label-text">Enter Password Here...</span>
-        </div>
-        <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs bg-slate-200" />
-      </label>
-      <img class="m-4 rounded-box border-4 border-black" src="./assets/picture/2Q.png" />
-      <div class="animate-bounce flex justify-center font-serif text-base pt-6">
+      <div id="input-password" class="items-center w-[300px]">
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="font-Saira text-[16px] text-white">Enter Password Here...</span>
+          </div>
+          <input type="text" placeholder="Type here"
+            class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA]" @click="startTimer" />
+        </label>
+      </div>
+      <p class="font-Saira text-[14px] text-white  mt-[10px]">Time: <span class="text-[14px] text-red">{{
+        Displaytimeformat()
+      }}</span></p>
+      <div class="flex flex-col items-center">
+        <img class="w-[166px] h-[236px]" src="./assets/picture/hard-pic.png" />
+        <p class="font-Saira text-[13px] text-white mt-[5px]">Your Character : SPY</p>
+      </div>
+      <div class="flex justify-center font-Saira text-base text-white pt-6 animate-bounce">
         HOW TO PLAY GAME 🎮
       </div>
       <div class="h-screen">
         <a class="flex justify-center" href="#HowtoPlay">
-          <svg class="animate-bounce w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          <svg class="animate-bounce w-8 h-8" width="27" height="16" viewBox="0 0 27 16" fill="none"
             xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            <line x1="13.8826" y1="15.2968" x2="1.29288" y2="2.70715" stroke="white" stroke-width="2" />
+            <line x1="13.0878" y1="14.5877" x2="26.0878" y2="1.58769" stroke="white" stroke-width="2" />
           </svg>
+
         </a>
         <div id="HowtoPlay" class="flex justify-center mt-3">
           <p>
