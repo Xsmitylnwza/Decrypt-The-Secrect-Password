@@ -5,10 +5,17 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      'mobile': '320px',
+      'tablet': '640px',
+      'laptop': '1024px',
+      'desktop': '1280px',
+    },
     extend: {
       fontFamily: {
         itim: "'Itim', cursive",
-        istok: "'Istok Web', sans-serif"
+        istok: "'Istok Web', sans-serif",
+        Saira: "'Saira Stencil One"
       }
     },
   },
