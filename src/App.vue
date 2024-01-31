@@ -63,16 +63,30 @@ function Displaytimeformat() {
           :class="rule.correct ? 'bg-green-300' : 'bg-red-300'"
           class="py-1 px-4 flex flex-row items-center gap-2"
         >
-          <i
+          <Correct
             v-if="rule.correct"
             class="fa-solid fa-check text-red-500 pt-1 text-2xl"
-          ></i>
+          />
           <i v-else class="fa-solid fa-xmark text-red-500 pt-1 text-2xl"></i>
           <p class="font-itim text-xl">Rule {{ rule.ruleNumber }}</p>
         </div>
-        <div :class="rule.correct ? 'bg-green-100' : 'bg-red-100'" class="p-4">
-          <p class="font-itim text-xl">{{ rule.message }}.</p>
+      </div>
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Enter Password Here...</span>
         </div>
+        <input
+          type="text"
+          placeholder="Type here"
+          class="input input-bordered w-full max-w-xs bg-slate-200"
+        />
+      </label>
+      <img
+        class="m-4 rounded-box border-4 border-black"
+        src="./assets/picture/2Q.png"
+      />
+      <div class="animate-bounce flex justify-center font-serif text-base pt-6">
+        HOW TO PLAY GAME 🎮
       </div>
     </div>
     <!-- Timer display -->
@@ -145,5 +159,26 @@ function Displaytimeformat() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.background-color-hard {
+  background: linear-gradient(
+    104deg,
+    #6e07f0 8.15%,
+    rgba(64, 22, 131, 0.44) 68.84%,
+    rgba(29, 34, 45, 0) 89.63%
+  );
+}
+.bg-color-hard-box {
+  border-radius: 31px;
+  border: 1px solid #fff;
+  background: #590ebb;
+}
+.btn-bg-hard {
+  background: linear-gradient(
+    104deg,
+    #590ebb 6.68%,
+    rgba(0, 0, 0, 0.74) 92.15%
+  );
+}
+</style>
 
