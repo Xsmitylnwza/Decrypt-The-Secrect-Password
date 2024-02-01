@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue"
+import { ref } from "vue";
 
 // data mockup สำหรับการ test rule componant
 
@@ -7,51 +7,58 @@ let rules = [
   {
     ruleNumber: 2,
     message: "Your password must include a number",
-    correct: false
+    correct: false,
+    message: "Your password must include a number",
+    correct: false,
   },
   {
     ruleNumber: 1,
     message: "Your password must be at least 5 characters",
-    correct: true
-  }
-]
+    correct: true,
+  },
+];
 
-let isOpen = ref(false)
+let isOpen = ref(false);
 
 // Timer function handle
-let timer = ref(0)
-let timerInterval
+let timer = ref(0);
+let timerInterval;
 
 // function สำหรับจับเวลาจะอัพเดทค่าทุกๆ 1 วินาที
 function startTimer() {
   timerInterval = setInterval(() => {
-    timer.value++
-  }, 1000)
+    timer.value++;
+  }, 1000);
 }
 
 // function สำหรับหยุดจับเวลา
 function stopTimer() {
-  clearInterval(timerInterval)
+  clearInterval(timerInterval);
 }
 
 // function สำหรับแสดงผลลัพธ์ของเวลา
 function Displaytimeformat() {
   const hours = Math.floor(timer.value / 3600)
     .toString()
-    .padStart(2, "0")
+    .padStart(2, "0");
   const minutes = Math.floor((timer.value % 3600) / 60)
     .toString()
-    .padStart(2, "0")
-  const seconds = (timer.value % 60).toString().padStart(2, "0")
+    .padStart(2, "0");
+  const seconds = (timer.value % 60).toString().padStart(2, "0");
 
-  return `${hours}:${minutes}:${seconds}`
+  return `${hours}:${minutes}:${seconds}`;
 }
 function levelSelector(level) {
   if (level === "hard") {
-    console.warn("HARD MODE")
+    console.warn("HARD MODE");
   } else if (level === "veryhard") {
-    console.warn("VERY HARD MODE")
-  } else console.warn("HARDEST MODE!")
+    console.warn("VERY HARD MODE");
+  } else console.warn("HARDEST MODE!");
+  if (level === "hard") {
+    console.warn("HARD MODE");
+  } else if (level === "veryhard") {
+    console.warn("VERY HARD MODE");
+  } else console.warn("HARDEST MODE!");
 }
 </script>
 
@@ -82,6 +89,15 @@ function levelSelector(level) {
             >
               HARD
             </button>
+            <p class="font-Saira text-white text-center font-medium">
+              SELECT LEVEL
+            </p>
+            <button
+              @click="levelSelector('hard')"
+              class="font-Saira text-md text-center font-medium motion-safe:hover:scale-110 text-white h-20 w-20 focus:scale-110 rounded-full btn-bg-hard min-w-max transition-all ease-linear cursor-pointer border-2 border-black hover:border-white"
+            >
+              HARD
+            </button>
 
             <button
               @click="levelSelector('veryhard')"
@@ -96,6 +112,18 @@ function levelSelector(level) {
               HARDEST
             </button>
           </div>
+          <button
+            @click="levelSelector('veryhard')"
+            class="font-Saira text-md text-center font-medium motion-safe:hover:scale-110 text-white h-20 w-20 focus:scale-110 rounded-full bg-blue-300 min-w-max transition-all border-2 border-black hover:border-white"
+          >
+            VERY<br />HARD
+          </button>
+          <button
+            @click="levelSelector('hardest')"
+            class="font-Saira text-md text-center font-medium motion-safe:hover:scale-110 text-white h-20 w-20 focus:scale-110 rounded-full bg-emerald-400 min-w-max transition-all border-2 border-black hover:border-white"
+          >
+            HARDEST
+          </button>
         </div>
       </section>
       <div id="input-password" class="items-center w-[300px]">
@@ -274,11 +302,13 @@ function levelSelector(level) {
 }
 
 .bg-color-hard-box {
+.bg-color-hard-box {
   border-radius: 31px;
   border: 1px solid #fff;
   background: #590ebb;
 }
 
+.btn-bg-hard {
 .btn-bg-hard {
   background: linear-gradient(
     104deg,
