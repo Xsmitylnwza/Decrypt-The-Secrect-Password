@@ -1,19 +1,20 @@
 <script setup>
 import { ref } from 'vue'
 
+
 // data mockup สำหรับการ test rule componant
 
 let rules = [
   {
     ruleNumber: 2,
-    message: 'Your password must include a number',
-    correct: false,
+    message: "Your password must include a number",
+    correct: false
   },
   {
     ruleNumber: 1,
-    message: 'Your password must be at least 5 characters',
-    correct: true,
-  },
+    message: "Your password must be at least 5 characters",
+    correct: true
+  }
 ]
 
 let isOpen = ref(false)
@@ -38,20 +39,20 @@ function stopTimer() {
 function Displaytimeformat() {
   const hours = Math.floor(timer.value / 3600)
     .toString()
-    .padStart(2, '0')
+    .padStart(2, "0")
   const minutes = Math.floor((timer.value % 3600) / 60)
     .toString()
-    .padStart(2, '0')
-  const seconds = (timer.value % 60).toString().padStart(2, '0')
+    .padStart(2, "0")
+  const seconds = (timer.value % 60).toString().padStart(2, "0")
 
   return `${hours}:${minutes}:${seconds}`
 }
 function levelSelector(level) {
-  if (level === 'hard') {
-    console.warn('HARD MODE')
-  } else if (level === 'veryhard') {
-    console.warn('VERY HARD MODE')
-  } else console.warn('HARDEST MODE!')
+  if (level === "hard") {
+    console.warn("HARD MODE")
+  } else if (level === "veryhard") {
+    console.warn("VERY HARD MODE")
+  } else console.warn("HARDEST MODE!")
 }
 </script>
 
@@ -66,6 +67,7 @@ function levelSelector(level) {
     />
     <div
       class="flex flex-col items-center w-11/12 h-full bg-color-hard-box rounded-box p-3"
+
     >
       <section
         id="select_level"
@@ -301,5 +303,55 @@ function levelSelector(level) {
     rgba(96, 22, 22, 0.83) 68.6%,
     rgba(29, 34, 45, 0.94) 89.63%
   );
+}
+@media (max-width: 600px) {
+  .HowToPlay {
+    height: 100vh;
+  }
+  .spy {
+    width: 166px;
+    height: 236px;
+  }
+}
+@media (min-width: 601px) and (max-width: 1200px) {
+  .logo {
+    width: 441px;
+    height: 238px;
+  }
+  .spy {
+    width: 276px;
+    height: 392px;
+  }
+}
+@media (min-width: 1201px) {
+  .hardBox {
+    height: 100vh;
+  }
+  .logo {
+    width: 441px;
+    height: 238px;
+  }
+  .spy {
+    width: 200px;
+    height: 380px;
+    position: absolute;
+    margin-top: 60px;
+    left: 13%;
+  }
+
+  .button {
+  }
+  .HowToPlayFont {
+    position: absolute;
+    bottom: 5%;
+    text-align: center;
+    left: 45%;
+  }
+  .HowToPlay {
+    position: absolute;
+    bottom: -10%;
+    right: 5%;
+    left: 5%;
+  }
 }
 </style>
