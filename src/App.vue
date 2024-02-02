@@ -121,6 +121,7 @@ function levelSelector(level) {
         </div>
       </div>
 
+      =
       <!-- <div class="grid md:w-4/12 grid-cols-1 m-2 gap-5">
         <div
           v-for="rule in rules"
