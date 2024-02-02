@@ -3,9 +3,6 @@ import { computed, ref } from "vue";
 
 // data mockup สำหรับการ test rule componant
 
-let selectedLevel = ref("");
-let userInput = ref("");
-
 let passwordRules = [
   {
     level: "hard",
@@ -42,8 +39,20 @@ let passwordRules = [
   },
 ];
 
+let selectedLevel = ref("");
+let userInput = ref("");
+let gameStartted = ref(false);
+
 function levelSelector(level) {
   selectedLevel.value = level;
+  stopTimer();
+  resetGame();
+}
+
+function resetGame() {
+  gameStartted.value = false;
+  timer.value = 0;
+  userInput.value = "";
 }
 
 const selectedRules = computed(() => {
@@ -52,6 +61,12 @@ const selectedRules = computed(() => {
   return selectedRules ? selectedRules.rules : [];
 });
 
+function startGame() {
+  if (selectedLevel.value !== "" && !gameStartted.value) {
+    gameStartted.value = true;
+    startTimer();
+  }
+}
 let isOpen = ref(false);
 
 // Timer function handle
@@ -155,6 +170,7 @@ function Displaytimeformat() {
             type="text"
             placeholder="Type here"
             class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx"
+            @input="startGame"
             v-model="userInput"
           />
         </label>
@@ -167,26 +183,26 @@ function Displaytimeformat() {
       </p>
       <div class="mobile:flex w-[300px] flex-col my-7 items-center spy">
         <img
-          v-if="selectedLevel === 'hard' && !userInput"
+          v-if="selectedLevel === 'hard' && !gameStartted"
           class=""
           src="./assets/picture/hard-pic.png"
         />
         <img
-          v-if="selectedLevel === 'veryhard' && !userInput"
+          v-if="selectedLevel === 'veryhard' && !gameStartted"
           class=""
           src="./assets/picture/very-hard-pic.png"
         />
         <img
-          v-if="selectedLevel === 'hardest' && !userInput"
+          v-if="selectedLevel === 'hardest' && !gameStartted"
           class="w-80 h-52"
           src="./assets/picture/hardest-pic.png"
         />
         <img
-          v-if="selectedLevel === '' && !userInput"
+          v-if="selectedLevel === '' && !gameStartted"
           class=""
           src="./assets/picture/hard-pic.png"
         />
-        <div v-if="userInput" class="flex flex-col">
+        <div v-if="gameStartted" class="flex flex-col">
           <div
             v-for="rule in selectedRules"
             class="sm:w-full rounded-md py-4"
@@ -206,7 +222,10 @@ function Displaytimeformat() {
             </div>
           </div>
         </div>
-        <p v-if="!userInput" class="font-Saira text-[13px] text-white mt-[5px]">
+        <p
+          v-if="!gameStartted"
+          class="font-Saira text-[13px] text-white mt-[5px]"
+        >
           Your Character :
           {{
             selectedLevel === "hard"
