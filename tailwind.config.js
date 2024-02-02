@@ -6,10 +6,8 @@ export default {
   ],
   theme: {
     screens: {
-      'mobile': '320px',
-      'tablet': '640px',
+      'mobile': '450px',
       'laptop': '1024px',
-      'desktop': '1280px',
     },
     extend: {
       fontFamily: {
