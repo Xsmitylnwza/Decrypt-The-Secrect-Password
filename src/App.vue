@@ -1,4 +1,4 @@
-  <script setup>
+<script setup>
 import { computed, ref } from "vue";
 
 // data mockup สำหรับการ test rule componant
