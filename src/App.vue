@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref } from "vue"
 
 // data mockup สำหรับการ test rule componant
 
@@ -10,9 +10,9 @@ let passwordRules = [
       {
         id: 1,
         message: "Your loved your cat",
-        correct: true,
-      },
-    ],
+        correct: true
+      }
+    ]
   },
   {
     level: "veryhard",
@@ -21,9 +21,9 @@ let passwordRules = [
       {
         id: 1,
         message: "Your loved your cat",
-        correct: true,
-      },
-    ],
+        correct: true
+      }
+    ]
   },
   {
     level: "hardest",
@@ -33,73 +33,73 @@ let passwordRules = [
       {
         id: 1,
         message: "Your loved your cat",
-        correct: true,
-      },
-    ],
-  },
-];
+        correct: true
+      }
+    ]
+  }
+]
 
-let selectedLevel = ref("");
-let userInput = ref("");
-let gameStartted = ref(false);
+let selectedLevel = ref("")
+let userInput = ref("")
+let gameStartted = ref(false)
 
 function levelSelector(level) {
-  selectedLevel.value = level;
-  stopTimer();
-  resetGame();
+  selectedLevel.value = level
+  stopTimer()
+  resetGame()
 }
 
 function resetGame() {
-  gameStartted.value = false;
-  timer.value = 0;
-  userInput.value = "";
+  gameStartted.value = false
+  timer.value = 0
+  userInput.value = ""
 }
 
 const selectedRules = computed(() => {
-  const level = selectedLevel.value;
-  const selectedRules = passwordRules.find((rule) => rule.level === level);
-  return selectedRules ? selectedRules.rules : [];
-});
+  const level = selectedLevel.value
+  const selectedRules = passwordRules.find((rule) => rule.level === level)
+  return selectedRules ? selectedRules.rules : []
+})
 
 function startGame() {
   if (selectedLevel.value !== "" && !gameStartted.value) {
-    gameStartted.value = true;
-    startTimer();
+    gameStartted.value = true
+    startTimer()
   }
 }
-let isOpen = ref(false);
+let isOpen = ref(false)
 
 // Timer function handle
-let timer = ref(0);
-let timerInterval;
+let timer = ref(0)
+let timerInterval
 
 // function สำหรับจับเวลาจะอัพเดทค่าทุกๆ 1 วินาที
 function startTimer() {
   timerInterval = setInterval(() => {
-    timer.value++;
-  }, 1000);
+    timer.value++
+  }, 1000)
 }
 
 // function สำหรับหยุดจับเวลา
 function stopTimer() {
-  clearInterval(timerInterval);
+  clearInterval(timerInterval)
 }
 
 // function สำหรับแสดงผลลัพธ์ของเวลา
 function Displaytimeformat() {
   const hours = Math.floor(timer.value / 3600)
     .toString()
-    .padStart(2, "0");
+    .padStart(2, "0")
   const minutes = Math.floor((timer.value % 3600) / 60)
     .toString()
-    .padStart(2, "0");
-  const seconds = (timer.value % 60).toString().padStart(2, "0");
+    .padStart(2, "0")
+  const seconds = (timer.value % 60).toString().padStart(2, "0")
 
-  return `${hours}:${minutes}:${seconds}`;
+  return `${hours}:${minutes}:${seconds}`
 }
 </script>
 
-  <template>
+<template>
   <!-- rulebox componant -->
   <div
     :class="
@@ -131,35 +131,33 @@ function Displaytimeformat() {
     >
       <section
         id="select_level"
-        class="text-center flex justify-center w-full text-black"
+        class="text-center flex justify-center w-full text-black buttons"
       >
-        <div>
-          <p class="font-Saira text-white text-center font-medium">
-            SELECT LEVEL
-          </p>
-          <div class="flex flex-row">
-            <button
-              @click="levelSelector('hard')"
-              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-            >
-              HARD
-            </button>
-            <button
-              @click="levelSelector('veryhard')"
-              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-            >
-              VERY<br />HARD
-            </button>
-            <button
-              @click="levelSelector('hardest')"
-              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-            >
-              HARDEST
-            </button>
-          </div>
+        <p class="font-Saira text-white text-center font-medium">
+          SELECT LEVEL
+        </p>
+        <div class="flex flex-row">
+          <button
+            @click="levelSelector('hard')"
+            class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+          >
+            HARD
+          </button>
+          <button
+            @click="levelSelector('veryhard')"
+            class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+          >
+            VERY<br />HARD
+          </button>
+          <button
+            @click="levelSelector('hardest')"
+            class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+          >
+            HARDEST
+          </button>
         </div>
       </section>
-      <div id="input-password" class="items-center w-[300px]">
+      <div id="input-password" class="items-center w-[300px] textInput">
         <label class="form-control w-full max-w-xs">
           <div class="label">
             <span class="font-Saira text-[16px] text-white"
@@ -175,12 +173,14 @@ function Displaytimeformat() {
           />
         </label>
       </div>
-      <p class="font-Saira text-[14px] text-white mt-[10px]">
-        Time:
-        <span class="text-[14px]">
-          {{ Displaytimeformat() }}
-        </span>
-      </p>
+      <div class="timer">
+        <p class="font-Saira text-[14px] text-white mt-[10px]">
+          Time:
+          <span class="text-[14px]">
+            {{ Displaytimeformat() }}
+          </span>
+        </p>
+      </div>
       <div class="mobile:flex w-[300px] flex-col my-7 items-center spy">
         <img
           v-if="selectedLevel === 'hard' && !gameStartted"
@@ -353,7 +353,7 @@ function Displaytimeformat() {
   </div>
 </template>
 
-  <style scoped>
+<style scoped>
 .background-color-hard {
   background: linear-gradient(
     104deg,
@@ -435,44 +435,92 @@ function Displaytimeformat() {
   }
 }
 @media (min-width: 601px) and (max-width: 1200px) {
+  .hardBox {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(7);
+    gap: 10px;
+  }
   .logo {
     width: 441px;
     height: 238px;
   }
+  .buttons {
+    grid-column: 2;
+  }
+  .textInput {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  .timer {
+    grid-row: 3;
+    grid-column: 2;
+  }
   .spy {
-    width: 276px;
-    height: 392px;
+    width: 200px;
+    height: 300px;
+    grid-row: 4;
+    grid-column: 1;
+    display: flex;
+    justify-items: center;
+    justify-self: center;
+  }
+  .HowToPlayFont {
+    grid-row: 5;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: center;
+  }
+  .HowToPlay {
+    grid-row: 6;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: center;
   }
 }
 @media (min-width: 1201px) {
   .hardBox {
-    height: 100vh;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(7);
+    gap: 10px;
   }
   .logo {
     width: 441px;
     height: 238px;
   }
-  .spy {
-    width: 200px;
-    height: 380px;
-    position: absolute;
-    margin-top: 60px;
-    left: 13%;
+  .buttons {
+    grid-column: 2;
   }
-
-  .button {
+  .textInput {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  .timer {
+    grid-row: 3;
+    grid-column: 2;
+  }
+  .spy {
+    width: 276px;
+    height: 392px;
+    grid-row: 4;
+    grid-column: 1;
+    display: flex;
+    justify-items: center;
+    justify-self: center;
   }
   .HowToPlayFont {
-    position: absolute;
-    bottom: 5%;
+    grid-row: 5;
+    grid-column: 2;
     text-align: center;
-    left: 45%;
   }
   .HowToPlay {
-    position: absolute;
-    bottom: -10%;
-    right: 5%;
-    left: 5%;
+    grid-row: 6;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: center;
   }
 }
 </style>
