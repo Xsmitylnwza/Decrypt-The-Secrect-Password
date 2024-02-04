@@ -1,22 +1,72 @@
 <script setup>
-import { ref } from 'vue'
-
+import { computed, ref } from "vue"
 
 // data mockup สำหรับการ test rule componant
 
-let rules = [
+let passwordRules = [
   {
-    ruleNumber: 2,
-    message: "Your password must include a number",
-    correct: false
+    level: "hard",
+    rules: [
+      {
+        id: 1,
+        message: "Your loved your cat",
+        correct: true
+      }
+    ]
   },
   {
-    ruleNumber: 1,
-    message: "Your password must be at least 5 characters",
-    correct: true
+    level: "veryhard",
+    rules: [
+      { id: 2, message: "Your don't loved your cat", correct: false },
+      {
+        id: 1,
+        message: "Your loved your cat",
+        correct: true
+      }
+    ]
+  },
+  {
+    level: "hardest",
+    rules: [
+      { id: 3, message: "Your neet to love your cat", correct: true },
+      { id: 2, message: "Your don't loved your catr", correct: false },
+      {
+        id: 1,
+        message: "Your loved your cat",
+        correct: true
+      }
+    ]
   }
 ]
 
+let selectedLevel = ref("")
+let userInput = ref("")
+let gameStartted = ref(false)
+
+function levelSelector(level) {
+  selectedLevel.value = level
+  stopTimer()
+  resetGame()
+}
+
+function resetGame() {
+  gameStartted.value = false
+  timer.value = 0
+  userInput.value = ""
+}
+
+const selectedRules = computed(() => {
+  const level = selectedLevel.value
+  const selectedRules = passwordRules.find((rule) => rule.level === level)
+  return selectedRules ? selectedRules.rules : []
+})
+
+function startGame() {
+  if (selectedLevel.value !== "" && !gameStartted.value) {
+    gameStartted.value = true
+    startTimer()
+  }
+}
 let isOpen = ref(false)
 
 // Timer function handle
@@ -47,60 +97,67 @@ function Displaytimeformat() {
 
   return `${hours}:${minutes}:${seconds}`
 }
-function levelSelector(level) {
-  if (level === "hard") {
-    console.warn("HARD MODE")
-  } else if (level === "veryhard") {
-    console.warn("VERY HARD MODE")
-  } else console.warn("HARDEST MODE!")
-}
 </script>
 
 <template>
   <!-- rulebox componant -->
   <div
-    class="background-color-hard flex flex-col w-full min-h-screen items-center"
+    :class="
+      selectedLevel === 'hard'
+        ? 'background-color-hard'
+        : selectedLevel === 'veryhard'
+        ? 'background-color-veryhard'
+        : selectedLevel === 'hardest'
+        ? 'btn-bg-hardest'
+        : 'background-color-hard'
+    "
+    class="flex flex-col w-full min-h-screen items-center"
   >
     <img
       src="./assets/logo/IMG_5174-removebg-preview.png"
       class="mobile:flex w-3/5 h-3/5 my-4 laptop:w-2/5 h-2/5 my-0"
     />
     <div
-      class="flex flex-col items-center w-11/12 h-full bg-color-hard-box rounded-box p-3"
-
+      :class="
+        selectedLevel === 'hard'
+          ? 'bg-color-hard-box'
+          : selectedLevel === 'veryhard'
+          ? 'bg-color-veryhard-box'
+          : selectedLevel === 'hardest'
+          ? 'bg-color-hardest-box'
+          : 'bg-color-hard-box'
+      "
+      class="flex flex-col items-center w-11/12 h-full rounded-box p-3 hardBox"
     >
       <section
         id="select_level"
-        class="text-center flex justify-center w-full text-black"
+        class="text-center flex justify-center w-full text-black buttons"
       >
-        <div>
-          <p class="font-Saira text-white text-center font-medium">
-            SELECT LEVEL
-          </p>
-          <div class="flex flex-row">
-            <button
-              @click="levelSelector('hard')"
-              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-            >
-              HARD
-            </button>
-
-            <button
-              @click="levelSelector('veryhard')"
-              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-            >
-              VERY<br />HARD
-            </button>
-            <button
-              @click="levelSelector('hardest')"
-              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-            >
-              HARDEST
-            </button>
-          </div>
+        <p class="font-Saira text-white text-center font-medium">
+          SELECT LEVEL
+        </p>
+        <div class="flex flex-row">
+          <button
+            @click="levelSelector('hard')"
+            class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+          >
+            HARD
+          </button>
+          <button
+            @click="levelSelector('veryhard')"
+            class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+          >
+            VERY<br />HARD
+          </button>
+          <button
+            @click="levelSelector('hardest')"
+            class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+          >
+            HARDEST
+          </button>
         </div>
       </section>
-      <div id="input-password" class="items-center w-[300px]">
+      <div id="input-password" class="items-center w-[300px] textInput">
         <label class="form-control w-full max-w-xs">
           <div class="label">
             <span class="font-Saira text-[16px] text-white"
@@ -111,18 +168,74 @@ function levelSelector(level) {
             type="text"
             placeholder="Type here"
             class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx"
-            @click="startTimer"
+            @input="startGame"
+            v-model="userInput"
           />
         </label>
       </div>
-      <p class="font-Saira text-[14px] text-white mt-[10px]">
-        Time:
-        <span class="text-[14px] text-red">{{ Displaytimeformat() }}</span>
-      </p>
-      <div class="mobile:flex flex-col items-center">
-        <img class="w-[166px] h-[236px]" src="./assets/picture/hard-pic.png" />
-        <p class="font-Saira text-[13px] text-white mt-[5px] pl-5">
-          Your Character : SPY
+      <div class="timer">
+        <p class="font-Saira text-[14px] text-white mt-[10px]">
+          Time:
+          <span class="text-[14px]">
+            {{ Displaytimeformat() }}
+          </span>
+        </p>
+      </div>
+      <div class="mobile:flex w-[300px] flex-col my-7 items-center spy">
+        <img
+          v-if="selectedLevel === 'hard' && !gameStartted"
+          class=""
+          src="./assets/picture/hard-pic.png"
+        />
+        <img
+          v-if="selectedLevel === 'veryhard' && !gameStartted"
+          class=""
+          src="./assets/picture/very-hard-pic.png"
+        />
+        <img
+          v-if="selectedLevel === 'hardest' && !gameStartted"
+          class="w-80 h-52"
+          src="./assets/picture/hardest-pic.png"
+        />
+        <img
+          v-if="selectedLevel === '' && !gameStartted"
+          class=""
+          src="./assets/picture/hard-pic.png"
+        />
+        <div v-if="gameStartted" class="flex flex-col">
+          <div
+            v-for="rule in selectedRules"
+            class="sm:w-full rounded-md py-4"
+            :key="rule.id"
+          >
+            <div
+              :class="rule.correct ? 'bg-green-300' : 'bg-red-300'"
+              class="py-1 px-4 flex flex-row items-center gap-2"
+            >
+              <i
+                v-if="rule.correct"
+                class="fa-solid fa-check text-red-500 pt-1 text-xl"
+              />
+              <i v-else class="fa-solid fa-xmark text-red-500 pt-1 text-xl"></i>
+              <p class="font-itim text-sm">Rule {{ rule.id }}</p>
+              <p class="font-itim text-sm">{{ rule.message }}.</p>
+            </div>
+          </div>
+        </div>
+        <p
+          v-if="!gameStartted"
+          class="font-Saira text-[13px] text-white mt-[5px]"
+        >
+          Your Character :
+          {{
+            selectedLevel === "hard"
+              ? "SPY"
+              : selectedLevel === "veryhard"
+              ? "FBI"
+              : selectedLevel === "hardest"
+              ? "HACKER"
+              : "SPY"
+          }}
         </p>
       </div>
       <div class="font-Saira text-base text-white pt-6 animate-bounce ml-[5px]">
@@ -169,96 +282,71 @@ function levelSelector(level) {
         </div>
       </div>
 
-      <!-- <div class="grid md:w-4/12 grid-cols-1 m-2 gap-5">
-        <div
-          v-for="rule in rules"
-          class="sm:w-full rounded-md shadow-md bg-red-300 p-0.5"
-          :key="rule.ruleNumber"
-        >
-          <div
-            :class="rule.correct ? 'bg-green-300' : 'bg-red-300'"
-            class="py-1 px-4 flex flex-row items-center gap-2"
-          >
-            <Correct
-              v-if="rule.correct"
-              class="fa-solid fa-check text-red-500 pt-1 text-2xl"
-            />
-            <i v-else class="fa-solid fa-xmark text-red-500 pt-1 text-2xl"></i>
-            <p class="font-itim text-xl">Rule {{ rule.ruleNumber }}</p>
-          </div>
-          <div
-            :class="rule.correct ? 'bg-green-100' : 'bg-red-100'"
-            class="p-4"
-          >
-            <p class="font-itim text-xl">{{ rule.message }}.</p>
-          </div>
-        </div> -->
-      <!-- </div> -->
       <!-- Timer display -->
       <!-- <div class="mt-5">
-        <p class="font-istok text-xl">Timer {{ Displaytimeformat() }}</p>
-        button for test timer-->
+          <p class="font-istok text-xl">Timer {{ Displaytimeformat() }}</p>
+          button for test timer-->
       <!-- <button
-          @click="startTimer"
-          class="font-itim border border-black p-1 rounded-[5px] mr-[8px]"
-        >
-          Start Timer
-        </button>
-        <button
-          @click="stopTimer"
-          class="font-itim border border-black p-1 rounded-[5px]"
-        >
-          Stop Timer
-        </button>
-      </div> -->
-      <!-- <div
-        :class="
-          isOpen
-            ? 'h-[350px] bg-white rounded-[10px] transition-height duration-300 ease-in-out'
-            : 'h-[43px] transition-height duration-300 ease-in-out'
-        "
-        class="fixed bottom-0 overflow-hidden"
-      >
-        <div class="flex flex-col items-center p-1" @click="isOpen = !isOpen">
-          <button class="flex flex-col items-center font-itim">
-            HOW TO PLAY GAME 🎮
-            <svg
-              width="24"
-              height="10"
-              viewBox="0 0 27 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line
-                x1="13.8826"
-                y1="15.2968"
-                x2="1.29294"
-                y2="2.70715"
-                stroke="black"
-                stroke-width="2"
-              />
-              <line
-                x1="13.0877"
-                y1="14.5877"
-                x2="26.0877"
-                y2="1.58769"
-                stroke="black"
-                stroke-width="2"
-              />
-            </svg>
+            @click="startTimer"
+            class="font-itim border border-black p-1 rounded-[5px] mr-[8px]"
+          >
+            Start Timer
           </button>
-        </div>
-        <div class="w-[300px] p-[10px]">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque rem
-            magni repudiandae tempora eos nemo maiores, doloremque quis
-            obcaecati totam, culpa dolorem sit eligendi adipisci laudantium ut!
-            Rem, quidem explicabo! Lorem ipsum dolor sit, amet consectetur
-            adipisicing elit. Ea nesciunt corrupti minus facere ex. Distinctio
-            incidunt maxime provident rerum ad ea suscipit fuga ex praesentium!
-            Maxime aliquam eos excepturi vel.
-          </p>
+          <button
+            @click="stopTimer"
+            class="font-itim border border-black p-1 rounded-[5px]"
+          >
+            Stop Timer
+          </button>
         </div> -->
+      <!-- <div
+          :class="
+            isOpen
+              ? 'h-[350px] bg-white rounded-[10px] transition-height duration-300 ease-in-out'
+              : 'h-[43px] transition-height duration-300 ease-in-out'
+          "
+          class="fixed bottom-0 overflow-hidden"
+        >
+          <div class="flex flex-col items-center p-1" @click="isOpen = !isOpen">
+            <button class="flex flex-col items-center font-itim">
+              HOW TO PLAY GAME 🎮
+              <svg
+                width="24"
+                height="10"
+                viewBox="0 0 27 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="13.8826"
+                  y1="15.2968"
+                  x2="1.29294"
+                  y2="2.70715"
+                  stroke="black"
+                  stroke-width="2"
+                />
+                <line
+                  x1="13.0877"
+                  y1="14.5877"
+                  x2="26.0877"
+                  y2="1.58769"
+                  stroke="black"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="w-[300px] p-[10px]">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque rem
+              magni repudiandae tempora eos nemo maiores, doloremque quis
+              obcaecati totam, culpa dolorem sit eligendi adipisci laudantium ut!
+              Rem, quidem explicabo! Lorem ipsum dolor sit, amet consectetur
+              adipisicing elit. Ea nesciunt corrupti minus facere ex. Distinctio
+              incidunt maxime provident rerum ad ea suscipit fuga ex praesentium!
+              Maxime aliquam eos excepturi vel.
+            </p>
+          </div> -->
     </div>
   </div>
 </template>
@@ -288,6 +376,20 @@ function levelSelector(level) {
   );
 }
 
+.background-color-veryhard {
+  background: linear-gradient(
+    104deg,
+    rgba(209, 164, 15, 1) 0%,
+    rgba(133, 39, 18, 1) 100%
+  );
+}
+
+.bg-color-veryhard-box {
+  border-radius: 31px;
+  border: 1px solid #fff;
+  background: #e36409;
+}
+
 .btn-bg-veryHard {
   background: linear-gradient(
     104deg,
@@ -296,6 +398,23 @@ function levelSelector(level) {
     rgba(60, 23, 8, 0.68) 89.63%
   );
 }
+
+.background-color-hardest {
+  background: linear-gradient(
+    104deg,
+    rgba(209, 15, 15, 1) 14%,
+    rgba(133, 18, 18, 1) 87%,
+    rgba(209, 164, 15, 1) 100%,
+    rgba(133, 18, 18, 1) 100%
+  );
+}
+
+.bg-color-hardest-box {
+  border-radius: 31px;
+  border: 1px solid #fff;
+  background: #cb0809;
+}
+
 .btn-bg-hardest {
   background: linear-gradient(
     104deg,
@@ -304,6 +423,7 @@ function levelSelector(level) {
     rgba(29, 34, 45, 0.94) 89.63%
   );
 }
+
 @media (max-width: 600px) {
   .HowToPlay {
     height: 100vh;
@@ -314,44 +434,92 @@ function levelSelector(level) {
   }
 }
 @media (min-width: 601px) and (max-width: 1200px) {
+  .hardBox {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(7);
+    gap: 10px;
+  }
   .logo {
     width: 441px;
     height: 238px;
   }
+  .buttons {
+    grid-column: 2;
+  }
+  .textInput {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  .timer {
+    grid-row: 3;
+    grid-column: 2;
+  }
   .spy {
-    width: 276px;
-    height: 392px;
+    width: 200px;
+    height: 300px;
+    grid-row: 4;
+    grid-column: 1;
+    display: flex;
+    justify-items: center;
+    justify-self: center;
+  }
+  .HowToPlayFont {
+    grid-row: 5;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: center;
+  }
+  .HowToPlay {
+    grid-row: 6;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: center;
   }
 }
 @media (min-width: 1201px) {
   .hardBox {
-    height: 100vh;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(7);
+    gap: 10px;
   }
   .logo {
     width: 441px;
     height: 238px;
   }
-  .spy {
-    width: 200px;
-    height: 380px;
-    position: absolute;
-    margin-top: 60px;
-    left: 13%;
+  .buttons {
+    grid-column: 2;
   }
-
-  .button {
+  .textInput {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  .timer {
+    grid-row: 3;
+    grid-column: 2;
+  }
+  .spy {
+    width: 276px;
+    height: 392px;
+    grid-row: 4;
+    grid-column: 1;
+    display: flex;
+    justify-items: center;
+    justify-self: center;
   }
   .HowToPlayFont {
-    position: absolute;
-    bottom: 5%;
+    grid-row: 5;
+    grid-column: 2;
     text-align: center;
-    left: 45%;
   }
   .HowToPlay {
-    position: absolute;
-    bottom: -10%;
-    right: 5%;
-    left: 5%;
+    grid-row: 6;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: center;
   }
 }
 </style>
