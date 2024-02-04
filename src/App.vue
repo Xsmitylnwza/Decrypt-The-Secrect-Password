@@ -102,21 +102,21 @@ function Displaytimeformat() {
 <template>
   <!-- rulebox componant -->
   <div :class="selectedLevel === 'hard'
-      ? 'background-color-hard'
-      : selectedLevel === 'veryhard'
-        ? 'background-color-veryhard'
-        : selectedLevel === 'hardest'
-          ? 'btn-bg-hardest'
-          : 'background-color-hard'
+    ? 'background-color-hard'
+    : selectedLevel === 'veryhard'
+      ? 'background-color-veryhard'
+      : selectedLevel === 'hardest'
+        ? 'btn-bg-hardest'
+        : 'background-color-hard'
     " class="flex flex-col w-full min-h-screen items-center">
     <img src="./assets/logo/IMG_5174-removebg-preview.png" class="mobile:flex w-3/5 h-3/5 my-4 logo" />
     <div :class="selectedLevel === 'hard'
-        ? 'bg-color-hard-box'
-        : selectedLevel === 'veryhard'
-          ? 'bg-color-veryhard-box'
-          : selectedLevel === 'hardest'
-            ? 'bg-color-hardest-box'
-            : 'bg-color-hard-box'
+      ? 'bg-color-hard-box'
+      : selectedLevel === 'veryhard'
+        ? 'bg-color-veryhard-box'
+        : selectedLevel === 'hardest'
+          ? 'bg-color-hardest-box'
+          : 'bg-color-hard-box'
       " class="flex flex-col items-center w-11/12 h-full rounded-box p-3 hardBox">
       <section id="select_level" class="text-center flex justify-center w-full text-black buttons">
         <p class="font-Saira text-white text-center font-medium">
