@@ -131,7 +131,7 @@ function Displaytimeformat() {
     >
       <section
         id="select_level"
-        class="text-center flex justify-center w-full text-black buttons"
+        class="text-center flex flex-col items-center w-full text-black buttons"
       >
         <p class="font-Saira text-white text-center font-medium">
           SELECT LEVEL
