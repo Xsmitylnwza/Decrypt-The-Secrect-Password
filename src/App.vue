@@ -222,8 +222,9 @@ function Displaytimeformat() {
               <div class="flex items-center gap-2">
                 <i v-if="selectedLevel.rules[i - 1]?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
                 <i v-else class="fa-solid fa-xmark text-white pt-1 text-xl"></i>
-                <p class="font-Saira text-sm text-white">Rule {{ selectedLevel.rules[i - 1]?.id }}</p>
-                <p class="font-Saira text-sm text-white">{{ selectedLevel.rules[i - 1]?.message }}</p>
+                <p class="font-Saira text-sm text-white">{{ selectedLevel.rules[i - 1]?.correct ? 'Correct' : 'Incorrect'
+                }}
+                  Rule {{ selectedLevel.rules[i - 1]?.id }} {{ selectedLevel.rules[i - 1]?.message }}</p>
               </div>
               <img v-if="selectedLevel.rules[i - 1]?.picture" :src="selectedLevel.rules[i - 1]?.picture"
                 class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]" />
