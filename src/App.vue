@@ -11,6 +11,13 @@ let passwordRules = [
         id: 1,
         message: "React vs Vue",
         correct: false,
+        answer: "React",
+      },
+      {
+        id: 2,
+        message: "React vs Vue",
+        correct: false,
+        answer: "Vue",
       },
     ],
     logo: "/hard-pic.png",
@@ -25,12 +32,14 @@ let passwordRules = [
         id: 1,
         message: "พูดว่า lungtoo",
         correct: false,
+        answer: "lungtoo",
       },
       {
         id: 2,
         message: "ในภาพนี้เป็นภาพของใคร",
         correct: false,
         picture: "/lungpon.png",
+        answer: "no",
       },
     ],
     logo: "/veryhard-pic.png",
@@ -45,9 +54,21 @@ let passwordRules = [
         id: 1,
         message: "Your loved your cat",
         correct: false,
+        answer: "cat",
       },
-      { id: 2, message: "Your don't loved your cat", correct: false },
-      { id: 3, message: "Your need to love your cat", correct: false },
+      {
+        id: 2,
+        message: "Your don't loved your cat",
+        correct: false,
+        answer: "no",
+      },
+      {
+        id: 3,
+        message: "Your need to love your cat",
+        correct: false,
+        answer: "test",
+      },
+      { id: 4, message: "Your need to love your cat", correct: false },
     ],
     logo: "/hardest-pic.png",
     character: "HACKER",
@@ -55,6 +76,8 @@ let passwordRules = [
     boxColor: "bg-color-hardest-box",
   },
 ];
+
+let levelRule = { hard: 0, veryhard: 1, hardest: 2 };
 
 let passedRule = ref(1);
 let selectedLevel = ref(passwordRules[0]);
@@ -77,46 +100,40 @@ function levelSelector(level) {
 }
 
 function checkAnswerHard() {
-  let question = passwordRules[0];
-  if (userInput.value.includes("React")) {
-    question.rules[0].correct = true;
-  } else {
-    question.rules[0].correct = false;
+  let question = passwordRules[levelRule.hard];
+  for (let i = 0; i < question.rules.length; i++) {
+    let currentRule = question.rules[i];
+    if (userInput.value.includes(currentRule.answer)) {
+      currentRule.correct = true;
+    } else {
+      currentRule.correct = false;
+    }
   }
 }
 
 function checkAnswerVeryhard() {
-  let question = passwordRules[1];
-  if (userInput.value.includes("lungtoo")) {
-    question.rules[0].correct = true;
-    passedRule.value = 2;
-  } else {
-    question.rules[0].correct = false;
-  }
-
-  if (userInput.value.includes("no")) {
-    question.rules[1].correct = true;
-    userInput.value = "🔥🔥🔥";
-  } else {
-    question.rules[1].correct = false;
+  let question = passwordRules[levelRule.veryhard];
+  for (let i = 0; i < question.rules.length; i++) {
+    let currentRule = question.rules[i];
+    if (userInput.value.includes(currentRule.answer)) {
+      currentRule.correct = true;
+      passedRule.value = 2;
+    } else {
+      currentRule.correct = false;
+    }
   }
 }
 
 function checkAnswerHardest() {
-  let question = passwordRules[2];
-  if (userInput.value.includes("cat")) {
-    question.rules[0].correct = true;
-    passedRule.value = 2;
-  } else {
-    question.rules[0].correct = false;
-  }
-
-  if (userInput.value.includes("no")) {
-    question.rules[1].correct = true;
-    passedRule.value = 3;
-    userInput.value = "🔥🔥🔥";
-  } else {
-    question.rules[1].correct = false;
+  let question = passwordRules[levelRule.hardest];
+  for (let i = 0; i < question.rules.length; i++) {
+    let currentRule = question.rules[i];
+    if (userInput.value.includes(currentRule.answer)) {
+      currentRule.correct = true;
+      passedRule.value = 3;
+    } else {
+      currentRule.correct = false;
+    }
   }
 }
 
