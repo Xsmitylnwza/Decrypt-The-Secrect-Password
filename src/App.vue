@@ -171,11 +171,11 @@ function levelSelector(level) {
   >
     <img
       src="./assets/logo/IMG_5174-removebg-preview.png"
-      class="mobile:flex w-3/5 h-3/5 my-4 laptop:"
+      class="flex w-3/5 h-3/5 my-4 laptop:flex w-[441px] h-[238px] my-4"
     />
     <div
       :class="selectedLevel.boxColor"
-      class="flex flex-col items-center w-11/12 h-full rounded-box p-3 hardBox"
+      class="flex flex-col items-center w-11/12 h-full rounded-box p-3 laptop:flex flex-col items-center w-11/12 h-full rounded-box p-3"
     >
       <section
         id="select_level"
@@ -573,11 +573,6 @@ function levelSelector(level) {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(7);
     gap: 10px;
-  }
-
-  .logo {
-    width: 441px;
-    height: 238px;
   }
 
   .buttons {
