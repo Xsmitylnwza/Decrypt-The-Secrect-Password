@@ -66,9 +66,8 @@ let passwordRules = [
         id: 3,
         message: "Your need to love your cat",
         correct: false,
-        answer: "test",
+        answer: "zaza",
       },
-      { id: 4, message: "Your need to love your cat", correct: false },
     ],
     logo: "/hardest-pic.png",
     character: "HACKER",
@@ -101,10 +100,13 @@ function levelSelector(level) {
 
 function checkAnswerHard() {
   let question = passwordRules[levelRule.hard];
+  let trackPassed = 1;
   for (let i = 0; i < question.rules.length; i++) {
     let currentRule = question.rules[i];
     if (userInput.value.includes(currentRule.answer)) {
       currentRule.correct = true;
+      passedRule.value =
+        trackPassed === question.rules.length ? trackPassed : ++trackPassed;
     } else {
       currentRule.correct = false;
     }
@@ -113,11 +115,13 @@ function checkAnswerHard() {
 
 function checkAnswerVeryhard() {
   let question = passwordRules[levelRule.veryhard];
+  let trackPassed = 1;
   for (let i = 0; i < question.rules.length; i++) {
     let currentRule = question.rules[i];
     if (userInput.value.includes(currentRule.answer)) {
       currentRule.correct = true;
-      passedRule.value = 2;
+      passedRule.value =
+        trackPassed === question.rules.length ? trackPassed : ++trackPassed;
     } else {
       currentRule.correct = false;
     }
@@ -126,11 +130,13 @@ function checkAnswerVeryhard() {
 
 function checkAnswerHardest() {
   let question = passwordRules[levelRule.hardest];
+  let trackPassed = 1;
   for (let i = 0; i < question.rules.length; i++) {
     let currentRule = question.rules[i];
     if (userInput.value.includes(currentRule.answer)) {
       currentRule.correct = true;
-      passedRule.value = 3;
+      passedRule.value =
+        trackPassed === question.rules.length ? trackPassed : ++trackPassed;
     } else {
       currentRule.correct = false;
     }
