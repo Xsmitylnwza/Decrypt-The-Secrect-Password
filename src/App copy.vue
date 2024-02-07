@@ -173,146 +173,127 @@ function Displaytimeformat() {
       src="./assets/logo/IMG_5174-removebg-preview.png"
       class="mobile:flex w-3/5 h-3/5 my-4 laptop:w-3/12 h-3/12"
     />
-    <!-- main box -->
     <div
       :class="selectedLevel.boxColor"
-      class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4"
+      class="flex flex-col w-11/12 h-full rounded-box p-3 mb-4"
     >
-      <!-- row1 character hidden-->
-      <div class="invisible laptop:visible w-[300px] h-[300px]">
-        <!-- Image only visible on laptop -->
+      <section
+        id="select_level"
+        class="text-center flex justify-center w-full text-black buttons"
+      >
+        <div>
+          <p class="font-Saira text-white text-center font-medium">
+            SELECT LEVEL
+          </p>
+          <div class="flex flex-row">
+            <button
+              @click="levelSelector(passwordRules[0])"
+              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+            >
+              HARD
+            </button>
+            <button
+              @click="levelSelector(passwordRules[1])"
+              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+            >
+              VERY<br />HARD
+            </button>
+            <button
+              @click="levelSelector(passwordRules[2])"
+              class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+            >
+              HARDEST
+            </button>
+          </div>
+        </div>
+      </section>
+      <div
+        id="input-password"
+        class="items-center w-[300px] m-[auto] textInput"
+      >
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="font-Saira text-[16px] text-white"
+              >Enter Password Here...</span
+            >
+          </div>
+          <input
+            type="text"
+            placeholder="Type here"
+            class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx"
+            @input="
+              () => {
+                startGame()
+                checkAnswer['checkAnswer' + selectedLevel.level]()
+              }
+            "
+            v-model="userInput"
+          />
+        </label>
+      </div>
+      <div class="timer m-[auto]">
+        <p class="font-Saira text-[14px] text-white mt-[10px]">
+          Time:
+          <span class="text-[14px]">
+            {{ Displaytimeformat() }}
+          </span>
+        </p>
+      </div>
+      <!-- สำหรับelement Characteristic -->
+      <div class="flex w-[300px] flex-col items-center my-7">
         <img
+          v-if="selectedLevel && !gameStartted"
           :src="selectedLevel.logo"
           alt
-          class="laptop:flex w-[200px] w-[250px] m-[auto] pt-3"
+          class="flex items-center w-2/3 h-2/3 laptop:hidden"
         />
-        <p class="font-Saira text-[13px] text-white items-center">
+        <div v-if="gameStartted" class="flex flex-col">
+          <div
+            v-for="i in passedRule"
+            class="min-w-[307px] sm:w-full rounded-md py-4 border border-black"
+            :key="i"
+          >
+            <div
+              :class="
+                selectedLevel.rules[i - 1]?.correct
+                  ? 'bg-[#62EC70]'
+                  : 'bg-[#FC6C6C]'
+              "
+              class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
+            >
+              <div class="flex items-center gap-2">
+                <i
+                  v-if="selectedLevel.rules[i - 1]?.correct"
+                  class="fa-solid fa-check text-white pt-1 text-xl"
+                />
+                <i v-else class="fa-solid fa-xmark text-white pt-1 text-xl"></i>
+                <p class="font-Saira text-sm text-white">
+                  {{
+                    selectedLevel.rules[i - 1]?.correct
+                      ? 'Correct'
+                      : 'Incorrect'
+                  }}
+                  Rule {{ selectedLevel.rules[i - 1]?.id }}
+                  {{ selectedLevel.rules[i - 1]?.message }}
+                </p>
+              </div>
+              <img
+                v-if="selectedLevel.rules[i - 1]?.picture"
+                :src="selectedLevel.rules[i - 1]?.picture"
+                class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]"
+              />
+            </div>
+          </div>
+        </div>
+        <p
+          v-if="!gameStartted"
+          class="font-Saira text-[13px] text-white mt-[5px] laptop:hidden"
+        >
           Your Character : {{ selectedLevel.character }}
         </p>
       </div>
-      <!-- level componant  row2-->
-      <div class="flex flex-col justify-center mr-32 laptop:grow items-start">
-        <section
-          id="select_level"
-          class="text-center text-black buttons desktop:ml-44"
-        >
-          <div>
-            <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
-            <div class="flex flex-row">
-              <button
-                @click="levelSelector(passwordRules[0])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-              >
-                HARD
-              </button>
-              <button
-                @click="levelSelector(passwordRules[1])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-              >
-                VERY<br />HARD
-              </button>
-              <button
-                @click="levelSelector(passwordRules[2])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
-              >
-                HARDEST
-              </button>
-            </div>
-          </div>
-        </section>
-        <!-- input component in row 2-->
-        <div
-          id="input-password"
-          class="items-start w-[300px] textInput desktop:ml-44"
-        >
-          <label class="form-control w-full max-w-xs">
-            <div class="label">
-              <span class="font-Saira text-[16px] text-white"
-                >Enter Password Here...</span
-              >
-            </div>
-            <input
-              type="text"
-              placeholder="Type here"
-              class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx"
-              @input="
-                () => {
-                  startGame()
-                  checkAnswer['checkAnswer' + selectedLevel.level]()
-                }
-              "
-              v-model="userInput"
-            />
-          </label>
-        </div>
-        <!-- timer componant in row2 -->
-        <div class="timer m-[auto] laptop:ml-24 desktop:ml-[260px]">
-          <p class="flex font-Saira text-[14px] text-white mt-[10px]">
-            Time:
-            <span class="text-[14px] text-red-600">
-              {{ Displaytimeformat() }}
-            </span>
-          </p>
-        </div>
-        <!-- Characteristic component row 2 for mobile -->
-        <div class="flex w-[300px] flex-col items-center my-7">
-          <img
-            v-if="selectedLevel && !gameStartted"
-            :src="selectedLevel.logo"
-            alt
-            class="flex items-center w-4/5 h-4/5 laptop:hidden"
-          />
-          <div v-if="gameStartted" class="flex flex-col">
-            <div
-              v-for="i in passedRule"
-              class="min-w-[307px] sm:w-full rounded-md py-4 border border-black"
-              :key="i"
-            >
-              <div
-                :class="
-                  selectedLevel.rules[i - 1]?.correct
-                    ? 'bg-[#62EC70]'
-                    : 'bg-[#FC6C6C]'
-                "
-                class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
-              >
-                <div class="flex items-center gap-2">
-                  <i
-                    v-if="selectedLevel.rules[i - 1]?.correct"
-                    class="fa-solid fa-check text-white pt-1 text-xl"
-                  />
-                  <i
-                    v-else
-                    class="fa-solid fa-xmark text-white pt-1 text-xl"
-                  ></i>
-                  <p class="font-Saira text-sm text-white">
-                    {{
-                      selectedLevel.rules[i - 1]?.correct
-                        ? 'Correct'
-                        : 'Incorrect'
-                    }}
-                    Rule {{ selectedLevel.rules[i - 1]?.id }}
-                    {{ selectedLevel.rules[i - 1]?.message }}
-                  </p>
-                </div>
-                <img
-                  v-if="selectedLevel.rules[i - 1]?.picture"
-                  :src="selectedLevel.rules[i - 1]?.picture"
-                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]"
-                />
-              </div>
-            </div>
-          </div>
-          <p
-            v-if="!gameStartted"
-            class="font-Saira text-[13px] text-white mt-[5px] laptop:hidden"
-          >
-            Your Character : {{ selectedLevel.character }}
-          </p>
-        </div>
-        <!-- how to play componant -->
-        <!-- Open the modal using ID.showModal() method -->
-        <div class="flex m-[auto] laptop:ml-12 desktop:ml-56">
+     <!-- Open the modal using ID.showModal() method -->
+     <div class="flex justify-center">
           <button
             class="btn border-0 font-Saira font-light bg-white text-black hover:text-white transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 duration-150"
             onclick="howToPlay.showModal()"
@@ -402,7 +383,7 @@ function Displaytimeformat() {
             </p>
           </div> -->
     </div>
-  </div>
+  
 </template>
 
 <style scoped>
