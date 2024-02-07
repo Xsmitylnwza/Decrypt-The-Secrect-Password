@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref } from "vue"
 
-// data mockup สำหรับการ test rule componant
 
 // data mockup สำหรับการ test rule componant
 
@@ -15,7 +14,7 @@ let passwordRules = [
         correct: false,
       },
     ],
-    logo: "/hard-pic.png",
+    logo: "./images/hard-pic.png",
     character: "SPY",
     backgroundColor: "background-color-hard",
     boxColor: "bg-color-hard-box"
@@ -32,10 +31,10 @@ let passwordRules = [
         id: 2,
         message: "ในภาพนี้เป็นภาพของใคร",
         correct: false,
-        picture: "/lungpon.png"
+        picture: "./images/lungpon.png"
       },
     ],
-    logo: "/veryhard-pic.png",
+    logo: "./images/veryhard-pic.png",
     character: "FBI",
     backgroundColor: "background-color-veryhard",
     boxColor: "bg-color-veryhard-box"
@@ -43,15 +42,20 @@ let passwordRules = [
   {
     level: "Hardest",
     rules: [
+      { id: 1, message: "Your password must have some digit", correct: false },
       {
-        id: 1,
-        message: "Your loved your cat",
+        id: 2,
+        message: "Your password must have atleast 5 characters",
         correct: false,
       },
-      { id: 2, message: "Your don't loved your cat", correct: false },
-      { id: 3, message: "Your need to love your cat", correct: false },
+      { id: 3, message: "Your password must includes speial characters", correct: false },
+      { id: 4, message: "Your digit must add to 35", correct: false },
+      { id: 5, message: "What month its is?", correct: false },
+      { id: 6, message: "2 + 7 * 2 + 9 / 3 + 9 * 2 = ?", correct: false },
+      { id: 7, message: "What do Japanese people used?", correct: false },
+      { id: 8, message: "Oh no it fire burning your password!?!!", correct: false },
     ],
-    logo: "/hardest-pic.png",
+    logo: "./images/hardest-pic.png",
     character: "HACKER",
     backgroundColor: "background-color-hardest",
     boxColor: "bg-color-hardest-box"
@@ -109,21 +113,65 @@ function checkAnswerVeryhard() {
 
 function checkAnswerHardest() {
   let question = passwordRules[2]
-  if (userInput.value.includes("cat")) {
+  let numSum = userInput.value.match(/\d/g)
+  let sum = numSum ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0) : 0;
+  var today = new Date()
+  var month = today.toLocaleString('en-US', { month: 'short' });
+
+  if (/\d{3,}/.test(userInput.value)) {
     question.rules[0].correct = true
-    passedRule.value = 2
+    if (passedRule.value < 2) {
+      passedRule.value = 2
+    }
   } else {
     question.rules[0].correct = false
   }
 
-  if (userInput.value.includes("no")) {
+  if (userInput.value.length >= 5 && passedRule.value >= 2) {
     question.rules[1].correct = true
-    passedRule.value = 3
-    userInput.value = "🔥🔥🔥"
+    if (passedRule.value < 3) {
+      passedRule.value = 3
+    }
+    // userInput.value = "🔥🔥🔥"
   } else {
     question.rules[1].correct = false
   }
+
+  if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
+    question.rules[2].correct = true
+    if (passedRule.value < 4) {
+      passedRule.value = 4
+    }
+  } else {
+    question.rules[2].correct = false
+  }
+  if (sum == 35 && passedRule.value >= 4) {
+    question.rules[3].correct = true
+    if (passedRule.value < 5) passedRule.value = 5
+  } else {
+    question.rules[3].correct = false
+  }
+  if (userInput.value.includes(month) && passedRule.value >= 5) {
+    question.rules[4].correct = true
+    if (passedRule.value < 6) passedRule.value = 6
+  } else {
+    question.rules[4].correct = false
+  }
+  if (userInput.value.includes("37") && passedRule.value >= 6) {
+    question.rules[5].correct = true
+    if (passedRule.value < 7) passedRule.value = 7
+  } else {
+    question.rules[5].correct = false
+  }
+  if (userInput.value.includes("¥") && passedRule.value >= 7) {
+    question.rules[6].correct = true
+    if (passedRule.value < 8) passedRule.value = 8
+  } else {
+    question.rules[6].correct = false
+  }
 }
+
+
 
 function resetGame() {
   gameStartted.value = false;
@@ -213,9 +261,9 @@ function Displaytimeformat() {
           </span>
         </p>
       </div>
-      <div class="mobile:flex w-[300px] flex-col my-7 items-center spy">
+      <div class="mobile:flex w-[300px] flex-col my-7 items-center">
         <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt class="icon" />
-        <div v-if="gameStartted" class="flex flex-col">
+        <div v-if="gameStartted" class="flex flex-col-reverse">
           <div v-for="i in passedRule" class="min-w-[307px] sm:w-full rounded-md py-4 border border-black" :key="i">
             <div :class="selectedLevel.rules[i - 1]?.correct ? 'bg-[#62EC70]' : 'bg-[#FC6C6C]'"
               class="py-2 px-3 flex flex-col border border-white rounded-[14px]">
