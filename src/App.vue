@@ -176,28 +176,34 @@ function Displaytimeformat() {
     <!-- main box -->
     <div
       :class="selectedLevel.boxColor"
-      class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4"
+      class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4 justify-center"
     >
       <!-- row1 character hidden-->
-      <div class="invisible laptop:visible w-[300px] h-[300px]">
+      <div
+        class="mobile:invisible w-0 h-0 laptop:visible laptop:w-[300px] laptop:h-[300px]"
+      >
         <!-- Image only visible on laptop -->
         <img
           :src="selectedLevel.logo"
           alt
-          class="laptop:flex w-[200px] w-[250px] m-[auto] pt-3"
+          class="laptop:flex laptop:w-[200px] laptop:h-[250px] m-[auto] pt-3"
         />
-        <p class="font-Saira text-[13px] text-white items-center">
+        <p class="font-Saira text-[13px] text-white text-center mt-4">
           Your Character : {{ selectedLevel.character }}
         </p>
       </div>
       <!-- level componant  row2-->
-      <div class="flex flex-col justify-center mr-32 laptop:grow items-start">
+      <div class="flex flex-col justify-center laptop:grow">
         <section
           id="select_level"
-          class="text-center text-black buttons desktop:ml-44"
+          class="text-center text-black buttons desktop:ml-48"
         >
           <div>
-            <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
+            <p
+              class="flex font-Saira mobile:justify-center text-white font-medium laptop:ml-24 laptop:justify-start"
+            >
+              SELECT LEVEL
+            </p>
             <div class="flex flex-row">
               <button
                 @click="levelSelector(passwordRules[0])"
@@ -246,7 +252,7 @@ function Displaytimeformat() {
           </label>
         </div>
         <!-- timer componant in row2 -->
-        <div class="timer m-[auto] laptop:ml-24 desktop:ml-[260px]">
+        <div class="timer m-[auto] laptop:ml-24 desktop:ml-72">
           <p class="flex font-Saira text-[14px] text-white mt-[10px]">
             Time:
             <span class="text-[14px] text-red-600">
