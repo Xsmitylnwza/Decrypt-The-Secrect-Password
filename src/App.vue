@@ -372,8 +372,8 @@ function Displaytimeformat() {
             HOW TO PLAY GAME 🎮
           </button>
           <dialog id="howToPlay" class="modal">
-            <div class=" modal-box bg-white">
-              <h3 class="font-bold text-lg text-black">
+            <div class=" modal-box bg-white ">
+              <h3 class="font-bold text-lg text-black mb-4">
                 How to play this game!
               </h3>
               <div class="overflow-y-auto overscroll-auto h-96">
