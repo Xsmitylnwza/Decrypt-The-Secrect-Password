@@ -1,6 +1,5 @@
 <script setup>
-import { computed, ref } from "vue"
-
+import { computed, ref } from 'vue'
 
 // data mockup สำหรับการ test rule componant
 
@@ -14,10 +13,10 @@ let passwordRules = [
         correct: false,
       },
     ],
-    logo: "./images/hard-pic.png",
-    character: "SPY",
-    backgroundColor: "background-color-hard",
-    boxColor: "bg-color-hard-box"
+    logo: './images/hard-pic.png',
+    character: 'SPY',
+    backgroundColor: 'background-color-hard',
+    boxColor: 'bg-color-hard-box',
   },
   {
     level: 'Veryhard',
@@ -31,34 +30,42 @@ let passwordRules = [
         id: 2,
         message: 'ในภาพนี้เป็นภาพของใคร',
         correct: false,
-        picture: "./images/lungpon.png"
+        picture: './images/lungpon.png',
       },
     ],
-    logo: "./images/veryhard-pic.png",
-    character: "FBI",
-    backgroundColor: "background-color-veryhard",
-    boxColor: "bg-color-veryhard-box"
+    logo: './images/veryhard-pic.png',
+    character: 'FBI',
+    backgroundColor: 'background-color-veryhard',
+    boxColor: 'bg-color-veryhard-box',
   },
   {
     level: 'Hardest',
     rules: [
-      { id: 1, message: "Your password must have some digit", correct: false },
+      { id: 1, message: 'Your password must have some digit', correct: false },
       {
         id: 2,
-        message: "Your password must have atleast 5 characters",
+        message: 'Your password must have atleast 5 characters',
         correct: false,
       },
-      { id: 3, message: "Your password must includes speial characters", correct: false },
-      { id: 4, message: "Your digit must add to 35", correct: false },
-      { id: 5, message: "What month its is?", correct: false },
-      { id: 6, message: "2 + 7 * 2 + 9 / 3 + 9 * 2 = ?", correct: false },
-      { id: 7, message: "What do Japanese people used?", correct: false },
-      { id: 8, message: "Oh no it fire burning your password!?!!", correct: false },
+      {
+        id: 3,
+        message: 'Your password must includes speial characters',
+        correct: false,
+      },
+      { id: 4, message: 'Your digit must add to 35', correct: false },
+      { id: 5, message: 'What month its is?', correct: false },
+      { id: 6, message: '2 + 7 * 2 + 9 / 3 + 9 * 2 = ?', correct: false },
+      { id: 7, message: 'What do Japanese people used?', correct: false },
+      {
+        id: 8,
+        message: 'Oh no it fire burning your password!?!!',
+        correct: false,
+      },
     ],
-    logo: "./images/hardest-pic.png",
-    character: "HACKER",
-    backgroundColor: "background-color-hardest",
-    boxColor: "bg-color-hardest-box"
+    logo: './images/hardest-pic.png',
+    character: 'HACKER',
+    backgroundColor: 'background-color-hardest',
+    boxColor: 'bg-color-hardest-box',
   },
 ]
 
@@ -75,12 +82,11 @@ const checkAnswer = {
   checkAnswerHardest,
 }
 
-
 function levelSelector(level) {
-  selectedLevel.value = level;
-  passedRule.value = 1;
-  stopTimer();
-  resetGame();
+  selectedLevel.value = level
+  passedRule.value = 1
+  stopTimer()
+  resetGame()
 }
 
 function checkAnswerHard() {
@@ -112,9 +118,11 @@ function checkAnswerVeryhard() {
 function checkAnswerHardest() {
   let question = passwordRules[2]
   let numSum = userInput.value.match(/\d/g)
-  let sum = numSum ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0) : 0;
+  let sum = numSum
+    ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
+    : 0
   var today = new Date()
-  var month = today.toLocaleString('en-US', { month: 'short' });
+  var month = today.toLocaleString('en-US', { month: 'short' })
 
   if (/\d{3,}/.test(userInput.value)) {
     question.rules[0].correct = true
@@ -155,21 +163,19 @@ function checkAnswerHardest() {
   } else {
     question.rules[4].correct = false
   }
-  if (userInput.value.includes("37") && passedRule.value >= 6) {
+  if (userInput.value.includes('37') && passedRule.value >= 6) {
     question.rules[5].correct = true
     if (passedRule.value < 7) passedRule.value = 7
   } else {
     question.rules[5].correct = false
   }
-  if (userInput.value.includes("¥") && passedRule.value >= 7) {
+  if (userInput.value.includes('¥') && passedRule.value >= 7) {
     question.rules[6].correct = true
     if (passedRule.value < 8) passedRule.value = 8
   } else {
     question.rules[6].correct = false
   }
 }
-
-
 
 function resetGame() {
   gameStartted.value = false
@@ -208,21 +214,36 @@ function Displaytimeformat() {
     .padStart(2, '0')
   const seconds = (timer.value % 60).toString().padStart(2, '0')
 
-  return `${hours}:${minutes}:${seconds}`;
+  return `${hours}:${minutes}:${seconds}`
 }
 </script>
 
 <template>
   <!-- rulebox componant -->
-  <div :class="selectedLevel.backgroundColor" class="flex flex-col w-full min-h-screen items-center">
-    <img src="./assets/logo/IMG_5174-removebg-preview.png" class="mobile:flex w-3/5 h-3/5 my-4 laptop:w-3/12 h-3/12" />
+  <div
+    :class="selectedLevel.backgroundColor"
+    class="flex flex-col w-full min-h-screen items-center"
+  >
+    <img
+      src="./assets/logo/IMG_5174-removebg-preview.png"
+      class="mobile:flex w-3/5 h-3/5 my-4 laptop:w-3/12 h-3/12"
+    />
     <!-- main box -->
-    <div :class="selectedLevel.boxColor" class="flex flex-row  w-11/12 h-full rounded-box p-3 mb-4 border">
+    <div
+      :class="selectedLevel.boxColor"
+      class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4 border"
+    >
       <!-- row1 character hidden-->
-      <div class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%]">
+      <div
+        class="absolute invisible laptop:visible flex flex-col items-center ml-[4%] labtop-L:ml-[8%]"
+      >
         <!-- Image only visible on laptop -->
-        <img :src="selectedLevel.logo" alt class="laptop:flex w-[220px] h-[250px] pt-3" />
-        <p class="font-Saira text-[13px] text-white items-center">
+        <img
+          :src="selectedLevel.logo"
+          alt
+          class="laptop:flex w-[100%] h-[260px] pt-3"
+        />
+        <p class="font-Saira text-[13px] text-white items-center mt-4">
           Your Character : {{ selectedLevel.character }}
         </p>
       </div>
@@ -232,34 +253,48 @@ function Displaytimeformat() {
         <section id="select_level" class="text-center">
           <div>
             <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
-            <div class="flex flex-row ">
-              <button @click="levelSelector(passwordRules[0])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2">
+            <div class="flex flex-row">
+              <button
+                @click="levelSelector(passwordRules[0])"
+                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+              >
                 HARD
               </button>
-              <button @click="levelSelector(passwordRules[1])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2">
+              <button
+                @click="levelSelector(passwordRules[1])"
+                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+              >
                 VERY<br />HARD
               </button>
-              <button @click="levelSelector(passwordRules[2])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2">
+              <button
+                @click="levelSelector(passwordRules[2])"
+                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+              >
                 HARDEST
               </button>
             </div>
           </div>
         </section>
         <!-- input component in row 2-->
-        <div id="input-password" class="items-start w-[300px] ">
+        <div id="input-password" class="items-start w-[300px]">
           <label class="form-control w-full max-w-xs">
             <div class="label">
-              <span class="font-Saira text-[16px] text-white">Enter Password Here...</span>
+              <span class="font-Saira text-[16px] text-white"
+                >Enter Password Here...</span
+              >
             </div>
-            <input type="text" placeholder="Type here"
-              class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx" @input="() => {
-                startGame()
-                checkAnswer['checkAnswer' + selectedLevel.level]()
-              }
-                " v-model="userInput" />
+            <input
+              type="text"
+              placeholder="Type here"
+              class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx"
+              @input="
+                () => {
+                  startGame()
+                  checkAnswer['checkAnswer' + selectedLevel.level]()
+                }
+              "
+              v-model="userInput"
+            />
           </label>
         </div>
         <!-- timer componant in row2 -->
@@ -273,61 +308,127 @@ function Displaytimeformat() {
         </div>
         <!-- Characteristic component row 2 for mobile -->
         <div class="flex w-[300px] flex-col items-center my-7">
-          <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt
-            class="flex items-center w-4/5 h-4/5 laptop:hidden" />
+          <img
+            v-if="selectedLevel && !gameStartted"
+            :src="selectedLevel.logo"
+            alt
+            class="flex items-center w-4/5 h-4/5 laptop:hidden"
+          />
           <div v-if="gameStartted" class="flex flex-col">
-            <div v-for="i in passedRule" class="min-w-[307px] sm:w-full rounded-md py-4" :key="i">
-              <div :class="selectedLevel.rules[i - 1]?.correct
-                ? 'bg-[#62EC70]'
-                : 'bg-[#FC6C6C]'
-                " class="py-2 px-3 flex flex-col border border-white rounded-[14px]">
+            <div
+              v-for="i in passedRule"
+              class="min-w-[307px] sm:w-full rounded-md py-4"
+              :key="i"
+            >
+              <div
+                :class="
+                  selectedLevel.rules[i - 1]?.correct
+                    ? 'bg-[#62EC70]'
+                    : 'bg-[#FC6C6C]'
+                "
+                class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
+              >
                 <div class="flex items-center gap-2">
-                  <i v-if="selectedLevel.rules[i - 1]?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
-                  <i v-else class="fa-solid fa-xmark text-white pt-1 text-xl"></i>
+                  <i
+                    v-if="selectedLevel.rules[i - 1]?.correct"
+                    class="fa-solid fa-check text-white pt-1 text-xl"
+                  />
+                  <i
+                    v-else
+                    class="fa-solid fa-xmark text-white pt-1 text-xl"
+                  ></i>
                   <p class="font-Saira text-sm text-white">
                     {{
                       selectedLevel.rules[i - 1]?.correct
-                      ? 'Correct'
-                      : 'Incorrect'
+                        ? 'Correct'
+                        : 'Incorrect'
                     }}
                     Rule {{ selectedLevel.rules[i - 1]?.id }}
                     {{ selectedLevel.rules[i - 1]?.message }}
                   </p>
                 </div>
-                <img v-if="selectedLevel.rules[i - 1]?.picture" :src="selectedLevel.rules[i - 1]?.picture"
-                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]" />
+                <img
+                  v-if="selectedLevel.rules[i - 1]?.picture"
+                  :src="selectedLevel.rules[i - 1]?.picture"
+                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]"
+                />
               </div>
             </div>
           </div>
-          <p v-if="!gameStartted" class="font-Saira text-[13px] text-white mt-[5px] laptop:hidden">
+          <p
+            v-if="!gameStartted"
+            class="font-Saira text-[13px] text-white mt-[5px] laptop:hidden"
+          >
             Your Character : {{ selectedLevel.character }}
           </p>
         </div>
         <!-- how to play componant -->
         <!-- Open the modal using ID.showModal() method -->
-        <div class="flex m-[auto] ">
+        <div class="flex m-[auto]">
           <button
             class="btn border-0 font-Saira font-light bg-white text-black hover:text-white transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 duration-150"
-            onclick="howToPlay.showModal()">
+            onclick="howToPlay.showModal()"
+          >
             HOW TO PLAY GAME 🎮
           </button>
           <dialog id="howToPlay" class="modal">
-            <div class="modal-box bg">
-              <h3 class="font-bold text-lg">Hello!</h3>
-              <p class="py-4">
-                Press ESC key or click the button below to close
+            <div class=" modal-box bg-white">
+              <h3 class="font-bold text-lg text-black">
+                How to play this game!
+              </h3>
+              <div class="overflow-y-auto overscroll-auto h-96">
+              <div class="flex flex-col items-center">
+              <p class="py-4 text-center">
+                <!-- Press ESC key or click the button below to close -->
+                <div class="font-bold text-black">1.Select your Power(Level)</div>
+                (Hard = noob)<br />
+                (Very Hard =medium)<br />
+                (Hardest = ok)
               </p>
+              <img
+                src="../public/images/howtoplay1.png"
+                alt="select Level image"
+                class="rounded-box "
+              />
+              <p class="mt-4">
+                Then any level it give your Character to play password game
+              </p>
+            </div>
+            <div class="flex flex-row space-x-2 mt-3">
+              <div><img src="../public/images/spy.png" alt="spy" class="w-full h-[100%] rounded-box "></div>
+              <div><img src="../public/images/FBI.png" alt="FBI" class="w-full h-[99.7%] rounded-box"></div>
+              <div><img src="../public/images/hacker.png" alt="hacker" class="w-full h-[99.5%] rounded-box"></div>
+            </div>
+            <div class="flex flex-col items-center mt-3">
+            <p>
+              **Character mean your power to play game harder**
+            </p>
+            <p class="font-bold text-black mt-2">
+              2.Enter password in textblock
+            </p>
+            <img src="../public/images/enterpassword.png" alt="enterpassword" class="rounded-box w-11/12 mt-3">
+            <p class="font-bold text-black mt-3">
+              3.Follow the rule until it done!!!
+            </p>
+            <p class=" mt-3 text-center">
+              <div class="font-bold">Game tip!!!</div> Time is runing when you text in text box you can get time to challenge with your friend
+            </p>
+          </div>
+
+          </div>
               <div class="modal-action">
                 <form method="dialog">
                   <!-- if there is a button in form, it will close the modal -->
-                  <button class="btn">Close</button>
+                  <button class="btn rounded-box w-30
+                   bg-red-600 text-white border-0  hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform motion-safe:hover:scale-110">
+                    Close
+                  </button>
                 </form>
               </div>
             </div>
           </dialog>
         </div>
       </div>
-
       <!-- Timer display -->
       <!-- <div class="mt-5">
           <p class="font-istok text-xl">Timer {{ Displaytimeformat() }}</p>
@@ -345,54 +446,6 @@ function Displaytimeformat() {
             Stop Timer
           </button>
         </div> -->
-      <!-- <div
-          :class="
-            isOpen
-              ? 'h-[350px] bg-white rounded-[10px] transition-height duration-300 ease-in-out'
-              : 'h-[43px] transition-height duration-300 ease-in-out'
-          "
-          class="fixed bottom-0 overflow-hidden"
-        >
-          <div class="flex flex-col items-center p-1" @click="isOpen = !isOpen">
-            <button class="flex flex-col items-center font-itim">
-              HOW TO PLAY GAME 🎮
-              <svg
-                width="24"
-                height="10"
-                viewBox="0 0 27 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <line
-                  x1="13.8826"
-                  y1="15.2968"
-                  x2="1.29294"
-                  y2="2.70715"
-                  stroke="black"
-                  stroke-width="2"
-                />
-                <line
-                  x1="13.0877"
-                  y1="14.5877"
-                  x2="26.0877"
-                  y2="1.58769"
-                  stroke="black"
-                  stroke-width="2"
-                />
-              </svg>
-            </button>
-          </div>
-          <div class="w-[300px] p-[10px]">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque rem
-              magni repudiandae tempora eos nemo maiores, doloremque quis
-              obcaecati totam, culpa dolorem sit eligendi adipisci laudantium ut!
-              Rem, quidem explicabo! Lorem ipsum dolor sit, amet consectetur
-              adipisicing elit. Ea nesciunt corrupti minus facere ex. Distinctio
-              incidunt maxime provident rerum ad ea suscipit fuga ex praesentium!
-              Maxime aliquam eos excepturi vel.
-            </p>
-          </div> -->
     </div>
   </div>
 </template>
