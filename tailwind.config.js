@@ -8,6 +8,7 @@ export default {
     screens: {
       'mobile': '450px',
       'laptop': '1024px',
+      'labtop-L': '1440px'
     },
     extend: {
       fontFamily: {
