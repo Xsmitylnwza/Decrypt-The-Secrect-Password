@@ -5,7 +5,7 @@ export default {
     screens: {
       'mobile': '320px',
       'laptop': '1024px',
-      'desktop': '1440px',
+      'labtop-L': '1440px'
     },
     extend: {
       fontFamily: {
