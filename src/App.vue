@@ -3,8 +3,6 @@ import { computed, ref } from 'vue'
 
 // data mockup สำหรับการ test rule componant
 
-// data mockup สำหรับการ test rule componant
-
 let passwordRules = [
   {
     level: 'Hard',
@@ -15,7 +13,7 @@ let passwordRules = [
         correct: false,
       },
     ],
-    logo: '/hard-pic.png',
+    logo: './images/hard-pic.png',
     character: 'SPY',
     backgroundColor: 'background-color-hard',
     boxColor: 'bg-color-hard-box',
@@ -32,10 +30,10 @@ let passwordRules = [
         id: 2,
         message: 'ในภาพนี้เป็นภาพของใคร',
         correct: false,
-        picture: '/lungpon.png',
+        picture: './images/lungpon.png',
       },
     ],
-    logo: '/veryhard-pic.png',
+    logo: './images/veryhard-pic.png',
     character: 'FBI',
     backgroundColor: 'background-color-veryhard',
     boxColor: 'bg-color-veryhard-box',
@@ -43,15 +41,28 @@ let passwordRules = [
   {
     level: 'Hardest',
     rules: [
+      { id: 1, message: 'Your password must have some digit', correct: false },
       {
-        id: 1,
-        message: 'Your loved your cat',
+        id: 2,
+        message: 'Your password must have atleast 5 characters',
         correct: false,
       },
-      { id: 2, message: "Your don't loved your cat", correct: false },
-      { id: 3, message: 'Your need to love your cat', correct: false },
+      {
+        id: 3,
+        message: 'Your password must includes speial characters',
+        correct: false,
+      },
+      { id: 4, message: 'Your digit must add to 35', correct: false },
+      { id: 5, message: 'What month its is?', correct: false },
+      { id: 6, message: '2 + 7 * 2 + 9 / 3 + 9 * 2 = ?', correct: false },
+      { id: 7, message: 'What do Japanese people used?', correct: false },
+      {
+        id: 8,
+        message: 'Oh no it fire burning your password!?!!',
+        correct: false,
+      },
     ],
-    logo: '/hardest-pic.png',
+    logo: './images/hardest-pic.png',
     character: 'HACKER',
     backgroundColor: 'background-color-hardest',
     boxColor: 'bg-color-hardest-box',
@@ -106,19 +117,63 @@ function checkAnswerVeryhard() {
 
 function checkAnswerHardest() {
   let question = passwordRules[2]
-  if (userInput.value.includes('cat')) {
+  let numSum = userInput.value.match(/\d/g)
+  let sum = numSum
+    ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
+    : 0
+  var today = new Date()
+  var month = today.toLocaleString('en-US', { month: 'short' })
+
+  if (/\d{3,}/.test(userInput.value)) {
     question.rules[0].correct = true
-    passedRule.value = 2
+    if (passedRule.value < 2) {
+      passedRule.value = 2
+    }
   } else {
     question.rules[0].correct = false
   }
 
-  if (userInput.value.includes('no')) {
+  if (userInput.value.length >= 5 && passedRule.value >= 2) {
     question.rules[1].correct = true
-    passedRule.value = 3
-    userInput.value = '🔥🔥🔥'
+    if (passedRule.value < 3) {
+      passedRule.value = 3
+    }
+    // userInput.value = "🔥🔥🔥"
   } else {
     question.rules[1].correct = false
+  }
+
+  if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
+    question.rules[2].correct = true
+    if (passedRule.value < 4) {
+      passedRule.value = 4
+    }
+  } else {
+    question.rules[2].correct = false
+  }
+  if (sum == 35 && passedRule.value >= 4) {
+    question.rules[3].correct = true
+    if (passedRule.value < 5) passedRule.value = 5
+  } else {
+    question.rules[3].correct = false
+  }
+  if (userInput.value.includes(month) && passedRule.value >= 5) {
+    question.rules[4].correct = true
+    if (passedRule.value < 6) passedRule.value = 6
+  } else {
+    question.rules[4].correct = false
+  }
+  if (userInput.value.includes('37') && passedRule.value >= 6) {
+    question.rules[5].correct = true
+    if (passedRule.value < 7) passedRule.value = 7
+  } else {
+    question.rules[5].correct = false
+  }
+  if (userInput.value.includes('¥') && passedRule.value >= 7) {
+    question.rules[6].correct = true
+    if (passedRule.value < 8) passedRule.value = 8
+  } else {
+    question.rules[6].correct = false
   }
 }
 
@@ -176,34 +231,28 @@ function Displaytimeformat() {
     <!-- main box -->
     <div
       :class="selectedLevel.boxColor"
-      class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4 justify-center"
+      class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4 border"
     >
       <!-- row1 character hidden-->
       <div
-        class="mobile:invisible w-0 h-0 laptop:visible laptop:w-[300px] laptop:h-[300px]"
+        class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%]"
       >
         <!-- Image only visible on laptop -->
         <img
           :src="selectedLevel.logo"
           alt
-          class="laptop:flex laptop:w-[200px] laptop:h-[250px] m-[auto] pt-3"
+          class="laptop:flex w-[220px] h-[250px] pt-3"
         />
-        <p class="font-Saira text-[13px] text-white text-center mt-4">
+        <p class="font-Saira text-[13px] text-white items-center">
           Your Character : {{ selectedLevel.character }}
         </p>
       </div>
       <!-- level componant  row2-->
-      <div class="flex flex-col justify-center laptop:grow">
-        <section
-          id="select_level"
-          class="text-center text-black buttons desktop:ml-48"
-        >
+
+      <div class="flex flex-col items-center w-[auto] m-[auto]">
+        <section id="select_level" class="text-center">
           <div>
-            <p
-              class="flex font-Saira mobile:justify-center text-white font-medium laptop:ml-24 laptop:justify-start"
-            >
-              SELECT LEVEL
-            </p>
+            <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
             <div class="flex flex-row">
               <button
                 @click="levelSelector(passwordRules[0])"
@@ -227,10 +276,7 @@ function Displaytimeformat() {
           </div>
         </section>
         <!-- input component in row 2-->
-        <div
-          id="input-password"
-          class="items-start w-[300px] textInput desktop:ml-44"
-        >
+        <div id="input-password" class="items-start w-[300px]">
           <label class="form-control w-full max-w-xs">
             <div class="label">
               <span class="font-Saira text-[16px] text-white"
@@ -252,7 +298,7 @@ function Displaytimeformat() {
           </label>
         </div>
         <!-- timer componant in row2 -->
-        <div class="timer m-[auto] laptop:ml-24 desktop:ml-72">
+        <div class="timer m-[auto] laptop:ml-24">
           <p class="flex font-Saira text-[14px] text-white mt-[10px]">
             Time:
             <span class="text-[14px] text-red-600">
@@ -271,7 +317,7 @@ function Displaytimeformat() {
           <div v-if="gameStartted" class="flex flex-col">
             <div
               v-for="i in passedRule"
-              class="min-w-[307px] sm:w-full rounded-md py-4 border border-black"
+              class="min-w-[307px] sm:w-full rounded-md py-4"
               :key="i"
             >
               <div
@@ -318,7 +364,7 @@ function Displaytimeformat() {
         </div>
         <!-- how to play componant -->
         <!-- Open the modal using ID.showModal() method -->
-        <div class="flex m-[auto] laptop:ml-12 desktop:ml-56">
+        <div class="flex m-[auto]">
           <button
             class="btn border-0 font-Saira font-light bg-white text-black hover:text-white transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 duration-150"
             onclick="howToPlay.showModal()"
@@ -326,15 +372,20 @@ function Displaytimeformat() {
             HOW TO PLAY GAME 🎮
           </button>
           <dialog id="howToPlay" class="modal">
-            <div class="modal-box bg">
-              <h3 class="font-bold text-lg">Hello!</h3>
+            <div class="modal-box bg-white">
+              <h3 class="font-bold text-lg">How to play game</h3>
               <p class="py-4">
-                Press ESC key or click the button below to close
+                <!-- Press ESC key or click the button below to close -->
+                1.first step
               </p>
               <div class="modal-action">
                 <form method="dialog">
                   <!-- if there is a button in form, it will close the modal -->
-                  <button class="btn">Close</button>
+                  <button
+                    class="btn bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 duration-150 border-0 text-white"
+                  >
+                    Close
+                  </button>
                 </form>
               </div>
             </div>
