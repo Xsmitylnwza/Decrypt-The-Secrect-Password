@@ -8,6 +8,7 @@ export default {
     screens: {
       'mobile': '450px',
       'laptop': '1024px',
+      'labtop-L': '1440px'
     },
     extend: {
       fontFamily: {
@@ -15,6 +16,11 @@ export default {
         istok: "'Istok Web', sans-serif",
         Saira: "'Saira Stencil One'"
       }
+    },
+    backgroundBoxColors: {
+      'correct-color': '#62EC70',
+      'incorrect-color': '#FC6C6C',
+      'white-color': '#FAEDE5'
     },
   },
   plugins: [require("daisyui")],
