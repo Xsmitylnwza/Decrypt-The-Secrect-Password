@@ -1,0 +1,87 @@
+[
+    {
+      "level": "Hard",
+      "rules": [
+        {
+          "id": 1,
+          "message": "React vs Vue",
+          "correct": false
+        }
+      ],
+      "logo": "./images/hard-pic.png",
+      "character": "SPY",
+      "backgroundColor": "background-color-hard",
+      "boxColor": "bg-color-hard-box"
+    },
+    {
+      "level": "Veryhard",
+      "rules": [
+        {
+          "id": 1,
+          "message": "พูดว่า lungtoo",
+          "correct": false,
+          "answer": "lungtoo"
+        },
+        {
+          "id": 2,
+          "message": "ในภาพนี้เป็นภาพของใคร",
+          "correct": false,
+          "picture": "./images/lungpon.png"
+        }
+      ],
+      "logo": "./images/veryhard-pic.png",
+      "character": "FBI",
+      "backgroundColor": "background-color-veryhard",
+      "boxColor": "bg-color-veryhard-box"
+    },
+    {
+      "level": "Hardest",
+      "rules": [
+        {
+          "id": 1,
+          "message": "Your password must have some digit",
+          "correct": false
+        },
+        {
+          "id": 2,
+          "message": "Your password must have atleast 5 characters",
+          "correct": false
+        },
+        {
+          "id": 3,
+          "message": "Your password must includes speial characters",
+          "correct": false
+        },
+        {
+          "id": 4,
+          "message": "Your digit must add to 35",
+          "correct": false
+        },
+        {
+          "id": 5,
+          "message": "What month its is?",
+          "correct": false
+        },
+        {
+          "id": 6,
+          "message": "2 + 7 * 2 + 9 / 3 + 9 * 2 = ?",
+          "correct": false
+        },
+        {
+          "id": 7,
+          "message": "What do Japanese people used?",
+          "correct": false
+        },
+        {
+          "id": 8,
+          "message": "Oh no it fire burning your password!?!!",
+          "correct": false
+        }
+      ],
+      "logo": "./images/hardest-pic.png",
+      "character": "HACKER",
+      "backgroundColor": "background-color-hardest",
+      "boxColor": "bg-color-hardest-box"
+    }
+  ]
+  
