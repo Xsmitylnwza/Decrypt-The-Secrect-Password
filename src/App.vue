@@ -1,5 +1,9 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
+import musicVeryHard from "/music/musicVeryHard.mp3";
+import musicHard from "/music/musicHard.mp4";
+import musicHardest from "/music/musicHardest.mp3";
+import correct from "/music/correct.mp4";
 
 // data mockup สำหรับการ test rule componant
 
@@ -17,6 +21,7 @@ let passwordRules = [
     character: "SPY",
     backgroundColor: "background-color-hard",
     boxColor: "bg-color-hard-box",
+    textColor: "text-color-hard",
   },
   {
     level: "Veryhard",
@@ -38,6 +43,7 @@ let passwordRules = [
     character: "FBI",
     backgroundColor: "background-color-veryhard",
     boxColor: "bg-color-veryhard-box",
+    textColor: "text-color-veryhard",
   },
   {
     level: "Hardest",
@@ -67,6 +73,7 @@ let passwordRules = [
     character: "HACKER",
     backgroundColor: "background-color-hardest",
     boxColor: "bg-color-hardest-box",
+    textColor: "text-color-hardest",
   },
 ];
 
@@ -77,23 +84,57 @@ let gameStartted = ref(false);
 let timer = ref(0);
 let timerInterval;
 let isOpen = ref(false);
+let checkAudio = ref(null);
+let checkSoundCorrect = ref(null);
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
   checkAnswerHardest,
 };
 
+const audioMapping = {
+  Hard: new Audio(musicHard),
+  Veryhard: new Audio(musicVeryHard),
+  Hardest: new Audio(musicHardest),
+};
+
+const startNewAudio = (level) => {
+  const audio = audioMapping[level];
+  if (checkAudio.value !== null) {
+    checkAudio.value.pause();
+    checkAudio.value.currentTime = 0;
+  }
+  audio.play();
+  checkAudio.value = audio;
+};
+
+const startNewSoundCorrect = () => {
+  const audioCorrect = new Audio(correct);
+  audioCorrect.play();
+  checkSoundCorrect.value = audioCorrect;
+};
+
+watchEffect(() => {
+  if (checkAudio.value !== null) {
+    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
+  }
+});
+
 function levelSelector(level) {
   selectedLevel.value = level;
   passedRule.value = 1;
   stopTimer();
   resetGame();
+  startNewAudio(selectedLevel.value.level);
 }
 
 function checkAnswerHard() {
   let question = passwordRules[0];
   if (userInput.value.includes("React")) {
-    question.rules[0].correct = true;
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[0].correct = false;
   }
@@ -102,15 +143,20 @@ function checkAnswerHard() {
 function checkAnswerVeryhard() {
   let question = passwordRules[1];
   if (userInput.value.includes("lungtoo")) {
-    question.rules[0].correct = true;
-    passedRule.value = 2;
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true;
+      passedRule.value = 2;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[0].correct = false;
   }
 
   if (userInput.value.includes("no")) {
-    question.rules[1].correct = true;
-    userInput.value = "🔥🔥🔥";
+    if (!question.rules[1].correct) {
+      question.rules[1].correct = true;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[1].correct = false;
   }
@@ -126,18 +172,20 @@ function checkAnswerHardest() {
   var month = today.toLocaleString("en-US", { month: "short" });
 
   if (/\d{3,}/.test(userInput.value)) {
-    question.rules[0].correct = true;
-    if (passedRule.value < 2) {
+    if (!question.rules[0].correct && passedRule.value < 2) {
+      question.rules[0].correct = true;
       passedRule.value = 2;
+      startNewSoundCorrect();
     }
   } else {
     question.rules[0].correct = false;
   }
 
   if (userInput.value.length >= 5 && passedRule.value >= 2) {
-    question.rules[1].correct = true;
-    if (passedRule.value < 3) {
+    if (!question.rules[1].correct && passedRule.value < 3) {
+      question.rules[1].correct = true;
       passedRule.value = 3;
+      startNewSoundCorrect();
     }
     // userInput.value = "🔥🔥🔥"
   } else {
@@ -145,34 +193,47 @@ function checkAnswerHardest() {
   }
 
   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
-    question.rules[2].correct = true;
-    if (passedRule.value < 4) {
+    if (!question.rules[2].correct && passedRule.value < 4) {
+      question.rules[2].correct = true;
       passedRule.value = 4;
+      startNewSoundCorrect();
     }
   } else {
     question.rules[2].correct = false;
   }
   if (sum == 35 && passedRule.value >= 4) {
-    question.rules[3].correct = true;
-    if (passedRule.value < 5) passedRule.value = 5;
+    if (!question.rules[3].correct && passedRule.value < 5) {
+      question.rules[3].correct = true;
+      passedRule.value = 5;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[3].correct = false;
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
-    question.rules[4].correct = true;
-    if (passedRule.value < 6) passedRule.value = 6;
+    if (!question.rules[4].correct && passedRule.value < 6) {
+      question.rules[4].correct = true;
+      passedRule.value = 6;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[4].correct = false;
   }
   if (userInput.value.includes("37") && passedRule.value >= 6) {
-    question.rules[5].correct = true;
-    if (passedRule.value < 7) passedRule.value = 7;
+    if (!question.rules[5].correct && passedRule.value < 7) {
+      question.rules[5].correct = true;
+      passedRule.value = 7;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[5].correct = false;
   }
   if (userInput.value.includes("¥") && passedRule.value >= 7) {
-    question.rules[6].correct = true;
-    if (passedRule.value < 8) passedRule.value = 8;
+    if (!question.rules[6].correct && passedRule.value < 8) {
+      question.rules[6].correct = true;
+      passedRule.value = 8;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[6].correct = false;
   }
@@ -302,7 +363,7 @@ function Displaytimeformat() {
         <div class="timer m-[auto] laptop:ml-24">
           <p class="flex font-Saira text-[14px] text-white mt-[10px]">
             Time:
-            <span class="text-[14px] text-red-600">
+            <span :class="selectedLevel.textColor" class="text-[14px]">
               {{ Displaytimeformat() }}
             </span>
           </p>
@@ -324,8 +385,8 @@ function Displaytimeformat() {
               <div
                 :class="
                   selectedLevel.rules[i - 1]?.correct
-                    ? 'bg-[#62EC70]'
-                    : 'bg-[#FC6C6C]'
+                    ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
+                    : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
                 "
                 class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
               >
@@ -459,6 +520,10 @@ function Displaytimeformat() {
 </template>
 
 <style scoped>
+.text-color-hard {
+  color: #ff0000;
+}
+
 .background-color-hard {
   background: linear-gradient(
     104deg,
@@ -480,6 +545,10 @@ function Displaytimeformat() {
     #590ebb 6.68%,
     rgba(0, 0, 0, 0.74) 92.15%
   );
+}
+
+.text-color-veryhard {
+  color: #590ebb;
 }
 
 .background-color-veryhard {
@@ -517,6 +586,10 @@ function Displaytimeformat() {
     rgba(169, 57, 21, 0.53) 68.84%,
     rgba(60, 23, 8, 0.68) 89.63%
   );
+}
+
+.text-color-hardest {
+  color: #ffffff;
 }
 
 .background-color-hardest {
