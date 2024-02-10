@@ -1,84 +1,13 @@
 <script setup>
 import { computed, ref, watchEffect } from "vue";
+import data from "./data/data.json";
 import musicVeryHard from "/music/musicVeryHard.mp3";
 import musicHard from "/music/musicHard.mp4";
 import musicHardest from "/music/musicHardest.mp3";
 import correct from "/music/correct.mp4";
 
-// data mockup สำหรับการ test rule componant
-
-let passwordRules = [
-  {
-    level: "Hard",
-    rules: [
-      {
-        id: 1,
-        message: "React vs Vue",
-        correct: false,
-      },
-    ],
-    logo: "./images/hard-pic.png",
-    character: "SPY",
-    backgroundColor: "background-color-hard",
-    boxColor: "bg-color-hard-box",
-    textColor: "text-color-hard",
-  },
-  {
-    level: "Veryhard",
-    rules: [
-      {
-        id: 1,
-        message: "พูดว่า lungtoo",
-        correct: false,
-        answer: "lungtoo",
-      },
-      {
-        id: 2,
-        message: "ในภาพนี้เป็นภาพของใคร",
-        correct: false,
-        picture: "./images/lungpon.png",
-      },
-    ],
-    logo: "./images/veryhard-pic.png",
-    character: "FBI",
-    backgroundColor: "background-color-veryhard",
-    boxColor: "bg-color-veryhard-box",
-    textColor: "text-color-veryhard",
-  },
-  {
-    level: "Hardest",
-    rules: [
-      { id: 1, message: "Your password must have some digit", correct: false },
-      {
-        id: 2,
-        message: "Your password must have atleast 5 characters",
-        correct: false,
-      },
-      {
-        id: 3,
-        message: "Your password must includes speial characters",
-        correct: false,
-      },
-      { id: 4, message: "Your digit must add to 35", correct: false },
-      { id: 5, message: "What month its is?", correct: false },
-      { id: 6, message: "2 + 7 * 2 + 9 / 3 + 9 * 2 = ?", correct: false },
-      { id: 7, message: "What do Japanese people used?", correct: false },
-      {
-        id: 8,
-        message: "Oh no it fire burning your password!?!!",
-        correct: false,
-      },
-    ],
-    logo: "./images/hardest-pic.png",
-    character: "HACKER",
-    backgroundColor: "background-color-hardest",
-    boxColor: "bg-color-hardest-box",
-    textColor: "text-color-hardest",
-  },
-];
-
 let passedRule = ref(1);
-let selectedLevel = ref(passwordRules[0]);
+let selectedLevel = ref(data[0]);
 let userInput = ref("");
 let gameStartted = ref(false);
 let timer = ref(0);
@@ -129,7 +58,7 @@ function levelSelector(level) {
 }
 
 function checkAnswerHard() {
-  let question = passwordRules[0];
+  let question = data[0];
   if (userInput.value.includes("React")) {
     if (!question.rules[0].correct) {
       question.rules[0].correct = true;
@@ -141,7 +70,7 @@ function checkAnswerHard() {
 }
 
 function checkAnswerVeryhard() {
-  let question = passwordRules[1];
+  let question = data[1];
   if (userInput.value.includes("lungtoo")) {
     if (!question.rules[0].correct) {
       question.rules[0].correct = true;
@@ -163,7 +92,7 @@ function checkAnswerVeryhard() {
 }
 
 function checkAnswerHardest() {
-  let question = passwordRules[2];
+  let question = data[2];
   let numSum = userInput.value.match(/\d/g);
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
@@ -317,19 +246,19 @@ function Displaytimeformat() {
             <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
             <div class="flex flex-row">
               <button
-                @click="levelSelector(passwordRules[0])"
+                @click="levelSelector(data[0])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 HARD
               </button>
               <button
-                @click="levelSelector(passwordRules[1])"
+                @click="levelSelector(data[1])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 VERY<br />HARD
               </button>
               <button
-                @click="levelSelector(passwordRules[2])"
+                @click="levelSelector(data[2])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 HARDEST
