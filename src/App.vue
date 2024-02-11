@@ -43,10 +43,12 @@ const startNewSoundCorrect = () => {
 };
 
 function sortByIncorrentAndId(rules) {
-  const correctRules = rules.value.filter((rule) => rule.correct);
-  const incorrectRules = rules.value.filter((rule) => !rule.correct);
-  correctRules.sort((a, b) => b.id - a.id);
-  incorrectRules.sort((a, b) => b.id - a.id);
+  const correctRules = rules.value
+    .filter((rule) => rule.correct)
+    .sort((a, b) => b.id - a.id);
+  const incorrectRules = rules.value
+    .filter((rule) => !rule.correct)
+    .sort((a, b) => b.id - a.id);
   const sortedRules = incorrectRules.concat(correctRules);
   return rules.value.splice(0, rules.value.length, ...sortedRules);
 }
