@@ -14,7 +14,6 @@ let timer = ref(0);
 let timerInterval;
 let isOpen = ref(false);
 let checkAudio = ref(null);
-let checkSoundCorrect = ref(null);
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
@@ -40,7 +39,6 @@ const startNewAudio = (level) => {
 const startNewSoundCorrect = () => {
   const audioCorrect = new Audio(correct);
   audioCorrect.play();
-  checkSoundCorrect.value = audioCorrect;
 };
 
 watchEffect(() => {
