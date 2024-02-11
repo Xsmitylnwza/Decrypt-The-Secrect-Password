@@ -420,8 +420,8 @@ function Displaytimeformat() {
           </button>
           <dialog id="howToPlay" class="modal">
             <div class=" modal-box bg-white ">
-              <h3 class="font-bold text-lg text-black mb-4">
-                How to play this game!
+              <h3 class="font-bold text-3xl text-black mb-4 text-center hover:transition ease-in-out hover:-translate-y-1 hover:scale-105 ">
+                How to play this game! 🎮
               </h3>
               <div class="overflow-y-auto overscroll-auto h-96">
               <div class="flex flex-col items-center">
@@ -435,16 +435,24 @@ function Displaytimeformat() {
               <img
                 src="/images/howtoplay1.png"
                 alt="select Level image"
-                class="rounded-box "
+                class="rounded-box hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"
               />
               <p class="mt-4">
                 Then any level it give your Character to play password game
               </p>
+              <p class="mt-4 font-bold">
+                Characteristic to play Game
+              </p>
             </div>
-            <div class="flex flex-row space-x-2 mt-3">
-              <div><img src="/images/spy.png" alt="spy" class="w-full h-[100%] rounded-box "></div>
-              <div><img src="/images/FBI.png" alt="FBI" class="w-full h-[99.7%] rounded-box"></div>
-              <div><img src="/images/hacker.png" alt="hacker" class="w-full h-[99.5%] rounded-box"></div>
+            <div class="flex flex-row mt-3 ">
+              <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"><img src="/images/hard-pic.png" alt="spy" class="w-[100%] h-[100%]  "></div>
+              <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"><img src="/images/veryhard-pic.png" alt="FBI" class="w-[100%] h-[99.7%] "></div>
+              <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"><img src="/images/hardest-pic.png" alt="hacker" class="w-[100%] h-[99.5%] "></div>
+            </div>
+            <div class="flex flex-row mt-3 mr-1">
+              <p class="text-center text-sm font-bold mx-2">Your Character is SPY</p>
+              <p class="text-center text-sm font-bold mx-2">Your Character is FBI</p>
+              <p class="text-center text-sm font-bold mx-2">Your Character is Hacker</p>
             </div>
             <div class="flex flex-col items-center mt-3">
             <p>
@@ -453,7 +461,7 @@ function Displaytimeformat() {
             <p class="font-bold text-black mt-2">
               2.Enter password in textblock
             </p>
-            <img src="/images/enterpassword.png" alt="enterpassword" class="rounded-box w-11/12 mt-3">
+            <img src="/images/enterpassword.png" alt="enterpassword" class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105">
             <p class="font-bold text-black mt-3">
               3.Follow the rule until it done!!!
             </p>
@@ -580,9 +588,10 @@ function Displaytimeformat() {
 
 .background-color-veryhard {
   background: linear-gradient(
-    104deg,
-    rgba(209, 164, 15, 1) 0%,
-    rgba(133, 39, 18, 1) 100%
+    90deg,
+    rgba(238, 78, 9, 1) 0%,
+    rgba(121, 46, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
   );
 }
 
@@ -594,16 +603,17 @@ function Displaytimeformat() {
 
 .background-color-veryhard {
   background: linear-gradient(
-    104deg,
-    rgba(209, 164, 15, 1) 0%,
-    rgba(133, 39, 18, 1) 100%
+    90deg,
+    rgba(238, 78, 9, 1) 0%,
+    rgba(121, 46, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
   );
 }
 
 .bg-color-veryhard-box {
   border-radius: 31px;
   border: 1px solid #fff;
-  background: #e36409;
+  background: #ff6f00;
 }
 
 .btn-bg-veryHard {
@@ -621,11 +631,10 @@ function Displaytimeformat() {
 
 .background-color-hardest {
   background: linear-gradient(
-    104deg,
-    rgba(209, 15, 15, 1) 14%,
-    rgba(133, 18, 18, 1) 87%,
-    rgba(209, 164, 15, 1) 100%,
-    rgba(133, 18, 18, 1) 100%
+    90deg,
+    rgba(238, 9, 9, 1) 0%,
+    rgba(121, 9, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
   );
 }
 
