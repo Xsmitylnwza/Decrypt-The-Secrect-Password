@@ -1,192 +1,239 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue';
+import data from './data/data.json';
+import musicVeryHard from '/music/musicVeryHard.mp3';
+import musicHard from '/music/musicHard.mp4';
+import musicHardest from '/music/musicHardest.mp3';
+import correct from '/music/correct.mp4';
 
-// data mockup สำหรับการ test rule componant
-
-let passwordRules = [
-  {
-    level: 'Hard',
-    rules: [
-      {
-        id: 1,
-        message: 'React vs Vue',
-        correct: false,
-      },
-    ],
-    logo: './images/hard-pic.png',
-    character: 'SPY',
-    backgroundColor: 'background-color-hard',
-    boxColor: 'bg-color-hard-box',
-  },
-  {
-    level: 'Veryhard',
-    rules: [
-      {
-        id: 1,
-        message: 'พูดว่า lungtoo',
-        correct: false,
-      },
-      {
-        id: 2,
-        message: 'ในภาพนี้เป็นภาพของใคร',
-        correct: false,
-        picture: './images/lungpon.png',
-      },
-    ],
-    logo: './images/veryhard-pic.png',
-    character: 'FBI',
-    backgroundColor: 'background-color-veryhard',
-    boxColor: 'bg-color-veryhard-box',
-  },
-  {
-    level: 'Hardest',
-    rules: [
-      { id: 1, message: 'Your password must have some digit', correct: false },
-      {
-        id: 2,
-        message: 'Your password must have atleast 5 characters',
-        correct: false,
-      },
-      {
-        id: 3,
-        message: 'Your password must includes speial characters',
-        correct: false,
-      },
-      { id: 4, message: 'Your digit must add to 35', correct: false },
-      { id: 5, message: 'What month its is?', correct: false },
-      { id: 6, message: '2 + 7 * 2 + 9 / 3 + 9 * 2 = ?', correct: false },
-      { id: 7, message: 'What do Japanese people used?', correct: false },
-      {
-        id: 8,
-        message: 'Oh no it fire burning your password!?!!',
-        correct: false,
-      },
-    ],
-    logo: './images/hardest-pic.png',
-    character: 'HACKER',
-    backgroundColor: 'background-color-hardest',
-    boxColor: 'bg-color-hardest-box',
-  },
-]
-
-let passedRule = ref(1)
-let selectedLevel = ref(passwordRules[0])
-let userInput = ref('')
-let gameStartted = ref(false)
-let timer = ref(0)
-let timerInterval
-let isOpen = ref(false)
+let passedRule = ref(1);
+let selectedLevel = ref(data[0]);
+let userInput = ref('');
+let gameStartted = ref(false);
+let timer = ref(0);
+let timerInterval;
+let isOpen = ref(false);
+let checkAudio = ref(null);
+let checkSoundCorrect = ref(null);
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
   checkAnswerHardest,
-}
+};
+
+const audioMapping = {
+  Hard: new Audio(musicHard),
+  Veryhard: new Audio(musicVeryHard),
+  Hardest: new Audio(musicHardest),
+};
+
+const startNewAudio = (level) => {
+  const audio = audioMapping[level];
+  if (checkAudio.value !== null) {
+    checkAudio.value.pause();
+    checkAudio.value.currentTime = 0;
+  }
+  audio.play();
+  checkAudio.value = audio;
+};
+
+const startNewSoundCorrect = () => {
+  const audioCorrect = new Audio(correct);
+  audioCorrect.play();
+  checkSoundCorrect.value = audioCorrect;
+};
+
+watchEffect(() => {
+  if (checkAudio.value !== null) {
+    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
+  }
+});
 
 function levelSelector(level) {
-  selectedLevel.value = level
-  passedRule.value = 1
-  stopTimer()
-  resetGame()
+  selectedLevel.value = level;
+  passedRule.value = 1;
+  stopTimer();
+  resetGame();
+  startNewAudio(selectedLevel.value.level);
 }
 
 function checkAnswerHard() {
-  let question = passwordRules[0]
-  if (userInput.value.includes('React')) {
-    question.rules[0].correct = true
+  let question = data[0];
+  if (/[aeiouAEIOU]/.test(userInput.value)) {
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true;
+      passedRule.value = 2;
+      startNewSoundCorrect();
+    }
   } else {
-    question.rules[0].correct = false
+    question.rules[0].correct = false;
+  }
+
+  if (userInput.value.includes('blue') || userInput.value.includes('BLUE')) {
+    if (!question.rules[1].correct) {
+      question.rules[1].correct = true;
+      passedRule.value = 3;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[1].correct = false;
+  }
+
+  if (userInput.value.includes('ฟ้า')) {
+    if (!question.rules[2].correct) {
+      question.rules[2].correct = true;
+      passedRule.value = 4;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[2].correct = false;
+  }
+
+  if (
+    userInput.value.includes('liverpool') ||
+    userInput.value.includes('LIVERPOOL')
+  ) {
+    if (!question.rules[3].correct) {
+      question.rules[3].correct = true;
+      passedRule.value = 5;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[3].correct = false;
+  }
+
+  if (userInput.value.includes('0')) {
+    if (!question.rules[4].correct) {
+      question.rules[4].correct = true;
+      passedRule.value = 6;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[4].correct = false;
+  }
+
+  if (
+    userInput.value.includes('ronaldo') ||
+    userInput.value.includes('Ronaldo')
+  ) {
+    if (!question.rules[5].correct) {
+      question.rules[5].correct = true;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[5].correct = false;
   }
 }
 
 function checkAnswerVeryhard() {
-  let question = passwordRules[1]
+  let question = data[1];
   if (userInput.value.includes('lungtoo')) {
-    question.rules[0].correct = true
-    passedRule.value = 2
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true;
+      passedRule.value = 2;
+      startNewSoundCorrect();
+    }
   } else {
-    question.rules[0].correct = false
+    question.rules[0].correct = false;
   }
 
   if (userInput.value.includes('no')) {
-    question.rules[1].correct = true
-    userInput.value = '🔥🔥🔥'
+    if (!question.rules[1].correct) {
+      question.rules[1].correct = true;
+      startNewSoundCorrect();
+    }
   } else {
-    question.rules[1].correct = false
+    question.rules[1].correct = false;
   }
 }
 
 function checkAnswerHardest() {
-  let question = passwordRules[2]
-  let numSum = userInput.value.match(/\d/g)
+  let question = data[2];
+  let numSum = userInput.value.match(/\d/g);
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
-    : 0
-  var today = new Date()
-  var month = today.toLocaleString('en-US', { month: 'short' })
+    : 0;
+  var today = new Date();
+  var month = today.toLocaleString('en-US', { month: 'short' });
 
   if (/\d{3,}/.test(userInput.value)) {
-    question.rules[0].correct = true
-    if (passedRule.value < 2) {
-      passedRule.value = 2
+    if (!question.rules[0].correct && passedRule.value < 2) {
+      question.rules[0].correct = true;
+      passedRule.value = 2;
+      startNewSoundCorrect();
     }
   } else {
-    question.rules[0].correct = false
+    question.rules[0].correct = false;
   }
 
   if (userInput.value.length >= 5 && passedRule.value >= 2) {
-    question.rules[1].correct = true
-    if (passedRule.value < 3) {
-      passedRule.value = 3
+    if (!question.rules[1].correct && passedRule.value < 3) {
+      question.rules[1].correct = true;
+      passedRule.value = 3;
+      startNewSoundCorrect();
     }
     // userInput.value = "🔥🔥🔥"
   } else {
-    question.rules[1].correct = false
+    question.rules[1].correct = false;
   }
 
   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
-    question.rules[2].correct = true
-    if (passedRule.value < 4) {
-      passedRule.value = 4
+    if (!question.rules[2].correct && passedRule.value < 4) {
+      question.rules[2].correct = true;
+      passedRule.value = 4;
+      startNewSoundCorrect();
     }
   } else {
-    question.rules[2].correct = false
+    question.rules[2].correct = false;
   }
   if (sum == 35 && passedRule.value >= 4) {
-    question.rules[3].correct = true
-    if (passedRule.value < 5) passedRule.value = 5
+    if (!question.rules[3].correct && passedRule.value < 5) {
+      question.rules[3].correct = true;
+      passedRule.value = 5;
+      startNewSoundCorrect();
+    }
   } else {
-    question.rules[3].correct = false
+    question.rules[3].correct = false;
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
-    question.rules[4].correct = true
-    if (passedRule.value < 6) passedRule.value = 6
+    if (!question.rules[4].correct && passedRule.value < 6) {
+      question.rules[4].correct = true;
+      passedRule.value = 6;
+      startNewSoundCorrect();
+    }
   } else {
-    question.rules[4].correct = false
+    question.rules[4].correct = false;
   }
   if (userInput.value.includes('37') && passedRule.value >= 6) {
-    question.rules[5].correct = true
-    if (passedRule.value < 7) passedRule.value = 7
+    if (!question.rules[5].correct && passedRule.value < 7) {
+      question.rules[5].correct = true;
+      passedRule.value = 7;
+      startNewSoundCorrect();
+    }
   } else {
-    question.rules[5].correct = false
+    question.rules[5].correct = false;
   }
   if (userInput.value.includes('¥') && passedRule.value >= 7) {
-    question.rules[6].correct = true
-    if (passedRule.value < 8) passedRule.value = 8
+    if (!question.rules[6].correct && passedRule.value < 8) {
+      question.rules[6].correct = true;
+      passedRule.value = 8;
+      startNewSoundCorrect();
+    }
   } else {
-    question.rules[6].correct = false
+    question.rules[6].correct = false;
   }
 }
 
 function resetGame() {
-  gameStartted.value = false
-  timer.value = 0
-  userInput.value = ''
+  gameStartted.value = false;
+  timer.value = 0;
+  userInput.value = '';
 }
 
 function startGame() {
   if (selectedLevel.value !== '' && !gameStartted.value) {
-    gameStartted.value = true
-    startTimer()
+    gameStartted.value = true;
+    startTimer();
   }
 }
 
@@ -195,26 +242,26 @@ function startGame() {
 // function สำหรับจับเวลาจะอัพเดทค่าทุกๆ 1 วินาที
 function startTimer() {
   timerInterval = setInterval(() => {
-    timer.value++
-  }, 1000)
+    timer.value++;
+  }, 1000);
 }
 
 // function สำหรับหยุดจับเวลา
 function stopTimer() {
-  clearInterval(timerInterval)
+  clearInterval(timerInterval);
 }
 
 // function สำหรับแสดงผลลัพธ์ของเวลา
 function Displaytimeformat() {
   const hours = Math.floor(timer.value / 3600)
     .toString()
-    .padStart(2, '0')
+    .padStart(2, '0');
   const minutes = Math.floor((timer.value % 3600) / 60)
     .toString()
-    .padStart(2, '0')
-  const seconds = (timer.value % 60).toString().padStart(2, '0')
+    .padStart(2, '0');
+  const seconds = (timer.value % 60).toString().padStart(2, '0');
 
-  return `${hours}:${minutes}:${seconds}`
+  return `${hours}:${minutes}:${seconds}`;
 }
 </script>
 
@@ -235,15 +282,15 @@ function Displaytimeformat() {
     >
       <!-- row1 character hidden-->
       <div
-        class="absolute invisible laptop:visible flex flex-col items-center ml-[4%] labtop-L:ml-[8%]"
+        class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%]"
       >
         <!-- Image only visible on laptop -->
         <img
           :src="selectedLevel.logo"
           alt
-          class="laptop:flex w-[100%] h-[260px] pt-3"
+          class="laptop:flex w-[220px] h-[250px] pt-3"
         />
-        <p class="font-Saira text-[13px] text-white items-center mt-4">
+        <p class="font-Saira text-[13px] text-white items-center">
           Your Character : {{ selectedLevel.character }}
         </p>
       </div>
@@ -255,19 +302,19 @@ function Displaytimeformat() {
             <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
             <div class="flex flex-row">
               <button
-                @click="levelSelector(passwordRules[0])"
+                @click="levelSelector(data[0])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 HARD
               </button>
               <button
-                @click="levelSelector(passwordRules[1])"
+                @click="levelSelector(data[1])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 VERY<br />HARD
               </button>
               <button
-                @click="levelSelector(passwordRules[2])"
+                @click="levelSelector(data[2])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 HARDEST
@@ -289,8 +336,8 @@ function Displaytimeformat() {
               class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx"
               @input="
                 () => {
-                  startGame()
-                  checkAnswer['checkAnswer' + selectedLevel.level]()
+                  startGame();
+                  checkAnswer['checkAnswer' + selectedLevel.level]();
                 }
               "
               v-model="userInput"
@@ -301,7 +348,7 @@ function Displaytimeformat() {
         <div class="timer m-[auto] laptop:ml-24">
           <p class="flex font-Saira text-[14px] text-white mt-[10px]">
             Time:
-            <span class="text-[14px] text-red-600">
+            <span :class="selectedLevel.textColor" class="text-[14px]">
               {{ Displaytimeformat() }}
             </span>
           </p>
@@ -323,8 +370,8 @@ function Displaytimeformat() {
               <div
                 :class="
                   selectedLevel.rules[i - 1]?.correct
-                    ? 'bg-[#62EC70]'
-                    : 'bg-[#FC6C6C]'
+                    ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
+                    : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
                 "
                 class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
               >
@@ -362,7 +409,7 @@ function Displaytimeformat() {
             Your Character : {{ selectedLevel.character }}
           </p>
         </div>
-        <!-- how to play componant -->
+         <!-- how to play componant -->
         <!-- Open the modal using ID.showModal() method -->
         <div class="flex m-[auto]">
           <button
@@ -386,7 +433,7 @@ function Displaytimeformat() {
                 (Hardest = ok)
               </p>
               <img
-                src="./images/howtoplay1.png"
+                src="/images/howtoplay1.png"
                 alt="select Level image"
                 class="rounded-box "
               />
@@ -395,9 +442,9 @@ function Displaytimeformat() {
               </p>
             </div>
             <div class="flex flex-row space-x-2 mt-3">
-              <div><img src="./images/spy.png" alt="spy" class="w-full h-[100%] rounded-box "></div>
-              <div><img src="./images/FBI.png" alt="FBI" class="w-full h-[99.7%] rounded-box"></div>
-              <div><img src="./images/hacker.png" alt="hacker" class="w-full h-[99.5%] rounded-box"></div>
+              <div><img src="/images/spy.png" alt="spy" class="w-full h-[100%] rounded-box "></div>
+              <div><img src="/images/FBI.png" alt="FBI" class="w-full h-[99.7%] rounded-box"></div>
+              <div><img src="/images/hacker.png" alt="hacker" class="w-full h-[99.5%] rounded-box"></div>
             </div>
             <div class="flex flex-col items-center mt-3">
             <p>
@@ -406,7 +453,7 @@ function Displaytimeformat() {
             <p class="font-bold text-black mt-2">
               2.Enter password in textblock
             </p>
-            <img src="./images/enterpassword.png" alt="enterpassword" class="rounded-box w-11/12 mt-3">
+            <img src="/images/enterpassword.png" alt="enterpassword" class="rounded-box w-11/12 mt-3">
             <p class="font-bold text-black mt-3">
               3.Follow the rule until it done!!!
             </p>
@@ -429,6 +476,7 @@ function Displaytimeformat() {
           </dialog>
         </div>
       </div>
+
       <!-- Timer display -->
       <!-- <div class="mt-5">
           <p class="font-istok text-xl">Timer {{ Displaytimeformat() }}</p>
@@ -446,11 +494,63 @@ function Displaytimeformat() {
             Stop Timer
           </button>
         </div> -->
+      <!-- <div
+          :class="
+            isOpen
+              ? 'h-[350px] bg-white rounded-[10px] transition-height duration-300 ease-in-out'
+              : 'h-[43px] transition-height duration-300 ease-in-out'
+          "
+          class="fixed bottom-0 overflow-hidden"
+        >
+          <div class="flex flex-col items-center p-1" @click="isOpen = !isOpen">
+            <button class="flex flex-col items-center font-itim">
+              HOW TO PLAY GAME 🎮
+              <svg
+                width="24"
+                height="10"
+                viewBox="0 0 27 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="13.8826"
+                  y1="15.2968"
+                  x2="1.29294"
+                  y2="2.70715"
+                  stroke="black"
+                  stroke-width="2"
+                />
+                <line
+                  x1="13.0877"
+                  y1="14.5877"
+                  x2="26.0877"
+                  y2="1.58769"
+                  stroke="black"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="w-[300px] p-[10px]">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque rem
+              magni repudiandae tempora eos nemo maiores, doloremque quis
+              obcaecati totam, culpa dolorem sit eligendi adipisci laudantium ut!
+              Rem, quidem explicabo! Lorem ipsum dolor sit, amet consectetur
+              adipisicing elit. Ea nesciunt corrupti minus facere ex. Distinctio
+              incidunt maxime provident rerum ad ea suscipit fuga ex praesentium!
+              Maxime aliquam eos excepturi vel.
+            </p>
+          </div> -->
     </div>
   </div>
 </template>
 
 <style scoped>
+.text-color-hard {
+  color: #ff0000;
+}
+
 .background-color-hard {
   background: linear-gradient(
     104deg,
@@ -474,6 +574,24 @@ function Displaytimeformat() {
   );
 }
 
+.text-color-veryhard {
+  color: #590ebb;
+}
+
+.background-color-veryhard {
+  background: linear-gradient(
+    104deg,
+    rgba(209, 164, 15, 1) 0%,
+    rgba(133, 39, 18, 1) 100%
+  );
+}
+
+.bg-color-veryhard-box {
+  border-radius: 31px;
+  border: 1px solid #fff;
+  background: #e36409;
+}
+
 .background-color-veryhard {
   background: linear-gradient(
     104deg,
@@ -495,6 +613,10 @@ function Displaytimeformat() {
     rgba(169, 57, 21, 0.53) 68.84%,
     rgba(60, 23, 8, 0.68) 89.63%
   );
+}
+
+.text-color-hardest {
+  color: #ffffff;
 }
 
 .background-color-hardest {
