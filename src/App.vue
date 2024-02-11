@@ -386,7 +386,7 @@ function Displaytimeformat() {
                 (Hardest = ok)
               </p>
               <img
-                src="../public/images/howtoplay1.png"
+                src="./images/howtoplay1.png"
                 alt="select Level image"
                 class="rounded-box "
               />
@@ -395,9 +395,9 @@ function Displaytimeformat() {
               </p>
             </div>
             <div class="flex flex-row space-x-2 mt-3">
-              <div><img src="../public/images/spy.png" alt="spy" class="w-full h-[100%] rounded-box "></div>
-              <div><img src="../public/images/FBI.png" alt="FBI" class="w-full h-[99.7%] rounded-box"></div>
-              <div><img src="../public/images/hacker.png" alt="hacker" class="w-full h-[99.5%] rounded-box"></div>
+              <div><img src="./images/spy.png" alt="spy" class="w-full h-[100%] rounded-box "></div>
+              <div><img src="./images/FBI.png" alt="FBI" class="w-full h-[99.7%] rounded-box"></div>
+              <div><img src="./images/hacker.png" alt="hacker" class="w-full h-[99.5%] rounded-box"></div>
             </div>
             <div class="flex flex-col items-center mt-3">
             <p>
@@ -406,7 +406,7 @@ function Displaytimeformat() {
             <p class="font-bold text-black mt-2">
               2.Enter password in textblock
             </p>
-            <img src="../public/images/enterpassword.png" alt="enterpassword" class="rounded-box w-11/12 mt-3">
+            <img src="./images/enterpassword.png" alt="enterpassword" class="rounded-box w-11/12 mt-3">
             <p class="font-bold text-black mt-3">
               3.Follow the rule until it done!!!
             </p>
