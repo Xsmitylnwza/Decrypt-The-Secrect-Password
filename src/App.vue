@@ -1,14 +1,14 @@
 <script setup>
-import { computed, ref, watchEffect } from "vue";
-import data from "./data/data.json";
-import musicVeryHard from "/music/musicVeryHard.mp3";
-import musicHard from "/music/musicHard.mp4";
-import musicHardest from "/music/musicHardest.mp3";
-import correct from "/music/correct.mp4";
+import { computed, ref, watchEffect } from 'vue';
+import data from './data/data.json';
+import musicVeryHard from '/music/musicVeryHard.mp3';
+import musicHard from '/music/musicHard.mp4';
+import musicHardest from '/music/musicHardest.mp3';
+import correct from '/music/correct.mp4';
 
 let passedRule = ref(1);
 let selectedLevel = ref(data[0]);
-let userInput = ref("");
+let userInput = ref('');
 let gameStartted = ref(false);
 let timer = ref(0);
 let timerInterval;
@@ -59,19 +59,7 @@ function levelSelector(level) {
 
 function checkAnswerHard() {
   let question = data[0];
-  if (userInput.value.includes("React")) {
-    if (!question.rules[0].correct) {
-      question.rules[0].correct = true;
-      startNewSoundCorrect();
-    }
-  } else {
-    question.rules[0].correct = false;
-  }
-}
-
-function checkAnswerVeryhard() {
-  let question = data[1];
-  if (userInput.value.includes("lungtoo")) {
+  if (/[aeiouAEIOU]/.test(userInput.value)) {
     if (!question.rules[0].correct) {
       question.rules[0].correct = true;
       passedRule.value = 2;
@@ -81,7 +69,75 @@ function checkAnswerVeryhard() {
     question.rules[0].correct = false;
   }
 
-  if (userInput.value.includes("no")) {
+  if (userInput.value.includes('blue') || userInput.value.includes('BLUE')) {
+    if (!question.rules[1].correct) {
+      question.rules[1].correct = true;
+      passedRule.value = 3;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[1].correct = false;
+  }
+
+  if (userInput.value.includes('ฟ้า')) {
+    if (!question.rules[2].correct) {
+      question.rules[2].correct = true;
+      passedRule.value = 4;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[2].correct = false;
+  }
+
+  if (
+    userInput.value.includes('liverpool') ||
+    userInput.value.includes('LIVERPOOL')
+  ) {
+    if (!question.rules[3].correct) {
+      question.rules[3].correct = true;
+      passedRule.value = 5;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[3].correct = false;
+  }
+
+  if (userInput.value.includes('0')) {
+    if (!question.rules[4].correct) {
+      question.rules[4].correct = true;
+      passedRule.value = 6;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[4].correct = false;
+  }
+
+  if (
+    userInput.value.includes('ronaldo') ||
+    userInput.value.includes('Ronaldo')
+  ) {
+    if (!question.rules[5].correct) {
+      question.rules[5].correct = true;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[5].correct = false;
+  }
+}
+
+function checkAnswerVeryhard() {
+  let question = data[1];
+  if (userInput.value.includes('lungtoo')) {
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true;
+      passedRule.value = 2;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[0].correct = false;
+  }
+
+  if (userInput.value.includes('no')) {
     if (!question.rules[1].correct) {
       question.rules[1].correct = true;
       startNewSoundCorrect();
@@ -98,7 +154,7 @@ function checkAnswerHardest() {
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
     : 0;
   var today = new Date();
-  var month = today.toLocaleString("en-US", { month: "short" });
+  var month = today.toLocaleString('en-US', { month: 'short' });
 
   if (/\d{3,}/.test(userInput.value)) {
     if (!question.rules[0].correct && passedRule.value < 2) {
@@ -148,7 +204,7 @@ function checkAnswerHardest() {
   } else {
     question.rules[4].correct = false;
   }
-  if (userInput.value.includes("37") && passedRule.value >= 6) {
+  if (userInput.value.includes('37') && passedRule.value >= 6) {
     if (!question.rules[5].correct && passedRule.value < 7) {
       question.rules[5].correct = true;
       passedRule.value = 7;
@@ -157,7 +213,7 @@ function checkAnswerHardest() {
   } else {
     question.rules[5].correct = false;
   }
-  if (userInput.value.includes("¥") && passedRule.value >= 7) {
+  if (userInput.value.includes('¥') && passedRule.value >= 7) {
     if (!question.rules[6].correct && passedRule.value < 8) {
       question.rules[6].correct = true;
       passedRule.value = 8;
@@ -171,11 +227,11 @@ function checkAnswerHardest() {
 function resetGame() {
   gameStartted.value = false;
   timer.value = 0;
-  userInput.value = "";
+  userInput.value = '';
 }
 
 function startGame() {
-  if (selectedLevel.value !== "" && !gameStartted.value) {
+  if (selectedLevel.value !== '' && !gameStartted.value) {
     gameStartted.value = true;
     startTimer();
   }
@@ -199,11 +255,11 @@ function stopTimer() {
 function Displaytimeformat() {
   const hours = Math.floor(timer.value / 3600)
     .toString()
-    .padStart(2, "0");
+    .padStart(2, '0');
   const minutes = Math.floor((timer.value % 3600) / 60)
     .toString()
-    .padStart(2, "0");
-  const seconds = (timer.value % 60).toString().padStart(2, "0");
+    .padStart(2, '0');
+  const seconds = (timer.value % 60).toString().padStart(2, '0');
 
   return `${hours}:${minutes}:${seconds}`;
 }
@@ -331,8 +387,8 @@ function Displaytimeformat() {
                   <p class="font-Saira text-sm text-white">
                     {{
                       selectedLevel.rules[i - 1]?.correct
-                        ? "Correct"
-                        : "Incorrect"
+                        ? 'Correct'
+                        : 'Incorrect'
                     }}
                     Rule {{ selectedLevel.rules[i - 1]?.id }}
                     {{ selectedLevel.rules[i - 1]?.message }}
