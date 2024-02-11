@@ -46,6 +46,7 @@ function sortByIncorrentAndId(rules) {
   const correctRules = rules.value.filter((rule) => rule.correct);
   const incorrectRules = rules.value.filter((rule) => !rule.correct);
   correctRules.sort((a, b) => b.id - a.id);
+  incorrectRules.sort((a, b) => b.id - a.id);
   const sortedRules = incorrectRules.concat(correctRules);
   return rules.value.splice(0, rules.value.length, ...sortedRules);
 }
@@ -54,9 +55,9 @@ watchEffect(() => {
   if (checkAudio.value !== null) {
     checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
   }
-  // sortRules.value[passedRule.value] =
-  //   selectedLevel.value.rules[passedRule.value - 1];
-  // sortByIncorrentAndId(sortRules);
+  sortRules.value[passedRule.value] =
+    selectedLevel.value.rules[passedRule.value - 1];
+  sortByIncorrentAndId(sortRules);
 });
 
 function levelSelector(level) {
@@ -324,7 +325,7 @@ function Displaytimeformat() {
             >
               <div
                 :class="
-                  selectedLevel.rules[i - 1]?.correct
+                  sortRules[i - 1]?.correct
                     ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
                     : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
                 "
@@ -332,7 +333,7 @@ function Displaytimeformat() {
               >
                 <div class="flex items-center gap-2">
                   <i
-                    v-if="selectedLevel.rules[i - 1]?.correct"
+                    v-if="sortRules[i - 1]?.correct"
                     class="fa-solid fa-check text-white pt-1 text-xl"
                   />
                   <i
@@ -340,18 +341,14 @@ function Displaytimeformat() {
                     class="fa-solid fa-xmark text-white pt-1 text-xl"
                   ></i>
                   <p class="font-Saira text-sm text-white">
-                    {{
-                      selectedLevel.rules[i - 1]?.correct
-                        ? "Correct"
-                        : "Incorrect"
-                    }}
-                    Rule {{ selectedLevel.rules[i - 1]?.id }}
-                    {{ selectedLevel.rules[i - 1]?.message }}
+                    {{ sortRules[i - 1]?.correct ? "Correct" : "Incorrect" }}
+                    Rule {{ sortRules[i - 1]?.id }}
+                    {{ sortRules[i - 1]?.message }}
                   </p>
                 </div>
                 <img
-                  v-if="selectedLevel.rules[i - 1]?.picture"
-                  :src="selectedLevel.rules[i - 1]?.picture"
+                  v-if="sortRules[i - 1]?.picture"
+                  :src="sortRules[i - 1]?.picture"
                   class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]"
                 />
               </div>
