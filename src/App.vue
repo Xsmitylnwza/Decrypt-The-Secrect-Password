@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect, onMounted } from "vue";
 import data from "./data/data.json";
 import musicVeryHard from "/music/musicVeryHard.mp3";
 import musicHard from "/music/musicHard.mp4";
@@ -14,6 +14,7 @@ let timer = ref(0);
 let timerInterval;
 let isOpen = ref(false);
 let checkAudio = ref(null);
+let sortRules = ref([]);
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
@@ -41,15 +42,27 @@ const startNewSoundCorrect = () => {
   audioCorrect.play();
 };
 
+function sortByIncorrentAndId(rules) {
+  const correctRules = rules.value.filter((rule) => rule.correct);
+  const incorrectRules = rules.value.filter((rule) => !rule.correct);
+  correctRules.sort((a, b) => b.id - a.id);
+  const sortedRules = incorrectRules.concat(correctRules);
+  return rules.value.splice(0, rules.value.length, ...sortedRules);
+}
+
 watchEffect(() => {
   if (checkAudio.value !== null) {
     checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
   }
+  // sortRules.value[passedRule.value] =
+  //   selectedLevel.value.rules[passedRule.value - 1];
+  // sortByIncorrentAndId(sortRules);
 });
 
 function levelSelector(level) {
   selectedLevel.value = level;
   passedRule.value = 1;
+  sortRules.value = [];
   stopTimer();
   resetGame();
   startNewAudio(selectedLevel.value.level);
