@@ -1,20 +1,20 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
-import data from './data/data.json';
-import musicVeryHard from '/music/musicVeryHard.mp3';
-import musicHard from '/music/musicHard.mp4';
-import musicHardest from '/music/musicHardest.mp3';
-import correct from '/music/correct.mp4';
+import { ref, watchEffect } from "vue";
+import data from "./data/data.json";
+import musicVeryHard from "/music/musicVeryHard.mp3";
+import musicHard from "/music/musicHard.mp4";
+import musicHardest from "/music/musicHardest.mp3";
+import correct from "/music/correct.mp4";
 
 let passedRule = ref(1);
 let selectedLevel = ref(data[0]);
-let userInput = ref('');
+let userInput = ref("");
 let gameStartted = ref(false);
 let timer = ref(0);
 let timerInterval;
 let isOpen = ref(false);
 let checkAudio = ref(null);
-let checkSoundCorrect = ref(null);
+let sortRules = ref([]);
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
@@ -40,27 +40,41 @@ const startNewAudio = (level) => {
 const startNewSoundCorrect = () => {
   const audioCorrect = new Audio(correct);
   audioCorrect.play();
-  checkSoundCorrect.value = audioCorrect;
 };
+
+function sortByIncorrentAndId(rules) {
+  const correctRules = rules.value
+    .filter((rule) => rule.correct)
+    .sort((a, b) => b.id - a.id);
+  const incorrectRules = rules.value
+    .filter((rule) => !rule.correct)
+    .sort((a, b) => b.id - a.id);
+  const sortedRules = incorrectRules.concat(correctRules);
+  return rules.value.splice(0, rules.value.length, ...sortedRules);
+}
 
 watchEffect(() => {
   if (checkAudio.value !== null) {
     checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
   }
+  sortRules.value[passedRule.value] =
+    selectedLevel.value.rules[passedRule.value - 1];
+  sortByIncorrentAndId(sortRules);
 });
 
 function updateRuleStatus(ruleIndex) {
   selectedLevel.value.rules[ruleIndex].correct = true;
   if (passedRule.value <= ruleIndex + 1) {
-    passedRule.value = passedRule.value + 1
+    passedRule.value = passedRule.value + 1;
     startNewSoundCorrect();
-    return
+    return;
   }
 }
 
 function levelSelector(level) {
   selectedLevel.value = level;
   passedRule.value = 1;
+  sortRules.value = [];
   stopTimer();
   resetGame();
   startNewAudio(selectedLevel.value.level);
@@ -78,7 +92,7 @@ function checkAnswerHard() {
     question.rules[0].correct = false;
   }
 
-  if (userInput.value.includes('blue') || userInput.value.includes('BLUE')) {
+  if (userInput.value.includes("blue") || userInput.value.includes("BLUE")) {
     if (!question.rules[1].correct) {
       question.rules[1].correct = true;
       passedRule.value = 3;
@@ -88,7 +102,7 @@ function checkAnswerHard() {
     question.rules[1].correct = false;
   }
 
-  if (userInput.value.includes('ฟ้า')) {
+  if (userInput.value.includes("ฟ้า")) {
     if (!question.rules[2].correct) {
       question.rules[2].correct = true;
       passedRule.value = 4;
@@ -99,8 +113,8 @@ function checkAnswerHard() {
   }
 
   if (
-    userInput.value.includes('liverpool') ||
-    userInput.value.includes('LIVERPOOL')
+    userInput.value.includes("liverpool") ||
+    userInput.value.includes("LIVERPOOL")
   ) {
     if (!question.rules[3].correct) {
       question.rules[3].correct = true;
@@ -111,7 +125,7 @@ function checkAnswerHard() {
     question.rules[3].correct = false;
   }
 
-  if (userInput.value.includes('0')) {
+  if (userInput.value.includes("0")) {
     if (!question.rules[4].correct) {
       question.rules[4].correct = true;
       passedRule.value = 6;
@@ -122,8 +136,8 @@ function checkAnswerHard() {
   }
 
   if (
-    userInput.value.includes('ronaldo') ||
-    userInput.value.includes('Ronaldo')
+    userInput.value.includes("ronaldo") ||
+    userInput.value.includes("Ronaldo")
   ) {
     if (!question.rules[5].correct) {
       question.rules[5].correct = true;
@@ -136,7 +150,7 @@ function checkAnswerHard() {
 
 function checkAnswerVeryhard() {
   let question = data[1];
-  if (userInput.value.includes('lungtoo')) {
+  if (userInput.value.includes("lungtoo")) {
     question.rules[0].correct = true;
     if (passedRule.value < 2) {
       passedRule.value = 2;
@@ -146,9 +160,9 @@ function checkAnswerVeryhard() {
     question.rules[0].correct = false;
   }
 
-  if (userInput.value.includes('no')) {
+  if (userInput.value.includes("no")) {
     if (passedRule.value < 3) {
-      passedRule.value = 3
+      passedRule.value = 3;
       question.rules[1].correct = true;
       startNewSoundCorrect();
     }
@@ -158,48 +172,48 @@ function checkAnswerVeryhard() {
 }
 
 function checkAnswerHardest() {
-  const rule = selectedLevel.value.rules
+  const rule = selectedLevel.value.rules;
   let numSum = userInput.value.match(/\d/g);
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
     : 0;
   const today = new Date();
-  const month = today.toLocaleString('en-US', { month: 'short' });
+  const month = today.toLocaleString("en-US", { month: "short" });
 
   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
     updateRuleStatus(0);
   } else {
-    rule[0].correct = false
+    rule[0].correct = false;
   }
   if (userInput.value.length >= 5 && passedRule.value >= 2) {
-    updateRuleStatus(1)
+    updateRuleStatus(1);
   } else {
-    rule[1].correct = false
+    rule[1].correct = false;
   }
   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
-    updateRuleStatus(2)
+    updateRuleStatus(2);
   } else {
-    rule[2].correct = false
+    rule[2].correct = false;
   }
   if (sum == 35 && passedRule.value >= 4) {
-    updateRuleStatus(3)
+    updateRuleStatus(3);
   } else {
-    rule[3].correct = false
+    rule[3].correct = false;
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
-    updateRuleStatus(4)
+    updateRuleStatus(4);
   } else {
-    rule[4].correct = false
+    rule[4].correct = false;
   }
-  if (userInput.value.includes('37') && passedRule.value >= 6) {
-    updateRuleStatus(5)
+  if (userInput.value.includes("37") && passedRule.value >= 6) {
+    updateRuleStatus(5);
   } else {
-    rule[5].correct = false
+    rule[5].correct = false;
   }
-  if (userInput.value.includes('¥') && passedRule.value >= 7) {
-    updateRuleStatus(6)
+  if (userInput.value.includes("¥") && passedRule.value >= 7) {
+    updateRuleStatus(6);
   } else {
-    rule[6].correct = false
+    rule[6].correct = false;
   }
 }
 
@@ -287,16 +301,14 @@ function checkAnswerHardest() {
 //   }
 // }
 
-
-
 function resetGame() {
   gameStartted.value = false;
   timer.value = 0;
-  userInput.value = '';
+  userInput.value = "";
 }
 
 function startGame() {
-  if (selectedLevel.value !== '' && !gameStartted.value) {
+  if (selectedLevel.value !== "" && !gameStartted.value) {
     gameStartted.value = true;
     startTimer();
   }
@@ -320,11 +332,11 @@ function stopTimer() {
 function Displaytimeformat() {
   const hours = Math.floor(timer.value / 3600)
     .toString()
-    .padStart(2, '0');
+    .padStart(2, "0");
   const minutes = Math.floor((timer.value % 3600) / 60)
     .toString()
-    .padStart(2, '0');
-  const seconds = (timer.value % 60).toString().padStart(2, '0');
+    .padStart(2, "0");
+  const seconds = (timer.value % 60).toString().padStart(2, "0");
 
   return `${hours}:${minutes}:${seconds}`;
 }
@@ -394,26 +406,39 @@ function Displaytimeformat() {
           <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt
             class="flex items-center w-4/5 h-4/5 laptop:hidden" />
           <div v-if="gameStartted" class="flex flex-col">
-            <div v-for="i in passedRule" class="min-w-[307px] sm:w-full rounded-md py-4" :key="i">
-              <div :class="selectedLevel.rules[i - 1]?.correct
-                ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
-                : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
-                " class="py-2 px-3 flex flex-col border border-white rounded-[14px]">
+            <div
+              v-for="i in passedRule"
+              class="min-w-[307px] sm:w-full rounded-md py-4"
+              :key="i"
+            >
+              <div
+                :class="
+                  sortRules[i - 1]?.correct
+                    ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
+                    : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
+                "
+                class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
+              >
                 <div class="flex items-center gap-2">
-                  <i v-if="selectedLevel.rules[i - 1]?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
-                  <i v-else class="fa-solid fa-xmark text-white pt-1 text-xl"></i>
+                  <i
+                    v-if="sortRules[i - 1]?.correct"
+                    class="fa-solid fa-check text-white pt-1 text-xl"
+                  />
+                  <i
+                    v-else
+                    class="fa-solid fa-xmark text-white pt-1 text-xl"
+                  ></i>
                   <p class="font-Saira text-sm text-white">
-                    {{
-                      selectedLevel.rules[i - 1]?.correct
-                      ? 'Correct'
-                      : 'Incorrect'
-                    }}
-                    Rule {{ selectedLevel.rules[i - 1]?.id }}
-                    {{ selectedLevel.rules[i - 1]?.message }}
+                    {{ sortRules[i - 1]?.correct ? "Correct" : "Incorrect" }}
+                    Rule {{ sortRules[i - 1]?.id }}
+                    {{ sortRules[i - 1]?.message }}
                   </p>
                 </div>
-                <img v-if="selectedLevel.rules[i - 1]?.picture" :src="selectedLevel.rules[i - 1]?.picture"
-                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]" />
+                <img
+                  v-if="sortRules[i - 1]?.picture"
+                  :src="sortRules[i - 1]?.picture"
+                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]"
+                />
               </div>
             </div>
           </div>
@@ -575,10 +600,12 @@ function Displaytimeformat() {
 }
 
 .background-color-hard {
-  background: linear-gradient(104deg,
-      #6e07f0 8.15%,
-      rgba(64, 22, 131, 0.44) 68.84%,
-      rgba(29, 34, 45, 0) 89.63%);
+  background: linear-gradient(
+    104deg,
+    #6e07f0 8.15%,
+    rgba(64, 22, 131, 0.44) 68.84%,
+    rgba(29, 34, 45, 0) 89.63%
+  );
 }
 
 .bg-color-hard-box {
@@ -588,9 +615,11 @@ function Displaytimeformat() {
 }
 
 .btn-bg-hard {
-  background: linear-gradient(104deg,
-      #590ebb 6.68%,
-      rgba(0, 0, 0, 0.74) 92.15%);
+  background: linear-gradient(
+    104deg,
+    #590ebb 6.68%,
+    rgba(0, 0, 0, 0.74) 92.15%
+  );
 }
 
 .text-color-veryhard {
@@ -598,10 +627,12 @@ function Displaytimeformat() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(90deg,
-      rgba(238, 78, 9, 1) 0%,
-      rgba(121, 46, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(238, 78, 9, 1) 0%,
+    rgba(121, 46, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
+  );
 }
 
 .bg-color-veryhard-box {
@@ -611,10 +642,12 @@ function Displaytimeformat() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(90deg,
-      rgba(238, 78, 9, 1) 0%,
-      rgba(121, 46, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(238, 78, 9, 1) 0%,
+    rgba(121, 46, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
+  );
 }
 
 .bg-color-veryhard-box {
@@ -624,10 +657,12 @@ function Displaytimeformat() {
 }
 
 .btn-bg-veryHard {
-  background: linear-gradient(104deg,
-      #f06907 8.15%,
-      rgba(169, 57, 21, 0.53) 68.84%,
-      rgba(60, 23, 8, 0.68) 89.63%);
+  background: linear-gradient(
+    104deg,
+    #f06907 8.15%,
+    rgba(169, 57, 21, 0.53) 68.84%,
+    rgba(60, 23, 8, 0.68) 89.63%
+  );
 }
 
 .text-color-hardest {
@@ -635,10 +670,12 @@ function Displaytimeformat() {
 }
 
 .background-color-hardest {
-  background: linear-gradient(90deg,
-      rgba(238, 9, 9, 1) 0%,
-      rgba(121, 9, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(238, 9, 9, 1) 0%,
+    rgba(121, 9, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
+  );
 }
 
 .bg-color-hardest-box {
@@ -648,9 +685,11 @@ function Displaytimeformat() {
 }
 
 .btn-bg-hardest {
-  background: linear-gradient(104deg,
-      #f00707 8.15%,
-      rgba(96, 22, 22, 0.83) 68.6%,
-      rgba(29, 34, 45, 0.94) 89.63%);
+  background: linear-gradient(
+    104deg,
+    #f00707 8.15%,
+    rgba(96, 22, 22, 0.83) 68.6%,
+    rgba(29, 34, 45, 0.94) 89.63%
+  );
 }
 </style>

@@ -60,8 +60,7 @@
       {
         "id": 1,
         "message": "พูดว่า lungtoo",
-        "correct": false,
-        "answer": "lungtoo"
+        "correct": false
       },
       {
         "id": 2,
