@@ -162,6 +162,7 @@ function checkAnswerHardest() {
     if (passedRule.value < 2) {
       passedRule.value = 2;
       startNewSoundCorrect();
+      return
     }
   } else {
     question.rules[0].correct = false;
@@ -172,6 +173,7 @@ function checkAnswerHardest() {
     if (passedRule.value < 3) {
       passedRule.value = 3;
       startNewSoundCorrect();
+      return
     }
     // userInput.value = "🔥🔥🔥"
   } else {
@@ -183,6 +185,7 @@ function checkAnswerHardest() {
     if (passedRule.value < 4) {
       passedRule.value = 4;
       startNewSoundCorrect();
+      return
     }
   } else {
     question.rules[2].correct = false;
@@ -192,6 +195,7 @@ function checkAnswerHardest() {
     if (passedRule.value < 5) {
       startNewSoundCorrect();
       passedRule.value = 5;
+      return
     }
   } else {
     question.rules[3].correct = false;
@@ -201,6 +205,7 @@ function checkAnswerHardest() {
     if (passedRule.value < 6) {
       passedRule.value = 6;
       startNewSoundCorrect();
+      return
     }
   } else {
     question.rules[4].correct = false;
@@ -210,6 +215,7 @@ function checkAnswerHardest() {
     if (passedRule.value < 7) {
       passedRule.value = 7;
       startNewSoundCorrect();
+      return
     }
   } else {
     question.rules[5].correct = false;
@@ -219,6 +225,7 @@ function checkAnswerHardest() {
     if (passedRule.value < 8) {
       passedRule.value = 8;
       startNewSoundCorrect();
+      return
     }
   } else {
     question.rules[6].correct = false;
