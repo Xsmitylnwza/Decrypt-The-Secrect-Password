@@ -1,49 +1,148 @@
 <script setup>
-import { computed, ref } from "vue";
-import data from './data/data.json'
-
+import { computed, ref, watchEffect } from 'vue';
+import data from './data/data.json';
+import musicVeryHard from '/music/musicVeryHard.mp3';
+import musicHard from '/music/musicHard.mp4';
+import musicHardest from '/music/musicHardest.mp3';
+import correct from '/music/correct.mp4';
 
 let passedRule = ref(1);
 let selectedLevel = ref(data[0]);
-let userInput = ref("");
+let userInput = ref('');
 let gameStartted = ref(false);
 let timer = ref(0);
 let timerInterval;
 let isOpen = ref(false);
+let checkAudio = ref(null);
+let checkSoundCorrect = ref(null);
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
   checkAnswerHardest,
 };
 
+const audioMapping = {
+  Hard: new Audio(musicHard),
+  Veryhard: new Audio(musicVeryHard),
+  Hardest: new Audio(musicHardest),
+};
+
+const startNewAudio = (level) => {
+  const audio = audioMapping[level];
+  if (checkAudio.value !== null) {
+    checkAudio.value.pause();
+    checkAudio.value.currentTime = 0;
+  }
+  audio.play();
+  checkAudio.value = audio;
+};
+
+const startNewSoundCorrect = () => {
+  const audioCorrect = new Audio(correct);
+  audioCorrect.play();
+  checkSoundCorrect.value = audioCorrect;
+};
+
+watchEffect(() => {
+  if (checkAudio.value !== null) {
+    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
+  }
+});
+
 function levelSelector(level) {
   selectedLevel.value = level;
   passedRule.value = 1;
   stopTimer();
   resetGame();
+  startNewAudio(selectedLevel.value.level);
 }
 
 function checkAnswerHard() {
   let question = data[0];
-  if (userInput.value.includes("React")) {
-    question.rules[0].correct = true;
+  if (/[aeiouAEIOU]/.test(userInput.value)) {
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true;
+      passedRule.value = 2;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[0].correct = false;
+  }
+
+  if (userInput.value.includes('blue') || userInput.value.includes('BLUE')) {
+    if (!question.rules[1].correct) {
+      question.rules[1].correct = true;
+      passedRule.value = 3;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[1].correct = false;
+  }
+
+  if (userInput.value.includes('ฟ้า')) {
+    if (!question.rules[2].correct) {
+      question.rules[2].correct = true;
+      passedRule.value = 4;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[2].correct = false;
+  }
+
+  if (
+    userInput.value.includes('liverpool') ||
+    userInput.value.includes('LIVERPOOL')
+  ) {
+    if (!question.rules[3].correct) {
+      question.rules[3].correct = true;
+      passedRule.value = 5;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[3].correct = false;
+  }
+
+  if (userInput.value.includes('0')) {
+    if (!question.rules[4].correct) {
+      question.rules[4].correct = true;
+      passedRule.value = 6;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[4].correct = false;
+  }
+
+  if (
+    userInput.value.includes('ronaldo') ||
+    userInput.value.includes('Ronaldo')
+  ) {
+    if (!question.rules[5].correct) {
+      question.rules[5].correct = true;
+      startNewSoundCorrect();
+    }
+  } else {
+    question.rules[5].correct = false;
   }
 }
 
 function checkAnswerVeryhard() {
   let question = data[1];
-  if (userInput.value.includes("lungtoo")) {
+  if (userInput.value.includes('lungtoo')) {
     question.rules[0].correct = true;
-    passedRule.value = 2;
+    if (passedRule.value < 2) {
+      passedRule.value = 2;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[0].correct = false;
   }
 
-  if (userInput.value.includes("no")) {
-    question.rules[1].correct = true;
-    userInput.value = "🔥🔥🔥";
+  if (userInput.value.includes('no')) {
+    if (passedRule.value < 3) {
+      passedRule.value = 3
+      question.rules[1].correct = true;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[1].correct = false;
   }
@@ -55,13 +154,14 @@ function checkAnswerHardest() {
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
     : 0;
-  var today = new Date();
-  var month = today.toLocaleString("en-US", { month: "short" });
+  const today = new Date();
+  const month = today.toLocaleString('en-US', { month: 'short' });
 
-  if (/\d{3,}/.test(userInput.value)) {
+  if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
     question.rules[0].correct = true;
     if (passedRule.value < 2) {
       passedRule.value = 2;
+      startNewSoundCorrect();
     }
   } else {
     question.rules[0].correct = false;
@@ -71,6 +171,7 @@ function checkAnswerHardest() {
     question.rules[1].correct = true;
     if (passedRule.value < 3) {
       passedRule.value = 3;
+      startNewSoundCorrect();
     }
     // userInput.value = "🔥🔥🔥"
   } else {
@@ -81,44 +182,59 @@ function checkAnswerHardest() {
     question.rules[2].correct = true;
     if (passedRule.value < 4) {
       passedRule.value = 4;
+      startNewSoundCorrect();
     }
   } else {
     question.rules[2].correct = false;
   }
   if (sum == 35 && passedRule.value >= 4) {
     question.rules[3].correct = true;
-    if (passedRule.value < 5) passedRule.value = 5;
+    if (passedRule.value < 5) {
+      startNewSoundCorrect();
+      passedRule.value = 5;
+    }
   } else {
     question.rules[3].correct = false;
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
     question.rules[4].correct = true;
-    if (passedRule.value < 6) passedRule.value = 6;
+    if (passedRule.value < 6) {
+      passedRule.value = 6;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[4].correct = false;
   }
-  if (userInput.value.includes("37") && passedRule.value >= 6) {
+  if (userInput.value.includes('37') && passedRule.value >= 6) {
     question.rules[5].correct = true;
-    if (passedRule.value < 7) passedRule.value = 7;
+    if (passedRule.value < 7) {
+      passedRule.value = 7;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[5].correct = false;
   }
-  if (userInput.value.includes("¥") && passedRule.value >= 7) {
+  if (userInput.value.includes('¥') && passedRule.value >= 7) {
     question.rules[6].correct = true;
-    if (passedRule.value < 8) passedRule.value = 8;
+    if (passedRule.value < 8) {
+      passedRule.value = 8;
+      startNewSoundCorrect();
+    }
   } else {
     question.rules[6].correct = false;
   }
 }
 
+
+
 function resetGame() {
   gameStartted.value = false;
   timer.value = 0;
-  userInput.value = "";
+  userInput.value = '';
 }
 
 function startGame() {
-  if (selectedLevel.value !== "" && !gameStartted.value) {
+  if (selectedLevel.value !== '' && !gameStartted.value) {
     gameStartted.value = true;
     startTimer();
   }
@@ -142,11 +258,11 @@ function stopTimer() {
 function Displaytimeformat() {
   const hours = Math.floor(timer.value / 3600)
     .toString()
-    .padStart(2, "0");
+    .padStart(2, '0');
   const minutes = Math.floor((timer.value % 3600) / 60)
     .toString()
-    .padStart(2, "0");
-  const seconds = (timer.value % 60).toString().padStart(2, "0");
+    .padStart(2, '0');
+  const seconds = (timer.value % 60).toString().padStart(2, '0');
 
   return `${hours}:${minutes}:${seconds}`;
 }
@@ -206,7 +322,7 @@ function Displaytimeformat() {
         <div class="timer m-[auto] laptop:ml-24">
           <p class="flex font-Saira text-[14px] text-white mt-[10px]">
             Time:
-            <span class="text-[14px] text-red-600">
+            <span :class="selectedLevel.textColor" class="text-[14px]">
               {{ Displaytimeformat() }}
             </span>
           </p>
@@ -218,8 +334,8 @@ function Displaytimeformat() {
           <div v-if="gameStartted" class="flex flex-col">
             <div v-for="i in passedRule" class="min-w-[307px] sm:w-full rounded-md py-4" :key="i">
               <div :class="selectedLevel.rules[i - 1]?.correct
-                ? 'bg-[#62EC70]'
-                : 'bg-[#FC6C6C]'
+                ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
+                : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
                 " class="py-2 px-3 flex flex-col border border-white rounded-[14px]">
                 <div class="flex items-center gap-2">
                   <i v-if="selectedLevel.rules[i - 1]?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
@@ -227,8 +343,8 @@ function Displaytimeformat() {
                   <p class="font-Saira text-sm text-white">
                     {{
                       selectedLevel.rules[i - 1]?.correct
-                      ? "Correct"
-                      : "Incorrect"
+                      ? 'Correct'
+                      : 'Incorrect'
                     }}
                     Rule {{ selectedLevel.rules[i - 1]?.id }}
                     {{ selectedLevel.rules[i - 1]?.message }}
@@ -252,26 +368,150 @@ function Displaytimeformat() {
             HOW TO PLAY GAME 🎮
           </button>
           <dialog id="howToPlay" class="modal">
-            <div class="modal-box bg">
-              <h3 class="font-bold text-lg">Hello!</h3>
-              <p class="py-4">
-                Press ESC key or click the button below to close
-              </p>
+            <div class=" modal-box bg-white ">
+              <h3
+                class="font-bold text-3xl text-black mb-4 text-center hover:transition ease-in-out hover:-translate-y-1 hover:scale-105 ">
+                How to play this game! 🎮
+              </h3>
+              <div class="overflow-y-auto overscroll-auto h-96">
+                <div class="flex flex-col items-center">
+                  <p class="py-4 text-center">
+                    <!-- Press ESC key or click the button below to close -->
+                  <div class="font-bold text-black">1.Select your Power(Level)</div>
+                  (Hard = noob)<br />
+                  (Very Hard =medium)<br />
+                  (Hardest = ok)
+                  </p>
+                  <img src="/images/howtoplay1.png" alt="select Level image"
+                    class="rounded-box hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
+                  <p class="mt-4">
+                    Then any level it give your Character to play password game
+                  </p>
+                  <p class="mt-4 font-bold">
+                    Characteristic to play Game
+                  </p>
+                </div>
+                <div class="flex flex-row mt-3 ">
+                  <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"><img
+                      src="/images/hard-pic.png" alt="spy" class="w-[100%] h-[100%]  "></div>
+                  <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"><img
+                      src="/images/veryhard-pic.png" alt="FBI" class="w-[100%] h-[99.7%] "></div>
+                  <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"><img
+                      src="/images/hardest-pic.png" alt="hacker" class="w-[100%] h-[99.5%] "></div>
+                </div>
+                <div class="flex flex-row mt-3 mr-1">
+                  <p class="text-center text-sm font-bold mx-2">Your Character is SPY</p>
+                  <p class="text-center text-sm font-bold mx-2">Your Character is FBI</p>
+                  <p class="text-center text-sm font-bold mx-2">Your Character is Hacker</p>
+                </div>
+                <div class="flex flex-col items-center mt-3">
+                  <p>
+                    **Character mean your power to play game harder**
+                  </p>
+                  <p class="font-bold text-black mt-2">
+                    2.Enter password in textblock
+                  </p>
+                  <img src="/images/enterpassword.png" alt="enterpassword"
+                    class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105">
+                  <p class="font-bold text-black mt-3">
+                    3.Follow the rule until it done!!!
+                  </p>
+                  <p class=" mt-3 text-center">
+                  <div class="font-bold">Game tip!!!</div> Time is runing when you text in text box you can get time to
+                  challenge with your friend
+                  </p>
+                </div>
+
+              </div>
               <div class="modal-action">
                 <form method="dialog">
                   <!-- if there is a button in form, it will close the modal -->
-                  <button class="btn">Close</button>
+                  <button
+                    class="btn rounded-box w-30
+                   bg-red-600 text-white border-0  hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform motion-safe:hover:scale-110">
+                    Close
+                  </button>
                 </form>
               </div>
             </div>
           </dialog>
         </div>
       </div>
+
+      <!-- Timer display -->
+      <!-- <div class="mt-5">
+          <p class="font-istok text-xl">Timer {{ Displaytimeformat() }}</p>
+          button for test timer-->
+      <!-- <button
+            @click="startTimer"
+            class="font-itim border border-black p-1 rounded-[5px] mr-[8px]"
+          >
+            Start Timer
+          </button>
+          <button
+            @click="stopTimer"
+            class="font-itim border border-black p-1 rounded-[5px]"
+          >
+            Stop Timer
+          </button>
+        </div> -->
+      <!-- <div
+          :class="
+            isOpen
+              ? 'h-[350px] bg-white rounded-[10px] transition-height duration-300 ease-in-out'
+              : 'h-[43px] transition-height duration-300 ease-in-out'
+          "
+          class="fixed bottom-0 overflow-hidden"
+        >
+          <div class="flex flex-col items-center p-1" @click="isOpen = !isOpen">
+            <button class="flex flex-col items-center font-itim">
+              HOW TO PLAY GAME 🎮
+              <svg
+                width="24"
+                height="10"
+                viewBox="0 0 27 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="13.8826"
+                  y1="15.2968"
+                  x2="1.29294"
+                  y2="2.70715"
+                  stroke="black"
+                  stroke-width="2"
+                />
+                <line
+                  x1="13.0877"
+                  y1="14.5877"
+                  x2="26.0877"
+                  y2="1.58769"
+                  stroke="black"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="w-[300px] p-[10px]">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque rem
+              magni repudiandae tempora eos nemo maiores, doloremque quis
+              obcaecati totam, culpa dolorem sit eligendi adipisci laudantium ut!
+              Rem, quidem explicabo! Lorem ipsum dolor sit, amet consectetur
+              adipisicing elit. Ea nesciunt corrupti minus facere ex. Distinctio
+              incidunt maxime provident rerum ad ea suscipit fuga ex praesentium!
+              Maxime aliquam eos excepturi vel.
+            </p>
+          </div> -->
     </div>
   </div>
 </template>
 
 <style scoped>
+.text-color-hard {
+  color: #ff0000;
+}
+
 .background-color-hard {
   background: linear-gradient(104deg,
       #6e07f0 8.15%,
@@ -291,10 +531,15 @@ function Displaytimeformat() {
       rgba(0, 0, 0, 0.74) 92.15%);
 }
 
+.text-color-veryhard {
+  color: #590ebb;
+}
+
 .background-color-veryhard {
-  background: linear-gradient(104deg,
-      rgba(209, 164, 15, 1) 0%,
-      rgba(133, 39, 18, 1) 100%);
+  background: linear-gradient(90deg,
+      rgba(238, 78, 9, 1) 0%,
+      rgba(121, 46, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-veryhard-box {
@@ -304,15 +549,16 @@ function Displaytimeformat() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(104deg,
-      rgba(209, 164, 15, 1) 0%,
-      rgba(133, 39, 18, 1) 100%);
+  background: linear-gradient(90deg,
+      rgba(238, 78, 9, 1) 0%,
+      rgba(121, 46, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-veryhard-box {
   border-radius: 31px;
   border: 1px solid #fff;
-  background: #e36409;
+  background: #ff6f00;
 }
 
 .btn-bg-veryHard {
@@ -322,12 +568,15 @@ function Displaytimeformat() {
       rgba(60, 23, 8, 0.68) 89.63%);
 }
 
+.text-color-hardest {
+  color: #ffffff;
+}
+
 .background-color-hardest {
-  background: linear-gradient(104deg,
-      rgba(209, 15, 15, 1) 14%,
-      rgba(133, 18, 18, 1) 87%,
-      rgba(209, 164, 15, 1) 100%,
-      rgba(133, 18, 18, 1) 100%);
+  background: linear-gradient(90deg,
+      rgba(238, 9, 9, 1) 0%,
+      rgba(121, 9, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-hardest-box {
