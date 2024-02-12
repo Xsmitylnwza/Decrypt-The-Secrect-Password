@@ -74,7 +74,6 @@ function updateRuleStatus(ruleIndex) {
 function levelSelector(level) {
   selectedLevel.value = level;
   passedRule.value = 1;
-  sortRules.value = [];
   stopTimer();
   resetGame();
   startNewAudio(selectedLevel.value.level);
@@ -151,8 +150,8 @@ function checkAnswerHard() {
 function checkAnswerVeryhard() {
   let question = data[1];
   if (userInput.value.includes("lungtoo")) {
-    question.rules[0].correct = true;
-    if (passedRule.value < 2) {
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true;
       passedRule.value = 2;
       startNewSoundCorrect();
     }
@@ -161,8 +160,7 @@ function checkAnswerVeryhard() {
   }
 
   if (userInput.value.includes("no")) {
-    if (passedRule.value < 3) {
-      passedRule.value = 3;
+    if (!question.rules[1].correct) {
       question.rules[1].correct = true;
       startNewSoundCorrect();
     }
@@ -305,6 +303,7 @@ function resetGame() {
   gameStartted.value = false;
   timer.value = 0;
   userInput.value = "";
+  sortRules.value = [];
 }
 
 function startGame() {
