@@ -49,6 +49,15 @@ watchEffect(() => {
   }
 });
 
+function updateRuleStatus(ruleIndex) {
+  selectedLevel.value.rules[ruleIndex].correct = true;
+  if (passedRule.value <= ruleIndex + 1) {
+    passedRule.value = passedRule.value + 1
+    startNewSoundCorrect();
+    return
+  }
+}
+
 function levelSelector(level) {
   selectedLevel.value = level;
   passedRule.value = 1;
@@ -149,7 +158,7 @@ function checkAnswerVeryhard() {
 }
 
 function checkAnswerHardest() {
-  let question = data[2];
+  const rule = selectedLevel.value.rules
   let numSum = userInput.value.match(/\d/g);
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
@@ -158,79 +167,125 @@ function checkAnswerHardest() {
   const month = today.toLocaleString('en-US', { month: 'short' });
 
   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
-    question.rules[0].correct = true;
-    if (passedRule.value < 2) {
-      passedRule.value = 2;
-      startNewSoundCorrect();
-      return
-    }
+    updateRuleStatus(0);
   } else {
-    question.rules[0].correct = false;
+    rule[0].correct = false
   }
-
   if (userInput.value.length >= 5 && passedRule.value >= 2) {
-    question.rules[1].correct = true;
-    if (passedRule.value < 3) {
-      passedRule.value = 3;
-      startNewSoundCorrect();
-      return
-    }
-    // userInput.value = "🔥🔥🔥"
+    updateRuleStatus(1)
   } else {
-    question.rules[1].correct = false;
+    rule[1].correct = false
   }
-
   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
-    question.rules[2].correct = true;
-    if (passedRule.value < 4) {
-      passedRule.value = 4;
-      startNewSoundCorrect();
-      return
-    }
+    updateRuleStatus(2)
   } else {
-    question.rules[2].correct = false;
+    rule[2].correct = false
   }
   if (sum == 35 && passedRule.value >= 4) {
-    question.rules[3].correct = true;
-    if (passedRule.value < 5) {
-      startNewSoundCorrect();
-      passedRule.value = 5;
-      return
-    }
+    updateRuleStatus(3)
   } else {
-    question.rules[3].correct = false;
+    rule[3].correct = false
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
-    question.rules[4].correct = true;
-    if (passedRule.value < 6) {
-      passedRule.value = 6;
-      startNewSoundCorrect();
-      return
-    }
+    updateRuleStatus(4)
   } else {
-    question.rules[4].correct = false;
+    rule[4].correct = false
   }
   if (userInput.value.includes('37') && passedRule.value >= 6) {
-    question.rules[5].correct = true;
-    if (passedRule.value < 7) {
-      passedRule.value = 7;
-      startNewSoundCorrect();
-      return
-    }
+    updateRuleStatus(5)
   } else {
-    question.rules[5].correct = false;
+    rule[5].correct = false
   }
   if (userInput.value.includes('¥') && passedRule.value >= 7) {
-    question.rules[6].correct = true;
-    if (passedRule.value < 8) {
-      passedRule.value = 8;
-      startNewSoundCorrect();
-      return
-    }
+    updateRuleStatus(6)
   } else {
-    question.rules[6].correct = false;
+    rule[6].correct = false
   }
 }
+
+// function checkAnswerHardest2() {
+//   let question = data[2];
+//   let numSum = userInput.value.match(/\d/g);
+//   let sum = numSum
+//     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
+//     : 0;
+//   const today = new Date();
+//   const month = today.toLocaleString('en-US', { month: 'short' });
+
+//   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
+//     question.rules[0].correct = true;
+//     if (passedRule.value < 2) {
+//       passedRule.value = 2;
+//       startNewSoundCorrect();
+//       return
+//     }
+//   } else {
+//     question.rules[0].correct = false;
+//   }
+
+//   if (userInput.value.length >= 5 && passedRule.value >= 2) {
+//     question.rules[1].correct = true;
+//     if (passedRule.value < 3) {
+//       passedRule.value = 3;
+//       startNewSoundCorrect();
+//       return
+//     }
+//     // userInput.value = "🔥🔥🔥"
+//   } else {
+//     question.rules[1].correct = false;
+//   }
+
+//   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
+//     question.rules[2].correct = true;
+//     if (passedRule.value < 4) {
+//       passedRule.value = 4;
+//       startNewSoundCorrect();
+//       return
+//     }
+//   } else {
+//     question.rules[2].correct = false;
+//   }
+//   if (sum == 35 && passedRule.value >= 4) {
+//     question.rules[3].correct = true;
+//     if (passedRule.value < 5) {
+//       startNewSoundCorrect();
+//       passedRule.value = 5;
+//       return
+//     }
+//   } else {
+//     question.rules[3].correct = false;
+//   }
+//   if (userInput.value.includes(month) && passedRule.value >= 5) {
+//     question.rules[4].correct = true;
+//     if (passedRule.value < 6) {
+//       passedRule.value = 6;
+//       startNewSoundCorrect();
+//       return
+//     }
+//   } else {
+//     question.rules[4].correct = false;
+//   }
+//   if (userInput.value.includes('37') && passedRule.value >= 6) {
+//     question.rules[5].correct = true;
+//     if (passedRule.value < 7) {
+//       passedRule.value = 7;
+//       startNewSoundCorrect();
+//       return
+//     }
+//   } else {
+//     question.rules[5].correct = false;
+//   }
+//   if (userInput.value.includes('¥') && passedRule.value >= 7) {
+//     question.rules[6].correct = true;
+//     if (passedRule.value < 8) {
+//       passedRule.value = 8;
+//       startNewSoundCorrect();
+//       return
+//     }
+//   } else {
+//     question.rules[6].correct = false;
+//   }
+// }
 
 
 
