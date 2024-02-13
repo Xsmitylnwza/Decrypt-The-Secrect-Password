@@ -1,20 +1,19 @@
 <script setup>
-import { ref, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import data from "./data/data.json";
 import musicVeryHard from "/music/musicVeryHard.mp3";
 import musicHard from "/music/musicHard.mp4";
 import musicHardest from "/music/musicHardest.mp3";
-import correct from "/music/correct.mp4";
+import correct from "/music/correct.mp3";
 
 let passedRule = ref(1);
 let selectedLevel = ref(data[0]);
 let userInput = ref("");
 let gameStartted = ref(false);
-let timer = ref(0);
-let timerInterval;
-let isOpen = ref(false);
 let checkAudio = ref(null);
 let sortRules = ref([]);
+let timer = ref("10:00")
+let time
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
@@ -26,7 +25,6 @@ const audioMapping = {
   Veryhard: new Audio(musicVeryHard),
   Hardest: new Audio(musicHardest),
 };
-
 const startNewAudio = (level) => {
   const audio = audioMapping[level];
   if (checkAudio.value !== null) {
@@ -74,8 +72,8 @@ function updateRuleStatus(ruleIndex) {
 function levelSelector(level) {
   selectedLevel.value = level;
   passedRule.value = 1;
-  stopTimer();
   resetGame();
+  timeformat(selectedLevel.value.time)
   startNewAudio(selectedLevel.value.level);
 }
 
@@ -214,94 +212,29 @@ function checkAnswerHardest() {
     rule[6].correct = false;
   }
 }
+function timeformat(seconds) {
+  const minute = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0");
+  const second = (seconds % 60).toString().padStart(2, "0");
+  timer.value = minute + ":" + second
+}
 
-// function checkAnswerHardest2() {
-//   let question = data[2];
-//   let numSum = userInput.value.match(/\d/g);
-//   let sum = numSum
-//     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
-//     : 0;
-//   const today = new Date();
-//   const month = today.toLocaleString('en-US', { month: 'short' });
+function countdown(seconds) {
+  time = setInterval(function () {
+    seconds--
+    timeformat(seconds)
+    if (seconds < 1) {
+      clearInterval(time)
+      console.log('timeout')
+    }
+  }, 1000)
+}
 
-//   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
-//     question.rules[0].correct = true;
-//     if (passedRule.value < 2) {
-//       passedRule.value = 2;
-//       startNewSoundCorrect();
-//       return
-//     }
-//   } else {
-//     question.rules[0].correct = false;
-//   }
-
-//   if (userInput.value.length >= 5 && passedRule.value >= 2) {
-//     question.rules[1].correct = true;
-//     if (passedRule.value < 3) {
-//       passedRule.value = 3;
-//       startNewSoundCorrect();
-//       return
-//     }
-//     // userInput.value = "🔥🔥🔥"
-//   } else {
-//     question.rules[1].correct = false;
-//   }
-
-//   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
-//     question.rules[2].correct = true;
-//     if (passedRule.value < 4) {
-//       passedRule.value = 4;
-//       startNewSoundCorrect();
-//       return
-//     }
-//   } else {
-//     question.rules[2].correct = false;
-//   }
-//   if (sum == 35 && passedRule.value >= 4) {
-//     question.rules[3].correct = true;
-//     if (passedRule.value < 5) {
-//       startNewSoundCorrect();
-//       passedRule.value = 5;
-//       return
-//     }
-//   } else {
-//     question.rules[3].correct = false;
-//   }
-//   if (userInput.value.includes(month) && passedRule.value >= 5) {
-//     question.rules[4].correct = true;
-//     if (passedRule.value < 6) {
-//       passedRule.value = 6;
-//       startNewSoundCorrect();
-//       return
-//     }
-//   } else {
-//     question.rules[4].correct = false;
-//   }
-//   if (userInput.value.includes('37') && passedRule.value >= 6) {
-//     question.rules[5].correct = true;
-//     if (passedRule.value < 7) {
-//       passedRule.value = 7;
-//       startNewSoundCorrect();
-//       return
-//     }
-//   } else {
-//     question.rules[5].correct = false;
-//   }
-//   if (userInput.value.includes('¥') && passedRule.value >= 7) {
-//     question.rules[6].correct = true;
-//     if (passedRule.value < 8) {
-//       passedRule.value = 8;
-//       startNewSoundCorrect();
-//       return
-//     }
-//   } else {
-//     question.rules[6].correct = false;
-//   }
-// }
 
 function resetGame() {
+  clearInterval(time)
   gameStartted.value = false;
-  timer.value = 0;
   userInput.value = "";
   sortRules.value = [];
 }
@@ -309,36 +242,10 @@ function resetGame() {
 function startGame() {
   if (selectedLevel.value !== "" && !gameStartted.value) {
     gameStartted.value = true;
-    startTimer();
+    countdown(selectedLevel.value.time)
   }
 }
 
-// Timer function handle
-
-// function สำหรับจับเวลาจะอัพเดทค่าทุกๆ 1 วินาที
-function startTimer() {
-  timerInterval = setInterval(() => {
-    timer.value++;
-  }, 1000);
-}
-
-// function สำหรับหยุดจับเวลา
-function stopTimer() {
-  clearInterval(timerInterval);
-}
-
-// function สำหรับแสดงผลลัพธ์ของเวลา
-function Displaytimeformat() {
-  const hours = Math.floor(timer.value / 3600)
-    .toString()
-    .padStart(2, "0");
-  const minutes = Math.floor((timer.value % 3600) / 60)
-    .toString()
-    .padStart(2, "0");
-  const seconds = (timer.value % 60).toString().padStart(2, "0");
-
-  return `${hours}:${minutes}:${seconds}`;
-}
 </script>
 
 <template>
@@ -394,9 +301,9 @@ function Displaytimeformat() {
         <!-- timer componant in row2 -->
         <div class="timer m-[auto] laptop:ml-24">
           <p class="flex font-Saira text-[14px] text-white mt-[10px]">
-            Time:
+            Time:&nbsp
             <span :class="selectedLevel.textColor" class="text-[14px]">
-              {{ Displaytimeformat() }}
+              {{ timer }}
             </span>
           </p>
         </div>
@@ -405,39 +312,22 @@ function Displaytimeformat() {
           <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt
             class="flex items-center w-4/5 h-4/5 laptop:hidden" />
           <div v-if="gameStartted" class="flex flex-col">
-            <div
-              v-for="i in passedRule"
-              class="min-w-[307px] sm:w-full rounded-md py-4"
-              :key="i"
-            >
-              <div
-                :class="
-                  sortRules[i - 1]?.correct
-                    ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
-                    : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
-                "
-                class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
-              >
+            <div v-for="i in passedRule" class="min-w-[307px] sm:w-full rounded-md py-4" :key="i">
+              <div :class="sortRules[i - 1]?.correct
+                ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
+                : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
+                " class="py-2 px-3 flex flex-col border border-white rounded-[14px]">
                 <div class="flex items-center gap-2">
-                  <i
-                    v-if="sortRules[i - 1]?.correct"
-                    class="fa-solid fa-check text-white pt-1 text-xl"
-                  />
-                  <i
-                    v-else
-                    class="fa-solid fa-xmark text-white pt-1 text-xl"
-                  ></i>
+                  <i v-if="sortRules[i - 1]?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
+                  <i v-else class="fa-solid fa-xmark text-white pt-1 text-xl"></i>
                   <p class="font-Saira text-sm text-white">
                     {{ sortRules[i - 1]?.correct ? "Correct" : "Incorrect" }}
                     Rule {{ sortRules[i - 1]?.id }}
                     {{ sortRules[i - 1]?.message }}
                   </p>
                 </div>
-                <img
-                  v-if="sortRules[i - 1]?.picture"
-                  :src="sortRules[i - 1]?.picture"
-                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]"
-                />
+                <img v-if="sortRules[i - 1]?.picture" :src="sortRules[i - 1]?.picture"
+                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]" />
               </div>
             </div>
           </div>
@@ -599,12 +489,10 @@ function Displaytimeformat() {
 }
 
 .background-color-hard {
-  background: linear-gradient(
-    104deg,
-    #6e07f0 8.15%,
-    rgba(64, 22, 131, 0.44) 68.84%,
-    rgba(29, 34, 45, 0) 89.63%
-  );
+  background: linear-gradient(104deg,
+      #6e07f0 8.15%,
+      rgba(64, 22, 131, 0.44) 68.84%,
+      rgba(29, 34, 45, 0) 89.63%);
 }
 
 .bg-color-hard-box {
@@ -614,11 +502,9 @@ function Displaytimeformat() {
 }
 
 .btn-bg-hard {
-  background: linear-gradient(
-    104deg,
-    #590ebb 6.68%,
-    rgba(0, 0, 0, 0.74) 92.15%
-  );
+  background: linear-gradient(104deg,
+      #590ebb 6.68%,
+      rgba(0, 0, 0, 0.74) 92.15%);
 }
 
 .text-color-veryhard {
@@ -626,12 +512,10 @@ function Displaytimeformat() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(
-    90deg,
-    rgba(238, 78, 9, 1) 0%,
-    rgba(121, 46, 9, 1) 30%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(238, 78, 9, 1) 0%,
+      rgba(121, 46, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-veryhard-box {
@@ -641,12 +525,10 @@ function Displaytimeformat() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(
-    90deg,
-    rgba(238, 78, 9, 1) 0%,
-    rgba(121, 46, 9, 1) 30%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(238, 78, 9, 1) 0%,
+      rgba(121, 46, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-veryhard-box {
@@ -656,12 +538,10 @@ function Displaytimeformat() {
 }
 
 .btn-bg-veryHard {
-  background: linear-gradient(
-    104deg,
-    #f06907 8.15%,
-    rgba(169, 57, 21, 0.53) 68.84%,
-    rgba(60, 23, 8, 0.68) 89.63%
-  );
+  background: linear-gradient(104deg,
+      #f06907 8.15%,
+      rgba(169, 57, 21, 0.53) 68.84%,
+      rgba(60, 23, 8, 0.68) 89.63%);
 }
 
 .text-color-hardest {
@@ -669,12 +549,10 @@ function Displaytimeformat() {
 }
 
 .background-color-hardest {
-  background: linear-gradient(
-    90deg,
-    rgba(238, 9, 9, 1) 0%,
-    rgba(121, 9, 9, 1) 30%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(238, 9, 9, 1) 0%,
+      rgba(121, 9, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-hardest-box {
@@ -684,11 +562,9 @@ function Displaytimeformat() {
 }
 
 .btn-bg-hardest {
-  background: linear-gradient(
-    104deg,
-    #f00707 8.15%,
-    rgba(96, 22, 22, 0.83) 68.6%,
-    rgba(29, 34, 45, 0.94) 89.63%
-  );
+  background: linear-gradient(104deg,
+      #f00707 8.15%,
+      rgba(96, 22, 22, 0.83) 68.6%,
+      rgba(29, 34, 45, 0.94) 89.63%);
 }
 </style>

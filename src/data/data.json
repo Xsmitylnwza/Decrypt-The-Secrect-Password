@@ -52,7 +52,8 @@
     "character": "SPY",
     "backgroundColor": "background-color-hard",
     "boxColor": "bg-color-hard-box",
-    "textColor": "text-color-hard"
+    "textColor": "text-color-hard",
+    "time": 600
   },
   {
     "level": "Veryhard",
@@ -73,7 +74,8 @@
     "character": "FBI",
     "backgroundColor": "background-color-veryhard",
     "boxColor": "bg-color-veryhard-box",
-    "textColor": "text-color-veryhard"
+    "textColor": "text-color-veryhard",
+    "time":450
   },
   {
     "level": "Hardest",
@@ -123,6 +125,7 @@
     "character": "HACKER",
     "backgroundColor": "background-color-hardest",
     "boxColor": "bg-color-hardest-box",
-    "textColor": "text-color-hardest"
+    "textColor": "text-color-hardest",
+    "time":300
   }
 ]
