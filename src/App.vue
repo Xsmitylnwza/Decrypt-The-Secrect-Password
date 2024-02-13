@@ -315,7 +315,7 @@ function startGame() {
     >
       <!-- row1 character hidden-->
       <div
-        class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%]"
+        class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%] hover:animate-shake"
       >
         <!-- Image only visible on laptop -->
         <img
@@ -392,7 +392,7 @@ function startGame() {
             v-if="selectedLevel && !gameStartted"
             :src="selectedLevel.logo"
             alt
-            class="flex items-center w-4/5 h-4/5 laptop:hidden"
+            class="flex items-center w-4/5 h-4/5 laptop:hidden "
           />
           <div v-if="gameStartted" class="flex flex-col">
             <div
