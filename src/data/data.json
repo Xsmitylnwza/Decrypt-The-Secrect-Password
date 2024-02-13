@@ -67,6 +67,17 @@
         "message": "ในภาพนี้เป็นภาพของใคร",
         "correct": false,
         "picture": "./images/lungpon.png"
+      },
+      {
+        "id": 3,
+        "message": "มะม่วง mango เเล้วอย่างสีเหลืองละ?",
+        "correct": false
+      },
+      {
+        "id": 4,
+        "message": "ชื่อจริงของพี่คนนึงมีกล้ามเต้นใจเกเร",
+        "correct": false,
+        "picture": "./images/peetho.jpg"
       }
     ],
     "logo": "./images/veryhard-pic.png",
