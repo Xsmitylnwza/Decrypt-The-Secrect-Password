@@ -25,6 +25,7 @@ const audioMapping = {
   Veryhard: new Audio(musicVeryHard),
   Hardest: new Audio(musicHardest),
 };
+
 const startNewAudio = (level) => {
   const audio = audioMapping[level];
   if (checkAudio.value !== null) {
