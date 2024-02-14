@@ -359,18 +359,18 @@ function startGame() {
           <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt
             class="flex items-center w-4/5 h-4/5 laptop:hidden" />
           <div v-if="gameStartted" class="flex flex-col">
-            <div v-for="i in ruleShow" class="min-w-[307px] sm:w-full rounded-md py-4" :key="i">
-              <div :class="i?.correct
+            <div v-for="rule in ruleShow" class="min-w-[307px] sm:w-full rounded-md py-4" :key="i">
+              <div :class="rule?.correct
                 ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
                 : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
                 " class="py-2 px-3 flex flex-col border border-white rounded-[14px]">
                 <div class="flex items-center gap-2">
-                  <i v-if="i?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
+                  <i v-if="rule?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
                   <i v-else class="fa-solid fa-xmark text-white pt-1 text-xl"></i>
                   <p class="font-Saira text-sm text-white">
-                    {{ i?.correct ? 'Correct' : 'Incorrect' }}
-                    Rule {{ i?.id }}
-                    {{ i?.message }}
+                    {{ rule?.correct ? 'Correct' : 'Incorrect' }}
+                    Rule {{ rule?.id }}
+                    {{ rule?.message }}
 
                   </p>
                 </div>
@@ -470,91 +470,6 @@ function startGame() {
   </div>
 </template>
 
-<style scoped>
-.text-color-hard {
-  color: #ff0000;
-}
-
-.background-color-hard {
-  background: linear-gradient(104deg,
-      #6e07f0 8.15%,
-      rgba(64, 22, 131, 0.44) 68.84%,
-      rgba(29, 34, 45, 0) 89.63%);
-}
-
-.bg-color-hard-box {
-  border-radius: 31px;
-  border: 1px solid #fff;
-  background: #590ebb;
-}
-
-.btn-bg-hard {
-  background: linear-gradient(104deg,
-      #590ebb 6.68%,
-      rgba(0, 0, 0, 0.74) 92.15%);
-}
-
-.text-color-veryhard {
-  color: #590ebb;
-}
-
-.background-color-veryhard {
-  background: linear-gradient(90deg,
-      rgba(238, 78, 9, 1) 0%,
-      rgba(121, 46, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
-}
-
-.bg-color-veryhard-box {
-  border-radius: 31px;
-  border: 1px solid #fff;
-  background: #e36409;
-}
-
-.background-color-veryhard {
-  background: linear-gradient(90deg,
-      rgba(238, 78, 9, 1) 0%,
-      rgba(121, 46, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
-}
-
-.bg-color-veryhard-box {
-  border-radius: 31px;
-  border: 1px solid #fff;
-  background: #ff6f00;
-}
-
-.btn-bg-veryHard {
-  background: linear-gradient(104deg,
-      #f06907 8.15%,
-      rgba(169, 57, 21, 0.53) 68.84%,
-      rgba(60, 23, 8, 0.68) 89.63%);
-}
-
-.text-color-hardest {
-  color: #ffffff;
-}
-
-.background-color-hardest {
-  background: linear-gradient(90deg,
-      rgba(238, 9, 9, 1) 0%,
-      rgba(121, 9, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
-}
-
-.bg-color-hardest-box {
-  border-radius: 31px;
-  border: 1px solid #fff;
-  background: #cb0809;
-}
-
-.btn-bg-hardest {
-  background: linear-gradient(104deg,
-      #f00707 8.15%,
-      rgba(96, 22, 22, 0.83) 68.6%,
-      rgba(29, 34, 45, 0.94) 89.63%);
-}
-</style>
 <style scoped>
 .text-color-hard {
   color: #ff0000;
