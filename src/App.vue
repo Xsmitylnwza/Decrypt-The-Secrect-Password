@@ -29,9 +29,9 @@ const checkAnswer = {
 }
 
 const audioMapping = {
-  // Hard: new Audio(musicHard),
-  // Veryhard: new Audio(musicVeryHard),
-  // Hardest: new Audio(musicHardest),
+  Hard: new Audio(musicHard),
+  Veryhard: new Audio(musicVeryHard),
+  Hardest: new Audio(musicHardest),
 }
 
 const startNewAudio = (level) => {
