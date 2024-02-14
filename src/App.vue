@@ -37,6 +37,9 @@ const startNewAudio = (level) => {
   checkAudio.value = audio
 }
 
+function deletekuy() {
+  userInput.value = 'KUY'
+}
 const startNewSoundCorrect = () => {
   const audioCorrect = new Audio(correct)
   audioCorrect.play()
@@ -158,24 +161,26 @@ function checkAnswerHard() {
 }
 
 function checkAnswerVeryhard() {
-  let question = data[1]
-  if (userInput.value.includes('lungtoo')) {
-    if (!question.rules[0].correct) {
-      question.rules[0].correct = true
-      passedRule.value = 2
-      startNewSoundCorrect()
-    }
+  const rule = selectedLevel.value.rules
+  if (userInput.value.includes('lungtoo') && passedRule.value >= 1) {
+    updateRuleStatus(0)
   } else {
-    question.rules[0].correct = false
+    rule[0].correct = false
   }
-
-  if (userInput.value.includes('no')) {
-    if (!question.rules[1].correct) {
-      question.rules[1].correct = true
-      startNewSoundCorrect()
-    }
+  if (userInput.value.includes('lungpol') && passedRule.value >= 2) {
+    updateRuleStatus(1)
   } else {
-    question.rules[1].correct = false
+    rule[1].correct = false
+  }
+  if (userInput.value.includes('yellow') && passedRule.value >= 3) {
+    updateRuleStatus(2)
+  } else {
+    rule[2].correct = false
+  }
+  if (userInput.value.includes('ricardo') && passedRule.value >= 4) {
+    updateRuleStatus(3)
+  } else {
+    rule[3].correct = false
   }
 }
 
@@ -239,6 +244,7 @@ function countdown(seconds) {
     if (seconds < 1) {
       clearInterval(time)
       console.log('timeout')
+      deletekuy()
     }
   }, 1000)
 }
@@ -392,7 +398,7 @@ function startGame() {
             v-if="selectedLevel && !gameStartted"
             :src="selectedLevel.logo"
             alt
-            class="flex items-center w-4/5 h-4/5 laptop:hidden "
+            class="flex items-center w-4/5 h-4/5 laptop:hidden"
           />
           <div v-if="gameStartted" class="flex flex-col">
             <div
