@@ -1,18 +1,18 @@
 <script setup>
-import { onMounted, ref, watchEffect } from 'vue'
-import data from './data/data.json'
-import musicVeryHard from '/music/musicVeryHard.mp3'
-import musicHard from '/music/musicHard.mp4'
-import musicHardest from '/music/musicHardest.mp3'
-import correct from '/music/correct.mp3'
+import { onMounted, ref, watchEffect } from "vue";
+import data from "./data/data.json";
+import musicVeryHard from "/music/musicVeryHard.mp3";
+import musicHard from "/music/musicHard.mp4";
+import musicHardest from "/music/musicHardest.mp3";
+import correct from "/music/correct.mp3";
 
-let passedRule = ref(1)
-let selectedLevel = ref(data[0])
-let userInput = ref('')
-let gameStartted = ref(false)
-let checkAudio = ref(null)
-let sortRules = ref([])
-let timer = ref('10:00')
+let passedRule = ref(1);
+let selectedLevel = ref(data[0]);
+let userInput = ref("");
+let gameStartted = ref(false);
+let checkAudio = ref(null);
+let sortRules = ref([]);
+let timer = ref("10:00")
 let time
 let isPlaying = ref(true)
 let ruleShow = ref(selectedLevel.value.rules.slice(0, 1))
@@ -38,9 +38,6 @@ const startNewAudio = (level) => {
   checkAudio.value = audio
 }
 
-function deletekuy() {
-  userInput.value = 'KUY'
-}
 const startNewSoundCorrect = () => {
   const audioCorrect = new Audio(correct)
   audioCorrect.play()
@@ -93,11 +90,12 @@ function updateRuleStatus(ruleIndex) {
 }
 
 function levelSelector(level) {
-  selectedLevel.value = level
-  passedRule.value = 1
-  resetGame()
+  selectedLevel.value = level;
+  passedRule.value = 1;
+  ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value)
+  resetGame();
   timeformat(selectedLevel.value.time)
-  startNewAudio(selectedLevel.value.level)
+  startNewAudio(selectedLevel.value.level);
   if (!isPlaying) stopSound()
 }
 
@@ -170,26 +168,24 @@ function checkAnswerHard() {
 }
 
 function checkAnswerVeryhard() {
-  const rule = selectedLevel.value.rules
-  if (userInput.value.includes('lungtoo') && passedRule.value >= 1) {
-    updateRuleStatus(0)
+  let question = data[1]
+  if (userInput.value.includes('lungtoo')) {
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true
+      passedRule.value = 2
+      startNewSoundCorrect()
+    }
   } else {
-    rule[0].correct = false
+    question.rules[0].correct = false
   }
-  if (userInput.value.includes('lungpol') && passedRule.value >= 2) {
-    updateRuleStatus(1)
+
+  if (userInput.value.includes('no')) {
+    if (!question.rules[1].correct) {
+      question.rules[1].correct = true
+      startNewSoundCorrect()
+    }
   } else {
-    rule[1].correct = false
-  }
-  if (userInput.value.includes('yellow') && passedRule.value >= 3) {
-    updateRuleStatus(2)
-  } else {
-    rule[2].correct = false
-  }
-  if (userInput.value.includes('ricardo') && passedRule.value >= 4) {
-    updateRuleStatus(3)
-  } else {
-    rule[3].correct = false
+    question.rules[1].correct = false
   }
 }
 
@@ -241,9 +237,9 @@ function checkAnswerHardest() {
 function timeformat(seconds) {
   const minute = Math.floor((seconds % 3600) / 60)
     .toString()
-    .padStart(2, '0')
-  const second = (seconds % 60).toString().padStart(2, '0')
-  timer.value = minute + ':' + second
+    .padStart(2, "0");
+  const second = (seconds % 60).toString().padStart(2, "0");
+  timer.value = minute + ":" + second
 }
 
 function countdown(seconds) {
@@ -253,24 +249,24 @@ function countdown(seconds) {
     if (seconds < 1) {
       clearInterval(time)
       console.log('timeout')
-      deletekuy()
     }
   }, 1000)
 }
 
 function resetGame() {
   clearInterval(time)
-  gameStartted.value = false
-  userInput.value = ''
-  sortRules.value = []
+  gameStartted.value = false;
+  userInput.value = "";
+  sortRules.value = [];
 }
 
 function startGame() {
-  if (selectedLevel.value !== '' && !gameStartted.value) {
-    gameStartted.value = true
+  if (selectedLevel.value !== "" && !gameStartted.value) {
+    gameStartted.value = true;
     countdown(selectedLevel.value.time)
   }
 }
+
 </script>
 
 <template>
@@ -306,9 +302,7 @@ function startGame() {
     <!-- main box -->
     <div :class="selectedLevel.boxColor" class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4 border">
       <!-- row1 character hidden-->
-      <div
-        class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%] hover:animate-shake"
-      >
+      <div class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%]">
         <!-- Image only visible on laptop -->
         <img :src="selectedLevel.logo" alt class="laptop:flex w-[220px] h-[250px] pt-3" />
         <p class="font-Saira text-[13px] text-white items-center">
@@ -365,28 +359,14 @@ function startGame() {
           <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt
             class="flex items-center w-4/5 h-4/5 laptop:hidden" />
           <div v-if="gameStartted" class="flex flex-col">
-            <div
-              v-for="i in passedRule"
-              class="min-w-[307px] sm:w-full rounded-md py-4"
-              :key="i"
-            >
-              <div
-                :class="
-                  sortRules[i - 1]?.correct
-                    ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
-                    : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
-                "
-                class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
-              >
+            <div v-for="rule in ruleShow" class="min-w-[307px] sm:w-full rounded-md py-4" :key="i">
+              <div :class="rule?.correct
+                ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
+                : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
+                " class="py-2 px-3 flex flex-col border border-white rounded-[14px]">
                 <div class="flex items-center gap-2">
-                  <i
-                    v-if="sortRules[i - 1]?.correct"
-                    class="fa-solid fa-check text-white pt-1 text-xl"
-                  />
-                  <i
-                    v-else
-                    class="fa-solid fa-xmark text-white pt-1 text-xl"
-                  ></i>
+                  <i v-if="rule?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
+                  <i v-else class="fa-solid fa-xmark text-white pt-1 text-xl"></i>
                   <p class="font-Saira text-sm text-white">
                     {{ rule?.correct ? 'Correct' : 'Incorrect' }}
                     Rule {{ rule?.id }}
@@ -394,11 +374,7 @@ function startGame() {
 
                   </p>
                 </div>
-                <img
-                  v-if="sortRules[i - 1]?.picture"
-                  :src="sortRules[i - 1]?.picture"
-                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]"
-                />
+                <img v-if="i?.picture" :src="i?.picture" class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]" />
               </div>
             </div>
           </div>
@@ -500,12 +476,10 @@ function startGame() {
 }
 
 .background-color-hard {
-  background: linear-gradient(
-    104deg,
-    #6e07f0 8.15%,
-    rgba(64, 22, 131, 0.44) 68.84%,
-    rgba(29, 34, 45, 0) 89.63%
-  );
+  background: linear-gradient(104deg,
+      #6e07f0 8.15%,
+      rgba(64, 22, 131, 0.44) 68.84%,
+      rgba(29, 34, 45, 0) 89.63%);
 }
 
 .bg-color-hard-box {
@@ -515,11 +489,9 @@ function startGame() {
 }
 
 .btn-bg-hard {
-  background: linear-gradient(
-    104deg,
-    #590ebb 6.68%,
-    rgba(0, 0, 0, 0.74) 92.15%
-  );
+  background: linear-gradient(104deg,
+      #590ebb 6.68%,
+      rgba(0, 0, 0, 0.74) 92.15%);
 }
 
 .text-color-veryhard {
@@ -527,12 +499,10 @@ function startGame() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(
-    90deg,
-    rgba(238, 78, 9, 1) 0%,
-    rgba(121, 46, 9, 1) 30%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(238, 78, 9, 1) 0%,
+      rgba(121, 46, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-veryhard-box {
@@ -542,12 +512,10 @@ function startGame() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(
-    90deg,
-    rgba(238, 78, 9, 1) 0%,
-    rgba(121, 46, 9, 1) 30%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(238, 78, 9, 1) 0%,
+      rgba(121, 46, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-veryhard-box {
@@ -557,12 +525,10 @@ function startGame() {
 }
 
 .btn-bg-veryHard {
-  background: linear-gradient(
-    104deg,
-    #f06907 8.15%,
-    rgba(169, 57, 21, 0.53) 68.84%,
-    rgba(60, 23, 8, 0.68) 89.63%
-  );
+  background: linear-gradient(104deg,
+      #f06907 8.15%,
+      rgba(169, 57, 21, 0.53) 68.84%,
+      rgba(60, 23, 8, 0.68) 89.63%);
 }
 
 .text-color-hardest {
@@ -570,12 +536,10 @@ function startGame() {
 }
 
 .background-color-hardest {
-  background: linear-gradient(
-    90deg,
-    rgba(238, 9, 9, 1) 0%,
-    rgba(121, 9, 9, 1) 30%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(238, 9, 9, 1) 0%,
+      rgba(121, 9, 9, 1) 30%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-hardest-box {
@@ -585,11 +549,9 @@ function startGame() {
 }
 
 .btn-bg-hardest {
-  background: linear-gradient(
-    104deg,
-    #f00707 8.15%,
-    rgba(96, 22, 22, 0.83) 68.6%,
-    rgba(29, 34, 45, 0.94) 89.63%
-  );
+  background: linear-gradient(104deg,
+      #f00707 8.15%,
+      rgba(96, 22, 22, 0.83) 68.6%,
+      rgba(29, 34, 45, 0.94) 89.63%);
 }
 </style>
