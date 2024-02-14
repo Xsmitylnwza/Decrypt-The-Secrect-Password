@@ -1,10 +1,10 @@
 <script setup>
-import { onMounted, ref, watchEffect } from "vue";
-import data from "./data/data.json";
-import musicVeryHard from "/music/musicVeryHard.mp3";
-import musicHard from "/music/musicHard.mp4";
-import musicHardest from "/music/musicHardest.mp3";
-import correct from "/music/correct.mp3";
+import { onMounted, ref, watchEffect } from 'vue'
+import data from './data/data.json'
+import musicVeryHard from '/music/musicVeryHard.mp3'
+import musicHard from '/music/musicHard.mp4'
+import musicHardest from '/music/musicHardest.mp3'
+import correct from '/music/correct.mp3'
 
 let passedRule = ref(1);
 let selectedLevel = ref(data[0]);
@@ -18,6 +18,10 @@ let isPlaying = ref(true)
 let ruleShow = ref(selectedLevel.value.rules.slice(0, 1))
 let IsSpread = true
 let IsFire = true
+let isAnimated = ref(false)
+const toggleAnimation = () => {
+  isAnimated.value = !isAnimated.value
+}
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
@@ -72,11 +76,11 @@ watchEffect(() => {
   ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value)
   ruleShow.value.sort((a, b) => {
     if (a.correct && b.correct) {
-      return -1;
+      return -1
     } else if (!a.correct && b.correct) {
-      return -1;
+      return -1
     } else {
-      return a.id - b.id;
+      return a.id - b.id
     }
   })
 })
@@ -91,12 +95,12 @@ function updateRuleStatus(ruleIndex) {
 }
 
 function levelSelector(level) {
-  selectedLevel.value = level;
-  passedRule.value = 1;
+  selectedLevel.value = level
+  passedRule.value = 1
   ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value)
-  resetGame();
+  resetGame()
   timeformat(selectedLevel.value.time)
-  startNewAudio(selectedLevel.value.level);
+  startNewAudio(selectedLevel.value.level)
   if (!isPlaying) stopSound()
 }
 
@@ -315,18 +319,17 @@ function countdown(seconds) {
 
 function resetGame() {
   clearInterval(time)
-  gameStartted.value = false;
-  userInput.value = "";
-  sortRules.value = [];
+  gameStartted.value = false
+  userInput.value = ''
+  sortRules.value = []
 }
 
 function startGame() {
-  if (selectedLevel.value !== "" && !gameStartted.value) {
-    gameStartted.value = true;
+  if (selectedLevel.value !== '' && !gameStartted.value) {
+    gameStartted.value = true
     countdown(selectedLevel.value.time)
   }
 }
-
 </script>
 
 <template>
@@ -336,7 +339,10 @@ function startGame() {
     <div class="flex flex-row w-full">
       <div class="m-auto invisible">www</div>
       <div class="grow">
-        <img src="./assets/logo/IMG_5174-removebg-preview.png" class="w-[90%] m-auto laptop:w-[30%]" />
+        <div class="w-11/12 animate-jump-in m-auto">
+          <img src="./assets/logo/IMG_5174-removebg-preview.png" class="w-[90%] m-auto laptop:w-[30%] curser-pointer"
+            @click="toggleAnimation" :class="{ 'animate-jump-in': isAnimated }" />
+        </div>
       </div>
       <div>
         <div class="flex">
@@ -399,9 +405,9 @@ function startGame() {
             </div>
             <input type="text" placeholder="Type here"
               class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx" @input="() => {
-                startGame()
-                checkAnswer['checkAnswer' + selectedLevel.level]()
-              }
+                  startGame()
+                  checkAnswer['checkAnswer' + selectedLevel.level]()
+                }
                 " v-model="userInput" />
           </label>
         </div>
@@ -431,7 +437,6 @@ function startGame() {
                     {{ rule?.correct ? 'Correct' : 'Incorrect' }}
                     Rule {{ rule?.id }}
                     {{ rule?.message }}
-
                   </p>
                 </div>
                 <img v-if="rule?.picture" :src="rule?.picture"
