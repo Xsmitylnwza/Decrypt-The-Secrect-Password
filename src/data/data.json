@@ -103,7 +103,7 @@
       },
       {
         "id": 3,
-        "message": "Your password must includes speial characters",
+        "message": "Your password must includes spacial characters",
         "correct": false
       },
       {
@@ -118,7 +118,7 @@
       },
       {
         "id": 6,
-        "message": "2 + 7 * 2 + 9 / 3 + 9 * 2 = ?",
+        "message": "What is result of 2 + 7 * 2 + 9 / 3 + 9 * 2 = ?",
         "correct": false
       },
       {
@@ -128,7 +128,28 @@
       },
       {
         "id": 8,
-        "message": "Oh no it fire burning your password!?!!",
+        "message": "Oh no! the virus is spreading 🦠🦠🦠, get rid of it quickly.",
+        "correct": false
+      },
+      {
+        "id": 9,
+        "message": "Your password must include this capcha",
+        "correct": false,
+        "picture": "./images/capcha.png"
+      },
+      {
+        "id": 10,
+        "message": "You come so far brother cheer up yourself",
+        "correct": false
+      },
+      {
+        "id": 11,
+        "message": "Oh I'm sorry the fire is burning your password 🔥🔥🔥",
+        "correct": false
+      },
+      {
+        "id": 12,
+        "message": "You made it !! you are the king !! 👑👑👑",
         "correct": false
       }
     ],

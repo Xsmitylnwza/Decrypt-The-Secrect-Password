@@ -12,10 +12,12 @@ let userInput = ref("");
 let gameStartted = ref(false);
 let checkAudio = ref(null);
 let sortRules = ref([]);
-let timer = ref("10:00")
+let timer = ref("10:00:00")
 let time
 let isPlaying = ref(true)
 let ruleShow = ref(selectedLevel.value.rules.slice(0, 1))
+let IsSpread = true
+let IsFire = true
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
@@ -23,9 +25,9 @@ const checkAnswer = {
 }
 
 const audioMapping = {
-  Hard: new Audio(musicHard),
-  Veryhard: new Audio(musicVeryHard),
-  Hardest: new Audio(musicHardest),
+  // Hard: new Audio(musicHard),
+  // Veryhard: new Audio(musicVeryHard),
+  // Hardest: new Audio(musicHardest),
 }
 
 const startNewAudio = (level) => {
@@ -83,7 +85,6 @@ function updateRuleStatus(ruleIndex) {
   selectedLevel.value.rules[ruleIndex].correct = true
   if (passedRule.value <= ruleIndex + 1) {
     passedRule.value = passedRule.value + 1
-    console.log(ruleShow.value)
     startNewSoundCorrect()
     return
   }
@@ -229,29 +230,88 @@ function checkAnswerHardest() {
     rule[5].correct = false
   }
   if (userInput.value.includes('¥') && passedRule.value >= 7) {
+    let index = 1
+    if (
+      IsSpread) {
+      userInput.value = '🦠' + userInput.value.substring(1)
+      IsSpread = false
+    }
     updateRuleStatus(6)
+    if (!rule[7].correct) {
+      const virus = setInterval(function () {
+        let inputArray = Array.from(userInput.value)
+        inputArray[index] = '🦠'
+        userInput.value = inputArray.join('')
+        index++
+        if (rule[7].correct) {
+          clearInterval(virus)
+        }
+      }, 4000)
+    }
   } else {
     rule[6].correct = false
   }
+  if (!userInput.value.includes('🦠') && passedRule.value >= 8) {
+    updateRuleStatus(7)
+  } else {
+    rule[7].correct = false
+  }
+  if (/33f7m/.test(userInput.value) && passedRule.value >= 9) {
+    updateRuleStatus(8)
+  } else {
+    rule[8].correct = false
+  }
+  if (/cheer/i.test(userInput.value) && passedRule.value >= 10) {
+    let index = 1
+    if (IsFire) {
+      userInput.value = '🔥' + userInput.value.substring(1)
+      IsFire = false
+    }
+    updateRuleStatus(9)
+    if (!rule[10].correct) {
+      const virus = setInterval(function () {
+        let inputArray = Array.from(userInput.value)
+        inputArray[index] = '🔥'
+        userInput.value = inputArray.join('')
+        index++
+        if (rule[10].correct) {
+          clearInterval(virus)
+        }
+      }, 2000)
+    }
+  } else {
+    rule[9].correct = false
+  }
+  if (!userInput.value.includes('🔥') && passedRule.value >= 11) {
+    updateRuleStatus(10)
+  } else {
+    rule[10].correct = false
+  }
+  if (userInput.value.includes('👑') && passedRule.value >= 12) {
+    updateRuleStatus(11)
+  } else {
+    rule[11].correct = false
+  }
 }
 function timeformat(seconds) {
-  const minute = Math.floor((seconds % 3600) / 60)
-    .toString()
-    .padStart(2, "0");
-  const second = (seconds % 60).toString().padStart(2, "0");
-  timer.value = minute + ":" + second
+  const minute = Math.floor(seconds / 60).toString().padStart(2, "0");
+  const second = Math.floor(seconds % 60).toString().padStart(2, "0");
+  const milisecond = ((seconds - Math.floor(seconds)) * 1000).toFixed(0).padStart(2, "0").slice(0, 2);
+
+  timer.value = minute + ":" + second + ":" + milisecond;
 }
 
 function countdown(seconds) {
   time = setInterval(function () {
-    seconds--
-    timeformat(seconds)
-    if (seconds < 1) {
-      clearInterval(time)
-      console.log('timeout')
+    seconds -= 0.004;
+    timeformat(seconds);
+    if (seconds < 0.001) {
+      clearInterval(time);
+      console.log('timeout');
     }
-  }, 1000)
+  }, 1);
 }
+
 
 function resetGame() {
   clearInterval(time)
@@ -359,7 +419,7 @@ function startGame() {
           <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt
             class="flex items-center w-4/5 h-4/5 laptop:hidden" />
           <div v-if="gameStartted" class="flex flex-col">
-            <div v-for="rule in ruleShow" class="min-w-[307px] sm:w-full rounded-md py-4" :key="i">
+            <div v-for="rule in ruleShow" class="min-w-[307px] sm:w-full rounded-md py-4" :key="rule.id">
               <div :class="rule?.correct
                 ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
                 : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
@@ -374,7 +434,8 @@ function startGame() {
 
                   </p>
                 </div>
-                <img v-if="i?.picture" :src="i?.picture" class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]" />
+                <img v-if="rule?.picture" :src="rule?.picture"
+                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]" />
               </div>
             </div>
           </div>
