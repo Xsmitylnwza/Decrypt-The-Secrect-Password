@@ -53,7 +53,7 @@
     "backgroundColor": "background-color-hard",
     "boxColor": "bg-color-hard-box",
     "textColor": "text-color-hard",
-    "time": 600
+    "time": 5
   },
   {
     "level": "Veryhard",
@@ -97,7 +97,7 @@
     "backgroundColor": "background-color-veryhard",
     "boxColor": "bg-color-veryhard-box",
     "textColor": "text-color-veryhard",
-    "time":450
+    "time": 450
   },
   {
     "level": "Hardest",
