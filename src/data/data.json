@@ -169,6 +169,6 @@
     "backgroundColor": "background-color-hardest",
     "boxColor": "bg-color-hardest-box",
     "textColor": "text-color-hardest",
-    "time":5
+    "time":400
   }
 ]
