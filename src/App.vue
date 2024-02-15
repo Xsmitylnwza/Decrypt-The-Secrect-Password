@@ -318,7 +318,7 @@ function checkAnswerHardest() {
   }
 }
 function firePassword(length) {
-  const length2 = length
+  const countLength = length
   let index = 0
   const fire = setInterval(function () {
     let inputArray = Array.from(userInput.value)
@@ -327,7 +327,7 @@ function firePassword(length) {
     index++
     console.log(userInput.value)
     console.log(inputArray)
-    if (index >= length2) {
+    if (index >= countLength) {
       clearInterval(fire)
     }
   }, 1000)
