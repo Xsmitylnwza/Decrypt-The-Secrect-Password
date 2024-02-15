@@ -378,7 +378,7 @@ function startGame() {
 
   <div
     :class="selectedLevel.backgroundColor"
-    class="flex flex-col w-full min-h-screen items-center "
+    class="flex flex-col w-full min-h-screen items-center"
   >
     <div class="flex flex-row w-full">
       <div class="m-auto invisible">www</div>
@@ -455,7 +455,7 @@ function startGame() {
             <div class="flex flex-row">
               <button
                 @click="levelSelector(data[0])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2 "
+                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 HARD
               </button>
@@ -566,7 +566,7 @@ function startGame() {
         <!-- Open the modal using ID.showModal() method -->
         <div class="flex m-[auto]">
           <button
-            class="btn border-0 font-Saira font-light bg-white text-black hover:text-white transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 duration-150"
+            class="btn border-0 font-Saira font-light bg-white text-black hover:text-white"
             onclick="howToPlay.showModal()"
           >
             HOW TO PLAY GAME 🎮
