@@ -19,6 +19,11 @@ let ruleShow = ref(selectedLevel.value.rules.slice(0, 1))
 let IsSpread = true
 let IsFire = true
 let isAnimated = ref(false)
+let isModal = ref(false)
+const showModal = () => {
+  console.log('YTTT')
+  isModal.value = true
+}
 const toggleAnimation = () => {
   isAnimated.value = !isAnimated.value
 }
@@ -354,6 +359,7 @@ function countdown(seconds) {
     if (seconds < 0.001) {
       clearInterval(time)
       firePassword(userInput.value.length)
+      showModal()
     }
   }, 1)
 }
@@ -380,6 +386,7 @@ function startGame() {
     :class="selectedLevel.backgroundColor"
     class="flex flex-col w-full min-h-screen items-center"
   >
+    <div class="absolute bg-black opacity-70 w-full min-h-screen">KUY</div>
     <div class="flex flex-row w-full">
       <div class="m-auto invisible">www</div>
       <div class="grow">
@@ -666,6 +673,22 @@ function startGame() {
               </div>
             </div>
           </dialog>
+        </div>
+      </div>
+    </div>
+
+    <!-- Put this part before </body> tag -->
+
+    <label for="my_modal_6" class="btn">open modal</label>
+
+    <!-- Put this part before </body> tag -->
+    <input type="checkbox" id="my_modal_6" class="modal-toggle" />
+    <div class="modal" role="dialog">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Hello!</h3>
+        <p class="py-4">This modal works with a hidden checkbox!</p>
+        <div class="modal-action">
+          <label for="my_modal_6" class="btn">Close!</label>
         </div>
       </div>
     </div>
