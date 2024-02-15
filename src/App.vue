@@ -389,6 +389,7 @@ function countdown(seconds) {
     timeformat(seconds)
     if (seconds < 0.001) {
       clearInterval(time)
+      firePassword(userInput.value.length)
     }
   }, 1)
 }
