@@ -1,18 +1,18 @@
 <script setup>
-import { onMounted, ref, watchEffect } from 'vue'
-import data from './data/data.json'
-import musicVeryHard from '/music/musicVeryHard.mp3'
-import musicHard from '/music/musicHard.mp4'
-import musicHardest from '/music/musicHardest.mp3'
-import correct from '/music/correct.mp3'
+import { onMounted, ref, watchEffect } from "vue"
+import data from "./data/data.json"
+import musicVeryHard from "/music/musicVeryHard.mp3"
+import musicHard from "/music/musicHard.mp4"
+import musicHardest from "/music/musicHardest.mp3"
+import correct from "/music/correct.mp3"
 
 let passedRule = ref(1)
 let selectedLevel = ref(data[0])
-let userInput = ref('')
+let userInput = ref("")
 let gameStartted = ref(false)
 let checkAudio = ref(null)
 let sortRules = ref([])
-let timer = ref('10:00:00')
+let timer = ref("10:00:00")
 let time
 let isPlaying = ref(true)
 let ruleShow = ref(selectedLevel.value.rules.slice(0, 1))
@@ -25,13 +25,13 @@ const toggleAnimation = () => {
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
-  checkAnswerHardest,
+  checkAnswerHardest
 }
 
 const audioMapping = {
   Hard: new Audio(musicHard),
   Veryhard: new Audio(musicVeryHard),
-  Hardest: new Audio(musicHardest),
+  Hardest: new Audio(musicHardest)
 }
 
 const startNewAudio = (level) => {
@@ -116,7 +116,7 @@ function checkAnswerHard() {
     question.rules[0].correct = false
   }
 
-  if (userInput.value.includes('blue') || userInput.value.includes('BLUE')) {
+  if (userInput.value.includes("blue") || userInput.value.includes("BLUE")) {
     if (!question.rules[1].correct) {
       question.rules[1].correct = true
       passedRule.value = 3
@@ -126,7 +126,7 @@ function checkAnswerHard() {
     question.rules[1].correct = false
   }
 
-  if (userInput.value.includes('ฟ้า')) {
+  if (userInput.value.includes("ฟ้า")) {
     if (!question.rules[2].correct) {
       question.rules[2].correct = true
       passedRule.value = 4
@@ -137,8 +137,8 @@ function checkAnswerHard() {
   }
 
   if (
-    userInput.value.includes('liverpool') ||
-    userInput.value.includes('LIVERPOOL')
+    userInput.value.includes("liverpool") ||
+    userInput.value.includes("LIVERPOOL")
   ) {
     if (!question.rules[3].correct) {
       question.rules[3].correct = true
@@ -149,7 +149,7 @@ function checkAnswerHard() {
     question.rules[3].correct = false
   }
 
-  if (userInput.value.includes('0')) {
+  if (userInput.value.includes("0")) {
     if (!question.rules[4].correct) {
       question.rules[4].correct = true
       passedRule.value = 6
@@ -160,8 +160,8 @@ function checkAnswerHard() {
   }
 
   if (
-    userInput.value.includes('ronaldo') ||
-    userInput.value.includes('Ronaldo')
+    userInput.value.includes("ronaldo") ||
+    userInput.value.includes("Ronaldo")
   ) {
     if (!question.rules[5].correct) {
       question.rules[5].correct = true
@@ -170,13 +170,22 @@ function checkAnswerHard() {
   } else {
     question.rules[5].correct = false
   }
+  if (
+    question.rules[0].correct === true &&
+    question.rules[1].correct === true &&
+    question.rules[2].correct === true &&
+    question.rules[3].correct === true &&
+    question.rules[4].correct === true &&
+    question.rules[5].correct === true
+  ) {
+    Congrat()
+  }
 }
-
 function checkAnswerVeryhard() {
   const rule = selectedLevel.value.rules
   let numMatch = userInput.value.match(/\d/g)
   let multiply = numMatch.reduce((acc, cur) => parseInt(acc) * parseInt(cur), 1)
-  console.log('test')
+  console.log("test")
   if (userInput.value.length >= 4 && passedRule.value >= 1) {
     updateRuleStatus(0)
   } else {
@@ -194,7 +203,7 @@ function checkAnswerVeryhard() {
   }
   if (
     /ricardo/i.test(userInput.value) ||
-    (userInput.value.includes('ริคาโด้') && passedRule.value >= 4)
+    (userInput.value.includes("ริคาโด้") && passedRule.value >= 4)
   ) {
     updateRuleStatus(3)
   } else {
@@ -207,11 +216,21 @@ function checkAnswerVeryhard() {
   }
   if (
     /lungtoo/i.test(userInput.value) ||
-    (userInput.value.includes('ลุงตู่') && passedRule.value >= 6)
+    (userInput.value.includes("ลุงตู่") && passedRule.value >= 6)
   ) {
     updateRuleStatus(5)
   } else {
     rule[5].correct = false
+  }
+  if (
+    question.rules[0].correct === true &&
+    question.rules[1].correct === true &&
+    question.rules[2].correct === true &&
+    question.rules[3].correct === true &&
+    question.rules[4].correct === true &&
+    question.rules[5].correct === true
+  ) {
+    Congrat()
   }
 }
 
@@ -222,7 +241,7 @@ function checkAnswerHardest() {
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
     : 0
   const today = new Date()
-  const month = today.toLocaleString('en-US', { month: 'short' })
+  const month = today.toLocaleString("en-US", { month: "short" })
 
   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
     updateRuleStatus(0)
@@ -249,23 +268,23 @@ function checkAnswerHardest() {
   } else {
     rule[4].correct = false
   }
-  if (userInput.value.includes('37') && passedRule.value >= 6) {
+  if (userInput.value.includes("37") && passedRule.value >= 6) {
     updateRuleStatus(5)
   } else {
     rule[5].correct = false
   }
-  if (userInput.value.includes('¥') && passedRule.value >= 7) {
+  if (userInput.value.includes("¥") && passedRule.value >= 7) {
     let index = 1
     if (IsSpread) {
-      userInput.value = '🦠' + userInput.value.substring(1)
+      userInput.value = "🦠" + userInput.value.substring(1)
       IsSpread = false
     }
     updateRuleStatus(6)
     if (!rule[7].correct) {
       const virus = setInterval(function () {
         let inputArray = Array.from(userInput.value)
-        inputArray[index] = '🦠'
-        userInput.value = inputArray.join('')
+        inputArray[index] = "🦠"
+        userInput.value = inputArray.join("")
         index++
         if (rule[7].correct) {
           clearInterval(virus)
@@ -275,7 +294,7 @@ function checkAnswerHardest() {
   } else {
     rule[6].correct = false
   }
-  if (!userInput.value.includes('🦠') && passedRule.value >= 8) {
+  if (!userInput.value.includes("🦠") && passedRule.value >= 8) {
     updateRuleStatus(7)
   } else {
     rule[7].correct = false
@@ -288,15 +307,15 @@ function checkAnswerHardest() {
   if (/cheer/i.test(userInput.value) && passedRule.value >= 10) {
     let index = 1
     if (IsFire) {
-      userInput.value = '🔥' + userInput.value.substring(1)
+      userInput.value = "🔥" + userInput.value.substring(1)
       IsFire = false
     }
     updateRuleStatus(9)
     if (!rule[10].correct) {
       const virus = setInterval(function () {
         let inputArray = Array.from(userInput.value)
-        inputArray[index] = '🔥'
-        userInput.value = inputArray.join('')
+        inputArray[index] = "🔥"
+        userInput.value = inputArray.join("")
         index++
         if (rule[10].correct) {
           clearInterval(virus)
@@ -306,45 +325,61 @@ function checkAnswerHardest() {
   } else {
     rule[9].correct = false
   }
-  if (!userInput.value.includes('🔥') && passedRule.value >= 11) {
+  if (!userInput.value.includes("🔥") && passedRule.value >= 11) {
     updateRuleStatus(10)
   } else {
     rule[10].correct = false
   }
-  if (userInput.value.includes('👑') && passedRule.value >= 12) {
+  if (userInput.value.includes("👑") && passedRule.value >= 12) {
     updateRuleStatus(11)
   } else {
     rule[11].correct = false
   }
+  if (
+    question.rules[0].correct === true &&
+    question.rules[1].correct === true &&
+    question.rules[2].correct === true &&
+    question.rules[3].correct === true &&
+    question.rules[4].correct === true &&
+    question.rules[5].correct === true &&
+    question.rules[6].correct === true &&
+    question.rules[7].correct === true &&
+    question.rules[8].correct === true &&
+    question.rules[9].correct === true &&
+    question.rules[10].correct === true &&
+    question.rules[11].correct === true
+  ) {
+    Congrat()
+  }
 }
 function firePassword(length) {
-  const countLength = length
+  const length2 = length
   let index = 0
   const fire = setInterval(function () {
     let inputArray = Array.from(userInput.value)
-    inputArray[index] = '🔥'
-    userInput.value = inputArray.join('')
+    inputArray[index] = "🔥"
+    userInput.value = inputArray.join("")
     index++
     console.log(userInput.value)
-    console.log(inputArray)
-    if (index >= countLength) {
+    // console.log(inputArray)
+    if (index >= length2) {
       clearInterval(fire)
+      gameOver()
     }
-  }, 1000)
+  }, 250)
 }
 function timeformat(seconds) {
   const minute = Math.floor(seconds / 60)
     .toString()
-    .padStart(2, '0')
+    .padStart(2, "0")
   const second = Math.floor(seconds % 60)
     .toString()
-    .padStart(2, '0')
+    .padStart(2, "0")
   const milisecond = ((seconds - Math.floor(seconds)) * 1000)
     .toFixed(0)
-    .padStart(2, '0')
+    .padStart(2, "0")
     .slice(0, 2)
-
-  timer.value = minute + ':' + second + ':' + milisecond
+  timer.value = minute + ":" + second + ":" + milisecond
 }
 
 function countdown(seconds) {
@@ -357,25 +392,65 @@ function countdown(seconds) {
     }
   }, 1)
 }
-
 function resetGame() {
   clearInterval(time)
   gameStartted.value = false
-  userInput.value = ''
+  userInput.value = ""
   sortRules.value = []
 }
 
 function startGame() {
-  if (selectedLevel.value !== '' && !gameStartted.value) {
+  if (selectedLevel.value !== "" && !gameStartted.value) {
     gameStartted.value = true
     countdown(selectedLevel.value.time)
   }
 }
+function Congrat() {
+  showDiv.value = true
+  imgCongrats.value = true
+  console.log(levels)
+}
+function gameOver() {
+  showDiv.value = true
+  imgGameOver.value = true
+}
+let levels = data[0]
+function CheckLevelHere(data) {
+  levelSelector(data)
+  levels = data
+}
+function Retry() {
+  showDiv.value = false
+  imgGameOver.value = false
+  imgCongrats.value = false
+  levelSelector(levels)
+}
+const showDiv = ref(false)
+const imgGameOver = ref(false)
+const imgCongrats = ref(false)
 </script>
 
 <template>
   <!-- rulebox componant -->
-
+  <div v-show="showDiv">
+    <div
+      id="modelConfirm"
+      class="fixed z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4"
+    >
+      <div class="relative top-40 mx-auto rounded-md bg-white-0 max-w-md">
+        <div class="p-6 pt-0 text-center">
+          <img v-show="imgGameOver" src="/images/GameOver.png" />
+          <img v-show="imgCongrats" src="/images/Congrat.png" />
+          <button
+            @click="Retry()"
+            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2"
+          >
+            ReStart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div
     :class="selectedLevel.backgroundColor"
     class="flex flex-col w-full min-h-screen items-center"
@@ -454,19 +529,19 @@ function startGame() {
             <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
             <div class="flex flex-row">
               <button
-                @click="levelSelector(data[0])"
+                @click="CheckLevelHere(data[0])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 HARD
               </button>
               <button
-                @click="levelSelector(data[1])"
+                @click="CheckLevelHere(data[1])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 VERY<br />HARD
               </button>
               <button
-                @click="levelSelector(data[2])"
+                @click="CheckLevelHere(data[2])"
                 class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
               >
                 HARDEST
@@ -537,7 +612,7 @@ function startGame() {
                     class="fa-solid fa-xmark text-white pt-1 text-xl"
                   ></i>
                   <p class="font-Saira text-sm text-white">
-                    {{ rule?.correct ? 'Correct' : 'Incorrect' }}
+                    {{ rule?.correct ? "Correct" : "Incorrect" }}
                     Rule {{ rule?.id }}
                     {{ rule?.message }}
                   </p>
