@@ -6,13 +6,13 @@ import musicHard from '/music/musicHard.mp4'
 import musicHardest from '/music/musicHardest.mp3'
 import correct from '/music/correct.mp3'
 
-let passedRule = ref(1);
-let selectedLevel = ref(data[0]);
-let userInput = ref("");
-let gameStartted = ref(false);
-let checkAudio = ref(null);
-let sortRules = ref([]);
-let timer = ref("10:00:00")
+let passedRule = ref(1)
+let selectedLevel = ref(data[0])
+let userInput = ref('')
+let gameStartted = ref(false)
+let checkAudio = ref(null)
+let sortRules = ref([])
+let timer = ref('10:00:00')
 let time
 let isPlaying = ref(true)
 let ruleShow = ref(selectedLevel.value.rules.slice(0, 1))
@@ -173,24 +173,45 @@ function checkAnswerHard() {
 }
 
 function checkAnswerVeryhard() {
-  let question = data[1]
-  if (userInput.value.includes('lungtoo')) {
-    if (!question.rules[0].correct) {
-      question.rules[0].correct = true
-      passedRule.value = 2
-      startNewSoundCorrect()
-    }
+  const rule = selectedLevel.value.rules
+  let numMatch = userInput.value.match(/\d/g)
+  let multiply = numMatch.reduce((acc, cur) => parseInt(acc) * parseInt(cur), 1)
+  console.log('test')
+  if (userInput.value.length >= 4 && passedRule.value >= 1) {
+    updateRuleStatus(0)
   } else {
-    question.rules[0].correct = false
+    rule[0].correct = false
   }
-
-  if (userInput.value.includes('no')) {
-    if (!question.rules[1].correct) {
-      question.rules[1].correct = true
-      startNewSoundCorrect()
-    }
+  if (multiply == 20 && passedRule.value >= 2) {
+    updateRuleStatus(1)
   } else {
-    question.rules[1].correct = false
+    rule[1].correct = false
+  }
+  if (/yellow/i.test(userInput.value) && passedRule.value >= 3) {
+    updateRuleStatus(2)
+  } else {
+    rule[2].correct = false
+  }
+  if (
+    /ricardo/i.test(userInput.value) ||
+    (userInput.value.includes('ริคาโด้') && passedRule.value >= 4)
+  ) {
+    updateRuleStatus(3)
+  } else {
+    rule[3].correct = false
+  }
+  if (/somporn/i.test(userInput.value) && passedRule.value >= 5) {
+    updateRuleStatus(4)
+  } else {
+    rule[4].correct = false
+  }
+  if (
+    /lungtoo/i.test(userInput.value) ||
+    (userInput.value.includes('ลุงตู่') && passedRule.value >= 6)
+  ) {
+    updateRuleStatus(5)
+  } else {
+    rule[5].correct = false
   }
 }
 
@@ -235,8 +256,7 @@ function checkAnswerHardest() {
   }
   if (userInput.value.includes('¥') && passedRule.value >= 7) {
     let index = 1
-    if (
-      IsSpread) {
+    if (IsSpread) {
       userInput.value = '🦠' + userInput.value.substring(1)
       IsSpread = false
     }
@@ -297,25 +317,46 @@ function checkAnswerHardest() {
     rule[11].correct = false
   }
 }
+function firePassword(length) {
+  const length2 = length
+  let index = 0
+  const fire = setInterval(function () {
+    let inputArray = Array.from(userInput.value)
+    inputArray[index] = '🔥'
+    userInput.value = inputArray.join('')
+    index++
+    console.log(userInput.value)
+    console.log(inputArray)
+    if (index >= length2) {
+      clearInterval(fire)
+    }
+  }, 1000)
+}
 function timeformat(seconds) {
-  const minute = Math.floor(seconds / 60).toString().padStart(2, "0");
-  const second = Math.floor(seconds % 60).toString().padStart(2, "0");
-  const milisecond = ((seconds - Math.floor(seconds)) * 1000).toFixed(0).padStart(2, "0").slice(0, 2);
+  const minute = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, '0')
+  const second = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, '0')
+  const milisecond = ((seconds - Math.floor(seconds)) * 1000)
+    .toFixed(0)
+    .padStart(2, '0')
+    .slice(0, 2)
 
-  timer.value = minute + ":" + second + ":" + milisecond;
+  timer.value = minute + ':' + second + ':' + milisecond
 }
 
 function countdown(seconds) {
   time = setInterval(function () {
-    seconds -= 0.004;
-    timeformat(seconds);
+    seconds -= 0.004
+    timeformat(seconds)
     if (seconds < 0.001) {
-      clearInterval(time);
-      console.log('timeout');
+      clearInterval(time)
+      firePassword(userInput.value.length)
     }
-  }, 1);
+  }, 1)
 }
-
 
 function resetGame() {
   clearInterval(time)
@@ -335,13 +376,20 @@ function startGame() {
 <template>
   <!-- rulebox componant -->
 
-  <div :class="selectedLevel.backgroundColor" class="flex flex-col w-full min-h-screen items-center">
+  <div
+    :class="selectedLevel.backgroundColor"
+    class="flex flex-col w-full min-h-screen items-center"
+  >
     <div class="flex flex-row w-full">
       <div class="m-auto invisible">www</div>
       <div class="grow">
         <div class="w-11/12 animate-jump-in m-auto">
-          <img src="./assets/logo/IMG_5174-removebg-preview.png" class="w-[90%] m-auto laptop:w-[30%] curser-pointer"
-            @click="toggleAnimation" :class="{ 'animate-jump-in': isAnimated }" />
+          <img
+            src="./assets/logo/IMG_5174-removebg-preview.png"
+            class="w-[90%] m-auto laptop:w-[30%] curser-pointer"
+            @click="toggleAnimation"
+            :class="{ 'animate-jump-in': isAnimated }"
+          />
         </div>
       </div>
       <div>
@@ -350,27 +398,50 @@ function startGame() {
             <!-- this hidden checkbox controls the state -->
             <input type="checkbox" />
             <!-- volume off icon -->
-            <svg class="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-              viewBox="0 0 24 24" @click="stopSound">
+            <svg
+              class="swap-on fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              @click="stopSound"
+            >
               <path
-                d="M3,9H7L12,4V20L7,15H3V9M16.59,12L14,9.41L15.41,8L18,10.59L20.59,8L22,9.41L19.41,12L22,14.59L20.59,16L18,13.41L15.41,16L14,14.59L16.59,12Z" />
+                d="M3,9H7L12,4V20L7,15H3V9M16.59,12L14,9.41L15.41,8L18,10.59L20.59,8L22,9.41L19.41,12L22,14.59L20.59,16L18,13.41L15.41,16L14,14.59L16.59,12Z"
+              />
             </svg>
             <!-- volume on icon -->
-            <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-              viewBox="0 0 24 24" @click="playSound">
+            <svg
+              class="swap-off fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              @click="playSound"
+            >
               <path
-                d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+                d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z"
+              />
             </svg>
           </label>
         </div>
       </div>
     </div>
     <!-- main box -->
-    <div :class="selectedLevel.boxColor" class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4 border">
+    <div
+      :class="selectedLevel.boxColor"
+      class="flex flex-row w-11/12 h-full rounded-box p-3 mb-4 border"
+    >
       <!-- row1 character hidden-->
-      <div class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%]">
+      <div
+        class="absolute invisible laptop:visible flex flex-col items-center ml-[2%] labtop-L:ml-[8%] hover:animate-jump hover:animate-once hover:animate-ease-in-out hover:animate-normal hover:animate-fill-forwards"
+      >
         <!-- Image only visible on laptop -->
-        <img :src="selectedLevel.logo" alt class="laptop:flex w-[220px] h-[250px] pt-3" />
+        <img
+          :src="selectedLevel.logo"
+          alt
+          class="laptop:flex w-[220px] h-[250px] pt-3 hover:animate-rotate-y 1`hover:animate-ease-in-out hover:animate-normal hover:animate-fill-forwards"
+        />
         <p class="font-Saira text-[13px] text-white items-center">
           Your Character : {{ selectedLevel.character }}
         </p>
@@ -382,16 +453,22 @@ function startGame() {
           <div>
             <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
             <div class="flex flex-row">
-              <button @click="levelSelector(data[0])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2">
+              <button
+                @click="levelSelector(data[0])"
+                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+              >
                 HARD
               </button>
-              <button @click="levelSelector(data[1])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2">
+              <button
+                @click="levelSelector(data[1])"
+                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-veryHard shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+              >
                 VERY<br />HARD
               </button>
-              <button @click="levelSelector(data[2])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2">
+              <button
+                @click="levelSelector(data[2])"
+                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hardest shadow-lg transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+              >
                 HARDEST
               </button>
             </div>
@@ -401,14 +478,22 @@ function startGame() {
         <div id="input-password" class="items-start w-[300px]">
           <label class="form-control w-full max-w-xs">
             <div class="label">
-              <span class="font-Saira text-[16px] text-white">Enter Password Here...</span>
+              <span class="font-Saira text-[16px] text-white"
+                >Enter Password Here...</span
+              >
             </div>
-            <input type="text" placeholder="Type here"
-              class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx" @input="() => {
+            <input
+              type="text"
+              placeholder="Type here"
+              class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx"
+              @input="
+                () => {
                   startGame()
                   checkAnswer['checkAnswer' + selectedLevel.level]()
                 }
-                " v-model="userInput" />
+              "
+              v-model="userInput"
+            />
           </label>
         </div>
         <!-- timer componant in row2 -->
@@ -422,29 +507,53 @@ function startGame() {
         </div>
         <!-- Characteristic component row 2 for mobile -->
         <div class="flex w-[300px] flex-col items-center my-7">
-          <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt
-            class="flex items-center w-4/5 h-4/5 laptop:hidden" />
+          <img
+            v-if="selectedLevel && !gameStartted"
+            :src="selectedLevel.logo"
+            alt
+            class="flex items-center w-4/5 h-4/5 laptop:hidden"
+          />
           <div v-if="gameStartted" class="flex flex-col">
-            <div v-for="rule in ruleShow" class="min-w-[307px] sm:w-full rounded-md py-4" :key="rule.id">
-              <div :class="rule?.correct
-                ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
-                : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
-                " class="py-2 px-3 flex flex-col border border-white rounded-[14px]">
+            <div
+              v-for="rule in ruleShow"
+              class="min-w-[307px] sm:w-full rounded-md py-4"
+              :key="rule.id"
+            >
+              <div
+                :class="
+                  rule?.correct
+                    ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
+                    : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
+                "
+                class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
+              >
                 <div class="flex items-center gap-2">
-                  <i v-if="rule?.correct" class="fa-solid fa-check text-white pt-1 text-xl" />
-                  <i v-else class="fa-solid fa-xmark text-white pt-1 text-xl"></i>
+                  <i
+                    v-if="rule?.correct"
+                    class="fa-solid fa-check text-white pt-1 text-xl"
+                  />
+                  <i
+                    v-else
+                    class="fa-solid fa-xmark text-white pt-1 text-xl"
+                  ></i>
                   <p class="font-Saira text-sm text-white">
                     {{ rule?.correct ? 'Correct' : 'Incorrect' }}
                     Rule {{ rule?.id }}
                     {{ rule?.message }}
                   </p>
                 </div>
-                <img v-if="rule?.picture" :src="rule?.picture"
-                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]" />
+                <img
+                  v-if="rule?.picture"
+                  :src="rule?.picture"
+                  class="w-[250px] h-[150px] m-[auto] mt-[10px] rounded-[15px]"
+                />
               </div>
             </div>
           </div>
-          <p v-if="!gameStartted" class="font-Saira text-[13px] text-white mt-[5px] laptop:hidden">
+          <p
+            v-if="!gameStartted"
+            class="font-Saira text-[13px] text-white mt-[5px] laptop:hidden"
+          >
             Your Character : {{ selectedLevel.character }}
           </p>
         </div>
@@ -453,13 +562,15 @@ function startGame() {
         <div class="flex m-[auto]">
           <button
             class="btn border-0 font-Saira font-light bg-white text-black hover:text-white transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 duration-150"
-            onclick="howToPlay.showModal()">
+            onclick="howToPlay.showModal()"
+          >
             HOW TO PLAY GAME 🎮
           </button>
           <dialog id="howToPlay" class="modal">
             <div class="modal-box bg-white">
               <h3
-                class="font-bold text-3xl text-black mb-4 text-center hover:transition ease-in-out hover:-translate-y-1 hover:scale-105">
+                class="font-bold text-3xl text-black mb-4 text-center hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"
+              >
                 How to play this game! 🎮
               </h3>
               <div class="overflow-y-auto overscroll-auto h-96">
@@ -473,22 +584,43 @@ function startGame() {
                     (Very Hard =medium)<br />
                     (Hardest = ok)
                   </div>
-                  <img src="/images/howtoplay1.png" alt="select Level image"
-                    class="rounded-box hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
+                  <img
+                    src="/images/howtoplay1.png"
+                    alt="select Level image"
+                    class="rounded-box hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"
+                  />
                   <p class="mt-4">
                     Then any level it give your Character to play password game
                   </p>
                   <p class="mt-4 font-bold">Characteristic to play Game</p>
                 </div>
                 <div class="flex flex-row mt-3">
-                  <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105">
-                    <img src="/images/hard-pic.png" alt="spy" class="w-[100%] h-[100%]" />
+                  <div
+                    class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"
+                  >
+                    <img
+                      src="/images/hard-pic.png"
+                      alt="spy"
+                      class="w-[100%] h-[100%]"
+                    />
                   </div>
-                  <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105">
-                    <img src="/images/veryhard-pic.png" alt="FBI" class="w-[100%] h-[99.7%]" />
+                  <div
+                    class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"
+                  >
+                    <img
+                      src="/images/veryhard-pic.png"
+                      alt="FBI"
+                      class="w-[100%] h-[99.7%]"
+                    />
                   </div>
-                  <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105">
-                    <img src="/images/hardest-pic.png" alt="hacker" class="w-[100%] h-[99.5%]" />
+                  <div
+                    class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"
+                  >
+                    <img
+                      src="/images/hardest-pic.png"
+                      alt="hacker"
+                      class="w-[100%] h-[99.5%]"
+                    />
                   </div>
                 </div>
                 <div class="flex flex-row mt-3 mr-1">
@@ -507,8 +639,11 @@ function startGame() {
                   <p class="font-bold text-black mt-2">
                     2.Enter password in textblock
                   </p>
-                  <img src="/images/enterpassword.png" alt="enterpassword"
-                    class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
+                  <img
+                    src="/images/enterpassword.png"
+                    alt="enterpassword"
+                    class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"
+                  />
                   <p class="font-bold text-black mt-3">
                     3.Follow the rule until it done!!!
                   </p>
@@ -523,7 +658,8 @@ function startGame() {
                 <form method="dialog">
                   <!-- if there is a button in form, it will close the modal -->
                   <button
-                    class="btn rounded-box w-30 bg-red-600 text-white border-0 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform motion-safe:hover:scale-110">
+                    class="btn rounded-box w-30 bg-red-600 text-white border-0 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform motion-safe:hover:scale-110"
+                  >
                     Close
                   </button>
                 </form>
@@ -542,10 +678,12 @@ function startGame() {
 }
 
 .background-color-hard {
-  background: linear-gradient(104deg,
-      #6e07f0 8.15%,
-      rgba(64, 22, 131, 0.44) 68.84%,
-      rgba(29, 34, 45, 0) 89.63%);
+  background: linear-gradient(
+    104deg,
+    #6e07f0 8.15%,
+    rgba(64, 22, 131, 0.44) 68.84%,
+    rgba(29, 34, 45, 0) 89.63%
+  );
 }
 
 .bg-color-hard-box {
@@ -555,9 +693,11 @@ function startGame() {
 }
 
 .btn-bg-hard {
-  background: linear-gradient(104deg,
-      #590ebb 6.68%,
-      rgba(0, 0, 0, 0.74) 92.15%);
+  background: linear-gradient(
+    104deg,
+    #590ebb 6.68%,
+    rgba(0, 0, 0, 0.74) 92.15%
+  );
 }
 
 .text-color-veryhard {
@@ -565,10 +705,12 @@ function startGame() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(90deg,
-      rgba(238, 78, 9, 1) 0%,
-      rgba(121, 46, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(238, 78, 9, 1) 0%,
+    rgba(121, 46, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
+  );
 }
 
 .bg-color-veryhard-box {
@@ -578,10 +720,12 @@ function startGame() {
 }
 
 .background-color-veryhard {
-  background: linear-gradient(90deg,
-      rgba(238, 78, 9, 1) 0%,
-      rgba(121, 46, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(238, 78, 9, 1) 0%,
+    rgba(121, 46, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
+  );
 }
 
 .bg-color-veryhard-box {
@@ -591,10 +735,12 @@ function startGame() {
 }
 
 .btn-bg-veryHard {
-  background: linear-gradient(104deg,
-      #f06907 8.15%,
-      rgba(169, 57, 21, 0.53) 68.84%,
-      rgba(60, 23, 8, 0.68) 89.63%);
+  background: linear-gradient(
+    104deg,
+    #f06907 8.15%,
+    rgba(169, 57, 21, 0.53) 68.84%,
+    rgba(60, 23, 8, 0.68) 89.63%
+  );
 }
 
 .text-color-hardest {
@@ -602,10 +748,12 @@ function startGame() {
 }
 
 .background-color-hardest {
-  background: linear-gradient(90deg,
-      rgba(238, 9, 9, 1) 0%,
-      rgba(121, 9, 9, 1) 30%,
-      rgba(0, 0, 0, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(238, 9, 9, 1) 0%,
+    rgba(121, 9, 9, 1) 30%,
+    rgba(0, 0, 0, 1) 100%
+  );
 }
 
 .bg-color-hardest-box {
@@ -615,9 +763,11 @@ function startGame() {
 }
 
 .btn-bg-hardest {
-  background: linear-gradient(104deg,
-      #f00707 8.15%,
-      rgba(96, 22, 22, 0.83) 68.6%,
-      rgba(29, 34, 45, 0.94) 89.63%);
+  background: linear-gradient(
+    104deg,
+    #f00707 8.15%,
+    rgba(96, 22, 22, 0.83) 68.6%,
+    rgba(29, 34, 45, 0.94) 89.63%
+  );
 }
 </style>
