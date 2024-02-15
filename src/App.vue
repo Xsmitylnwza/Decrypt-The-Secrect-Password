@@ -19,6 +19,7 @@ let ruleShow = ref(selectedLevel.value.rules.slice(0, 1))
 let IsSpread = true
 let IsFire = true
 let isAnimated = ref(false)
+
 const toggleAnimation = () => {
   isAnimated.value = !isAnimated.value
 }
@@ -353,7 +354,6 @@ function countdown(seconds) {
     timeformat(seconds)
     if (seconds < 0.001) {
       clearInterval(time)
-      firePassword(userInput.value.length)
     }
   }, 1)
 }
@@ -506,7 +506,7 @@ function startGame() {
           </p>
         </div>
         <!-- Characteristic component row 2 for mobile -->
-        <div class="flex w-[300px] flex-col items-center my-7">
+        <div class="flex w-[300px] flex-col items-center my-2">
           <img
             v-if="selectedLevel && !gameStartted"
             :src="selectedLevel.logo"
@@ -516,31 +516,36 @@ function startGame() {
           <div v-if="gameStartted" class="flex flex-col">
             <div
               v-for="rule in ruleShow"
-              class="min-w-[307px] sm:w-full rounded-md py-4"
+              class="min-w-[307px] sm:w-full rounded-md py-3"
               :key="rule.id"
             >
               <div
                 :class="
                   rule?.correct
-                    ? 'bg-[#62EC70] hover:bg-green-400 shadow-md shadow-green-200 '
-                    : 'bg-[#FC6C6C] hover:bg-red-500 shadow-md shadow-red-200'
+                    ? 'bg-[#22c55e] hover:bg-green-400 shadow-md shadow-green-200 '
+                    : 'bg-[#e11d48] hover:bg-red-500 shadow-md shadow-red-200'
                 "
-                class="py-2 px-3 flex flex-col border border-white rounded-[14px]"
+                class="py-4 px-5 flex flex-col border border-white rounded-[14px]"
               >
-                <div class="flex items-center gap-2">
-                  <i
-                    v-if="rule?.correct"
-                    class="fa-solid fa-check text-white pt-1 text-xl"
-                  />
-                  <i
-                    v-else
-                    class="fa-solid fa-xmark text-white pt-1 text-xl"
-                  ></i>
-                  <p class="font-Saira text-sm text-white">
+                <div class="flex flex-col gap-2">
+                  <div class="items-start font-Saira text-white">
+                    Rule {{ rule?.id }} :
                     {{ rule?.correct ? 'Correct' : 'Incorrect' }}
-                    Rule {{ rule?.id }}
-                    {{ rule?.message }}
-                  </p>
+                    <div class="border mt-2"></div>
+                  </div>
+                  <div class="flex flex-row">
+                    <i
+                      v-if="rule?.correct"
+                      class="fa-solid fa-check text-green-50 pt-1 text-xl"
+                    />
+                    <i
+                      v-else
+                      class="fa-solid fa-xmark text-white pt-1 text-xl"
+                    ></i>
+                    <p class="font-Saira text-sm text-white ml-3 mt-1">
+                      {{ rule?.message }}
+                    </p>
+                  </div>
                 </div>
                 <img
                   v-if="rule?.picture"
@@ -653,16 +658,6 @@ function startGame() {
                     challenge with your friend
                   </div>
                 </div>
-              </div>
-              <div class="modal-action">
-                <form method="dialog">
-                  <!-- if there is a button in form, it will close the modal -->
-                  <button
-                    class="btn rounded-box w-30 bg-red-600 text-white border-0 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform motion-safe:hover:scale-110"
-                  >
-                    Close
-                  </button>
-                </form>
               </div>
             </div>
           </dialog>

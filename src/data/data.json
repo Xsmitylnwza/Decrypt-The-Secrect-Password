@@ -60,7 +60,7 @@
     "rules": [
       {
         "id": 1,
-        "message": "Your password must have atleast 4 charactor",
+        "message": "Your password must have atleast 4 digit",
         "correct": false
       },
       {
@@ -169,6 +169,6 @@
     "backgroundColor": "background-color-hardest",
     "boxColor": "bg-color-hardest-box",
     "textColor": "text-color-hardest",
-    "time":400
+    "time":500
   }
 ]
