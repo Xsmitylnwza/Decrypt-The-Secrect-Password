@@ -516,7 +516,7 @@ function startGame() {
           <div v-if="gameStartted" class="flex flex-col">
             <div
               v-for="rule in ruleShow"
-              class="min-w-[307px] sm:w-full rounded-md py-3"
+              class="min-w-[307px] sm:w-full rounded-md py-3 animate-fade-up"
               :key="rule.id"
             >
               <div
