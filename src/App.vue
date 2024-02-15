@@ -378,7 +378,7 @@ function startGame() {
 
   <div
     :class="selectedLevel.backgroundColor"
-    class="flex flex-col w-full min-h-screen items-center"
+    class="flex flex-col w-full min-h-screen items-center "
   >
     <div class="flex flex-row w-full">
       <div class="m-auto invisible">www</div>
@@ -455,7 +455,7 @@ function startGame() {
             <div class="flex flex-row">
               <button
                 @click="levelSelector(data[0])"
-                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2"
+                class="font-Saira text-md text-center font-medium text-white h-20 w-20 rounded-full btn-bg-hard shadow-lg transition-all hover:shadow-indigo-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2 "
               >
                 HARD
               </button>
@@ -522,8 +522,8 @@ function startGame() {
               <div
                 :class="
                   rule?.correct
-                    ? 'bg-[#22c55e] hover:bg-green-400 shadow-md shadow-green-200 '
-                    : 'bg-[#e11d48] hover:bg-red-500 shadow-md shadow-red-200'
+                    ? 'bg-[#22c55e] hover:bg-green-400 shadow-md shadow-green-200 animate-jump animate-ease-in'
+                    : 'bg-[#e11d48] hover:bg-red-500 shadow-md shadow-red-200 animate-shake'
                 "
                 class="py-4 px-5 flex flex-col border border-white rounded-[14px]"
               >
