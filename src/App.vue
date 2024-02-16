@@ -5,7 +5,7 @@ import musicVeryHard from "/music/musicVeryHard.mp3"
 import musicHard from "/music/musicHard.mp4"
 import musicHardest from "/music/musicHardest.mp3"
 import correct from "/music/correct.mp3"
-
+let winOrLose = ""
 let passedRule = ref(1)
 let selectedLevel = ref(data[0])
 let userInput = ref("")
@@ -171,15 +171,10 @@ function checkAnswerHard() {
   } else {
     question.rules[5].correct = false
   }
-  if (
-    question.rules[0].correct === true &&
-    question.rules[1].correct === true &&
-    question.rules[2].correct === true &&
-    question.rules[3].correct === true &&
-    question.rules[4].correct === true &&
-    question.rules[5].correct === true
-  ) {
-    Congrat()
+  if (question.rules.every((rule) => rule.correct === true)) {
+    winOrLose = "win"
+    console.log(winOrLose)
+    firePassword(userInput.value.length)
   }
 }
 function checkAnswerVeryhard() {
@@ -223,15 +218,9 @@ function checkAnswerVeryhard() {
   } else {
     rule[5].correct = false
   }
-  if (
-    question.rules[0].correct === true &&
-    question.rules[1].correct === true &&
-    question.rules[2].correct === true &&
-    question.rules[3].correct === true &&
-    question.rules[4].correct === true &&
-    question.rules[5].correct === true
-  ) {
-    Congrat()
+  if (rule.every((rule) => rule.correct === true)) {
+    winOrLose = "win"
+    firePassword(userInput.value.length)
   }
 }
 
@@ -336,21 +325,9 @@ function checkAnswerHardest() {
   } else {
     rule[11].correct = false
   }
-  if (
-    question.rules[0].correct === true &&
-    question.rules[1].correct === true &&
-    question.rules[2].correct === true &&
-    question.rules[3].correct === true &&
-    question.rules[4].correct === true &&
-    question.rules[5].correct === true &&
-    question.rules[6].correct === true &&
-    question.rules[7].correct === true &&
-    question.rules[8].correct === true &&
-    question.rules[9].correct === true &&
-    question.rules[10].correct === true &&
-    question.rules[11].correct === true
-  ) {
-    Congrat()
+  if (rule.every((rule) => rule.correct === true)) {
+    winOrLose = "win"
+    firePassword(userInput.value.length)
   }
 }
 function firePassword(length) {
@@ -365,7 +342,13 @@ function firePassword(length) {
     // console.log(inputArray)
     if (index >= length2) {
       clearInterval(fire)
-      gameOver()
+      if (winOrLose === "win") {
+        Congrat()
+        winOrLose = ""
+      } else {
+        gameOver()
+        winOrLose = ""
+      }
     }
   }, 250)
 }
@@ -390,6 +373,8 @@ function countdown(seconds) {
     if (seconds < 0.001) {
       clearInterval(time)
       firePassword(userInput.value.length)
+    } else if (winOrLose === "win") {
+      clearInterval(time)
     }
   }, 1)
 }
@@ -454,7 +439,7 @@ const imgCongrats = ref(false)
   </div>
   <div
     :class="selectedLevel.backgroundColor"
-    class="flex flex-col w-full min-h-screen items-center "
+    class="flex flex-col w-full min-h-screen items-center"
   >
     <div class="flex flex-row w-full">
       <div class="m-auto invisible">www</div>
@@ -606,7 +591,7 @@ const imgCongrats = ref(false)
                 <div class="flex flex-col gap-2">
                   <div class="items-start font-Saira text-white">
                     Rule {{ rule?.id }} :
-                    {{ rule?.correct ? 'Correct' : 'Incorrect' }}
+                    {{ rule?.correct ? "Correct" : "Incorrect" }}
                     <div class="border mt-2"></div>
                   </div>
                   <div class="flex flex-row">
