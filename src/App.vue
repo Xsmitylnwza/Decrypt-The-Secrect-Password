@@ -171,9 +171,14 @@ function checkAnswerHard() {
   } else {
     question.rules[5].correct = false
   }
+  //old logic when damn edit hard logic please delete and change to anotoer if  
   if (question.rules.every((rule) => rule.correct === true)) {
     Congrat()
   }
+  // change to this ->
+  // if (rule.every((rule) => rule.correct === true)) {
+  //   Congrat()
+  // }
 }
 
 function checkAnswerVeryhard() {
@@ -217,7 +222,7 @@ function checkAnswerVeryhard() {
   } else {
     rule[5].correct = false
   }
-  if (question.rules.every((rule) => rule.correct === true)) {
+  if (rule.every((rule) => rule.correct === true)) {
     Congrat()
   }
 }
@@ -323,7 +328,7 @@ function checkAnswerHardest() {
   } else {
     rule[11].correct = false
   }
-  if (question.rules.every((rule) => rule.correct === true)) {
+  if (rule.every((rule) => rule.correct === true)) {
     Congrat()
   }
 }
