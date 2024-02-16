@@ -31,21 +31,6 @@
         "id": 6,
         "message": "SUIII",
         "correct": false
-      },
-      {
-        "id": 7,
-        "message": "ชื่อทีมของเป็ดแดง",
-        "correct": false
-      },
-      {
-        "id": 8,
-        "message": "ชื่อทีมของเป็ดแดง",
-        "correct": false
-      },
-      {
-        "id": 9,
-        "message": "ชื่อทีมของเป็ดแดง",
-        "correct": false
       }
     ],
     "logo": "./images/hard-pic.png",
@@ -53,7 +38,7 @@
     "backgroundColor": "background-color-hard",
     "boxColor": "bg-color-hard-box",
     "textColor": "text-color-hard",
-    "time": 1000
+    "time": 500
   },
   {
     "level": "Veryhard",
