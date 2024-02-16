@@ -118,7 +118,7 @@
       },
       {
         "id": 6,
-        "message": "What is result of 2 + 7 * 2 + 9 / 3 + 9 * 2 = ?",
+        "message": "What is result of (2 + (7 * 2) + (9 / 3) + (9 * 2)) = ?",
         "correct": false
       },
       {
