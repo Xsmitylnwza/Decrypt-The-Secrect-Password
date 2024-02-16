@@ -108,75 +108,60 @@ function levelSelector(level) {
 }
 
 function checkAnswerHard() {
-  let question = data[0]
-  if (/[aeiouAEIOU]/.test(userInput.value)) {
-    if (!question.rules[0].correct) {
-      question.rules[0].correct = true
-      passedRule.value = 2
-      startNewSoundCorrect()
-    }
+  const rule = selectedLevel.value.rules;
+  if (/[aeiouAEIOU]/.test(userInput.value) && passedRule.value >= 1) {
+    updateRuleStatus(0);
   } else {
-    question.rules[0].correct = false
+    rule[0].correct = false;
   }
-
-  if (userInput.value.includes('blue') || userInput.value.includes('BLUE')) {
-    if (!question.rules[1].correct) {
-      question.rules[1].correct = true
-      passedRule.value = 3
-      startNewSoundCorrect()
-    }
+  if (/\d{2,}/.test(userInput.value) && passedRule.value >= 2) {
+    updateRuleStatus(1);
   } else {
-    question.rules[1].correct = false
+    rule[1].correct = false;
   }
-
-  if (userInput.value.includes('ฟ้า')) {
-    if (!question.rules[2].correct) {
-      question.rules[2].correct = true
-      passedRule.value = 4
-      startNewSoundCorrect()
-    }
+  if (/yes/i.test(userInput.value) && passedRule.value >= 3) {
+    updateRuleStatus(2);
   } else {
-    question.rules[2].correct = false
+    rule[2].correct = false;
   }
-
-  if (
-    userInput.value.includes('liverpool') ||
-    userInput.value.includes('LIVERPOOL')
-  ) {
-    if (!question.rules[3].correct) {
-      question.rules[3].correct = true
-      passedRule.value = 5
-      startNewSoundCorrect()
-    }
+  if (/liverpool/i.test(userInput.value) && passedRule.value >= 4) {
+    updateRuleStatus(3);
   } else {
-    question.rules[3].correct = false
+    rule[3].correct = false;
   }
-
-  if (userInput.value.includes('0')) {
-    if (!question.rules[4].correct) {
-      question.rules[4].correct = true
-      passedRule.value = 6
-      startNewSoundCorrect()
-    }
+  if (userInput.value.includes('ฟ้า') && passedRule.value >= 5) {
+    updateRuleStatus(4);
   } else {
-    question.rules[4].correct = false
+    rule[4].correct = false;
   }
-
-  if (
-    userInput.value.includes('ronaldo') ||
-    userInput.value.includes('Ronaldo')
-  ) {
-    if (!question.rules[5].correct) {
-      question.rules[5].correct = true
-      passedRule.value = 7
-      startNewSoundCorrect()
-    }
+  if (userInput.value.includes('BLUE') && passedRule.value >= 6) {
+    updateRuleStatus(5);
   } else {
-    question.rules[5].correct = false
+    rule[5].correct = false;
   }
-  if (question.rules.every((rule) => rule.correct === true)) {
-    firePassword(userInput.value.length)
-    isWin.value = true
+  if (userInput.value.includes('0') && passedRule.value >= 7) {
+    updateRuleStatus(6);
+  } else {
+    rule[6].correct = false;
+  }
+  if (/ronaldo/i.test(userInput.value) && passedRule.value >= 8) {
+    updateRuleStatus(7);
+  } else {
+    rule[7].correct = false;
+  }
+  if (userInput.value.includes('2547') && passedRule.value >= 9) {
+    updateRuleStatus(8);
+  } else {
+    rule[8].correct = false;
+  }
+  if (/youtube/i.test(userInput.value) && passedRule.value >= 10) {
+    updateRuleStatus(9);
+  } else {
+    rule[9].correct = false;
+  }
+  if (rule.every((rule) => rule.correct === true)) {
+    firePassword(userInput.value.length);
+    isWin.value = true;
   }
 }
 
