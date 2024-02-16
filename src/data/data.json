@@ -75,6 +75,31 @@
         "id": 6,
         "message": "who is President of thailand number 29",
         "correct": false
+      },
+      {
+        "id": 7,
+        "message": "Which country has the most area?",
+        "correct": false
+      },
+      {
+        "id": 8,
+        "message": "NBA player with the most championship rings",
+        "correct": false
+      },
+      {
+        "id": 9,
+        "message": "Roman letter with value 13",
+        "correct": false
+      },
+      {
+        "id": 10,
+        "message": "The sum of all solutions to the equation |x²-72| = x answer with text ex.(fifteen)",
+        "correct": false
+      },
+      {
+        "id": 11,
+        "message": "EXTRA:arithmetic sequence formula ex.(am=am+2a+2(n+32)x)",
+        "correct": false
       }
     ],
     "logo": "./images/veryhard-pic.png",
