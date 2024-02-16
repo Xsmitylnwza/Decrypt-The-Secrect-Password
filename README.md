@@ -1,4 +1,4 @@
-![logo](https://github.com/Xsmitylnwza/PROJECT1-SEC-2-WeLoveReact/blob/main/public/images/group-logo.png)
+<p align="center"><img src="https://github.com/Xsmitylnwza/PROJECT1-SEC-2-WeLoveReact/blob/main/public/images/group-logo.png"/></p>
 
 # PROJECT-SEC-2-WeLoveReact💕
 
@@ -20,6 +20,7 @@ The web-based game, Decrypt the password by following the difficult and creative
 
 ## References
 - Image : [DeepAI](https://deepai.org/machine-learning-model/text2img)
+
 ## Member
 ### นายมณฑล มักคุ้น 65130500067 😎
 ### นาย ศักดิ์สิทธิ์ ตติไตรสกุล 65130500078 💵
