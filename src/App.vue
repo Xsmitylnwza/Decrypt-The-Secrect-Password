@@ -171,17 +171,11 @@ function checkAnswerHard() {
   } else {
     question.rules[5].correct = false
   }
-  if (
-    question.rules[0].correct === true &&
-    question.rules[1].correct === true &&
-    question.rules[2].correct === true &&
-    question.rules[3].correct === true &&
-    question.rules[4].correct === true &&
-    question.rules[5].correct === true
-  ) {
+  if (question.rules.every((rule) => rule.correct === true)) {
     Congrat()
   }
 }
+
 function checkAnswerVeryhard() {
   const rule = selectedLevel.value.rules
   let numMatch = userInput.value.match(/\d/g)
@@ -223,14 +217,7 @@ function checkAnswerVeryhard() {
   } else {
     rule[5].correct = false
   }
-  if (
-    question.rules[0].correct === true &&
-    question.rules[1].correct === true &&
-    question.rules[2].correct === true &&
-    question.rules[3].correct === true &&
-    question.rules[4].correct === true &&
-    question.rules[5].correct === true
-  ) {
+  if (question.rules.every((rule) => rule.correct === true)) {
     Congrat()
   }
 }
@@ -336,20 +323,7 @@ function checkAnswerHardest() {
   } else {
     rule[11].correct = false
   }
-  if (
-    question.rules[0].correct === true &&
-    question.rules[1].correct === true &&
-    question.rules[2].correct === true &&
-    question.rules[3].correct === true &&
-    question.rules[4].correct === true &&
-    question.rules[5].correct === true &&
-    question.rules[6].correct === true &&
-    question.rules[7].correct === true &&
-    question.rules[8].correct === true &&
-    question.rules[9].correct === true &&
-    question.rules[10].correct === true &&
-    question.rules[11].correct === true
-  ) {
+  if (question.rules.every((rule) => rule.correct === true)) {
     Congrat()
   }
 }
