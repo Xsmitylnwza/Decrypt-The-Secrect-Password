@@ -53,32 +53,43 @@
     "backgroundColor": "background-color-hard",
     "boxColor": "bg-color-hard-box",
     "textColor": "text-color-hard",
-    "time": 600
+    "time": 5
   },
   {
     "level": "Veryhard",
     "rules": [
       {
         "id": 1,
-        "message": "พูดว่า lungtoo",
+        "message": "Your password must have atleast 4 digit",
         "correct": false
       },
       {
         "id": 2,
-        "message": "ในภาพนี้เป็นภาพของใคร",
-        "correct": false,
-        "picture": "./images/lungpon.png"
+        "message": "Your password must multiply to 20",
+        "correct": false
       },
       {
         "id": 3,
         "message": "มะม่วง mango เเล้วอย่างสีเหลืองละ?",
-        "correct": false
+        "correct": false,
+        "picture": "./images/yellow.jpg"
       },
       {
         "id": 4,
-        "message": "ชื่อจริงของพี่คนนึงมีกล้ามเต้นใจเกเร",
+        "message": "What is his name?",
         "correct": false,
         "picture": "./images/peetho.jpg"
+      },
+      {
+        "id": 5,
+        "message": "What is this person's wife's name?",
+        "correct": false,
+        "picture": "./images/lungpon.png"
+      },
+      {
+        "id": 6,
+        "message": "who is President of thailand number 29",
+        "correct": false
       }
     ],
     "logo": "./images/veryhard-pic.png",
@@ -86,7 +97,7 @@
     "backgroundColor": "background-color-veryhard",
     "boxColor": "bg-color-veryhard-box",
     "textColor": "text-color-veryhard",
-    "time":450
+    "time": 450
   },
   {
     "level": "Hardest",
@@ -158,6 +169,6 @@
     "backgroundColor": "background-color-hardest",
     "boxColor": "bg-color-hardest-box",
     "textColor": "text-color-hardest",
-    "time":300
+    "time":500
   }
 ]
