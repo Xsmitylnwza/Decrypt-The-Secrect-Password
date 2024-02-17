@@ -435,8 +435,8 @@ function closeModal(event) {
     >
       <div class="relative top-40 mx-auto rounded-md bg-white-0 max-w-md">
         <div class="p-6 pt-0 text-center">
-          <img v-show="imgGameOver" src="/images/gameOver.png" />
-          <img v-show="imgCongrats" src="/images/congrat.png" />
+          <img v-show="imgGameOver" src="/images/GameOver.png" />
+          <img v-show="imgCongrats" src="/images/Congrat.png" />
           <button
             @click="retry()"
             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2"
