@@ -58,6 +58,7 @@
     "backgroundColor": "background-color-hard",
     "boxColor": "bg-color-hard-box",
     "textColor": "text-color-hard",
+    "soundColor": "sound-color-hard",
     "time": 500
   },
   {
@@ -127,6 +128,7 @@
     "backgroundColor": "background-color-veryhard",
     "boxColor": "bg-color-veryhard-box",
     "textColor": "text-color-veryhard",
+    "soundColor": "sound-color-veryhard",
     "time": 450
   },
   {
@@ -199,6 +201,7 @@
     "backgroundColor": "background-color-hardest",
     "boxColor": "bg-color-hardest-box",
     "textColor": "text-color-hardest",
+    "soundColor": "sound-color-hardest",
     "time":600
   }
 ]

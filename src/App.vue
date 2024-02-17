@@ -6,23 +6,22 @@ import musicHard from "/music/musicHard.mp4";
 import musicHardest from "/music/musicHardest.mp3";
 import correct from "/music/correct.mp3";
 
-let passedRule = ref(1);
-let selectedLevel = ref(getRule());
-let userInput = ref("");
-let gameStartted = ref(false);
-let checkAudio = ref(null);
-let sortRules = ref([]);
-let timer = ref("10:00:00");
+const passedRule = ref(1);
+const selectedLevel = ref(getRule());
+const userInput = ref("");
+const gameStartted = ref(false);
+const checkAudio = ref(null);
+const timer = ref("10:00:00");
 let time;
-let isPlaying = ref(true);
-let ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
+const isPlaying = ref(true);
+const ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
 let IsSpread = true;
 let IsFire = true;
-let isAnimated = ref(false);
+const isAnimated = ref(false);
 const showDiv = ref(false);
 const imgGameOver = ref(false);
 const imgCongrats = ref(false);
-let isWin = ref(false);
+const isWin = ref(false);
 
 function getRule() {
   const localRule = JSON.parse(sessionStorage.getItem("data")) || data[0];
@@ -31,18 +30,6 @@ function getRule() {
   } else if (localRule.level === "Veryhard") {
     return data[1];
   } else return data[2];
-}
-
-function openModal() {
-  howToPlay.showModal();
-}
-
-function closeModal(event) {
-  console.log(event.target);
-  console.log(event.currentTarget);
-  if (event.target === event.currentTarget) {
-    howToPlay.close();
-  }
 }
 
 const toggleAnimation = () => {
@@ -84,12 +71,8 @@ const playSound = () => {
   checkAudio.value.play();
 };
 
-watchEffect(() => {
-  if (checkAudio.value !== null) {
-    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
-  }
-  ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value);
-  ruleShow.value.sort((a, b) => {
+function sortRules(rules) {
+  return rules.slice(0, passedRule.value).sort((a, b) => {
     if (a.correct && b.correct) {
       return -1;
     } else if (!a.correct && b.correct) {
@@ -98,6 +81,13 @@ watchEffect(() => {
       return a.id - b.id;
     }
   });
+}
+
+watchEffect(() => {
+  if (checkAudio.value !== null) {
+    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
+  }
+  ruleShow.value = sortRules(selectedLevel.value.rules);
 });
 
 function updateRuleStatus(ruleIndex) {
@@ -120,80 +110,65 @@ function levelSelector(level) {
 }
 
 function checkAnswerHard() {
-  let question = data[0];
-  if (/[aeiouAEIOU]/.test(userInput.value)) {
-    if (!question.rules[0].correct) {
-      question.rules[0].correct = true;
-      passedRule.value = 2;
-      startNewSoundCorrect();
-    }
+  const rules = selectedLevel.value.rules;
+  if (/[aeiouAEIOU]/.test(userInput.value) && passedRule.value >= 1) {
+    updateRuleStatus(0);
   } else {
-    question.rules[0].correct = false;
+    rules[0].correct = false;
   }
-
-  if (userInput.value.includes("blue") || userInput.value.includes("BLUE")) {
-    if (!question.rules[1].correct) {
-      question.rules[1].correct = true;
-      passedRule.value = 3;
-      startNewSoundCorrect();
-    }
+  if (/\d{2,}/.test(userInput.value) && passedRule.value >= 2) {
+    updateRuleStatus(1);
   } else {
-    question.rules[1].correct = false;
+    rules[1].correct = false;
   }
-
-  if (userInput.value.includes("ฟ้า")) {
-    if (!question.rules[2].correct) {
-      question.rules[2].correct = true;
-      passedRule.value = 4;
-      startNewSoundCorrect();
-    }
+  if (/yes/i.test(userInput.value) && passedRule.value >= 3) {
+    updateRuleStatus(2);
   } else {
-    question.rules[2].correct = false;
+    rules[2].correct = false;
   }
-
-  if (
-    userInput.value.includes("liverpool") ||
-    userInput.value.includes("LIVERPOOL")
-  ) {
-    if (!question.rules[3].correct) {
-      question.rules[3].correct = true;
-      passedRule.value = 5;
-      startNewSoundCorrect();
-    }
+  if (/liverpool/i.test(userInput.value) && passedRule.value >= 4) {
+    updateRuleStatus(3);
   } else {
-    question.rules[3].correct = false;
+    rules[3].correct = false;
   }
-
-  if (userInput.value.includes("0")) {
-    if (!question.rules[4].correct) {
-      question.rules[4].correct = true;
-      passedRule.value = 6;
-      startNewSoundCorrect();
-    }
+  if (userInput.value.includes("ฟ้า") && passedRule.value >= 5) {
+    updateRuleStatus(4);
   } else {
-    question.rules[4].correct = false;
+    rules[4].correct = false;
   }
-
-  if (
-    userInput.value.includes("ronaldo") ||
-    userInput.value.includes("Ronaldo")
-  ) {
-    if (!question.rules[5].correct) {
-      question.rules[5].correct = true;
-      passedRule.value = 7;
-      startNewSoundCorrect();
-    }
+  if (userInput.value.includes("BLUE") && passedRule.value >= 6) {
+    updateRuleStatus(5);
   } else {
-    question.rules[5].correct = false;
+    rules[5].correct = false;
   }
-  if (question.rules.every((rule) => rule.correct === true)) {
+  if (userInput.value.includes("0") && passedRule.value >= 7) {
+    updateRuleStatus(6);
+  } else {
+    rules[6].correct = false;
+  }
+  if (/ronaldo/i.test(userInput.value) && passedRule.value >= 8) {
+    updateRuleStatus(7);
+  } else {
+    rules[7].correct = false;
+  }
+  if (userInput.value.includes("2547") && passedRule.value >= 9) {
+    updateRuleStatus(8);
+  } else {
+    rules[8].correct = false;
+  }
+  if (/youtube/i.test(userInput.value) && passedRule.value >= 10) {
+    updateRuleStatus(9);
+  } else {
+    rules[9].correct = false;
+  }
+  if (rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
     isWin.value = true;
   }
 }
 
 function checkAnswerVeryhard() {
-  const rule = selectedLevel.value.rules;
+  const rules = selectedLevel.value.rules;
   let numMatch = userInput.value.match(/\d/g);
   let multiply = numMatch.reduce(
     (acc, cur) => parseInt(acc) * parseInt(cur),
@@ -202,17 +177,17 @@ function checkAnswerVeryhard() {
   if (userInput.value.length >= 4 && passedRule.value >= 1) {
     updateRuleStatus(0);
   } else {
-    rule[0].correct = false;
+    rules[0].correct = false;
   }
   if (multiply == 20 && passedRule.value >= 2) {
     updateRuleStatus(1);
   } else {
-    rule[1].correct = false;
+    rules[1].correct = false;
   }
   if (/yellow/i.test(userInput.value) && passedRule.value >= 3) {
     updateRuleStatus(2);
   } else {
-    rule[2].correct = false;
+    rules[2].correct = false;
   }
   if (
     /ricardo/i.test(userInput.value) ||
@@ -220,12 +195,12 @@ function checkAnswerVeryhard() {
   ) {
     updateRuleStatus(3);
   } else {
-    rule[3].correct = false;
+    rules[3].correct = false;
   }
   if (/somporn/i.test(userInput.value) && passedRule.value >= 5) {
     updateRuleStatus(4);
   } else {
-    rule[4].correct = false;
+    rules[4].correct = false;
   }
   if (
     /lungtoo/i.test(userInput.value) ||
@@ -233,7 +208,7 @@ function checkAnswerVeryhard() {
   ) {
     updateRuleStatus(5);
   } else {
-    rule[5].correct = false;
+    rules[5].correct = false;
   }
   if (
     /Russia/i.test(userInput.value) ||
@@ -241,36 +216,36 @@ function checkAnswerVeryhard() {
   ) {
     updateRuleStatus(6);
   } else {
-    rule[6].correct = false;
+    rules[6].correct = false;
   }
   if (/BillRussell/i.test(userInput.value) && passedRule.value >= 8) {
     updateRuleStatus(7);
   } else {
-    rule[7].correct = false;
+    rules[7].correct = false;
   }
   if (/XIII/i.test(userInput.value) && passedRule.value >= 9) {
     updateRuleStatus(8);
   } else {
-    rule[8].correct = false;
+    rules[8].correct = false;
   }
   if (/seventeen/i.test(userInput.value) && passedRule.value >= 10) {
     updateRuleStatus(9);
   } else {
-    rule[9].correct = false;
+    rules[9].correct = false;
   }
   if (userInput.value.includes("an=a1+(n-1)d") && passedRule.value >= 11) {
     updateRuleStatus(10);
   } else {
-    rule[10].correct = false;
+    rules[10].correct = false;
   }
-  if (rule.every((rule) => rule.correct === true)) {
+  if (rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
     isWin.value = true;
   }
 }
 
 function checkAnswerHardest() {
-  const rule = selectedLevel.value.rules;
+  const rules = selectedLevel.value.rules;
   let numSum = userInput.value.match(/\d/g);
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
@@ -281,32 +256,32 @@ function checkAnswerHardest() {
   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
     updateRuleStatus(0);
   } else {
-    rule[0].correct = false;
+    rules[0].correct = false;
   }
   if (userInput.value.length >= 5 && passedRule.value >= 2) {
     updateRuleStatus(1);
   } else {
-    rule[1].correct = false;
+    rules[1].correct = false;
   }
   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
     updateRuleStatus(2);
   } else {
-    rule[2].correct = false;
+    rules[2].correct = false;
   }
   if (sum == 35 && passedRule.value >= 4) {
     updateRuleStatus(3);
   } else {
-    rule[3].correct = false;
+    rules[3].correct = false;
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
     updateRuleStatus(4);
   } else {
-    rule[4].correct = false;
+    rules[4].correct = false;
   }
   if (userInput.value.includes("37") && passedRule.value >= 6) {
     updateRuleStatus(5);
   } else {
-    rule[5].correct = false;
+    rules[5].correct = false;
   }
   if (userInput.value.includes("¥") && passedRule.value >= 7) {
     let index = 1;
@@ -315,29 +290,29 @@ function checkAnswerHardest() {
       IsSpread = false;
     }
     updateRuleStatus(6);
-    if (!rule[7].correct) {
+    if (!rules[7].correct) {
       const virus = setInterval(function () {
         let inputArray = Array.from(userInput.value);
         inputArray[index] = "🦠";
         userInput.value = inputArray.join("");
         index++;
-        if (rule[7].correct) {
+        if (rules[7].correct) {
           clearInterval(virus);
         }
       }, 4000);
     }
   } else {
-    rule[6].correct = false;
+    rules[6].correct = false;
   }
   if (!userInput.value.includes("🦠") && passedRule.value >= 8) {
     updateRuleStatus(7);
   } else {
-    rule[7].correct = false;
+    rules[7].correct = false;
   }
   if (/33f7m/.test(userInput.value) && passedRule.value >= 9) {
     updateRuleStatus(8);
   } else {
-    rule[8].correct = false;
+    rules[8].correct = false;
   }
   if (/cheer/i.test(userInput.value) && passedRule.value >= 10) {
     let index = 1;
@@ -346,44 +321,44 @@ function checkAnswerHardest() {
       IsFire = false;
     }
     updateRuleStatus(9);
-    if (!rule[10].correct) {
+    if (!rules[10].correct) {
       const virus = setInterval(function () {
         let inputArray = Array.from(userInput.value);
         inputArray[index] = "🔥";
         userInput.value = inputArray.join("");
         index++;
-        if (rule[10].correct) {
+        if (rules[10].correct) {
           clearInterval(virus);
         }
       }, 2000);
     }
   } else {
-    rule[9].correct = false;
+    rules[9].correct = false;
   }
   if (!userInput.value.includes("🔥") && passedRule.value >= 11) {
     updateRuleStatus(10);
   } else {
-    rule[10].correct = false;
+    rules[10].correct = false;
   }
   if (userInput.value.includes("👑") && passedRule.value >= 12) {
     updateRuleStatus(11);
   } else {
-    rule[11].correct = false;
+    rules[11].correct = false;
   }
-  if (rule.every((rule) => rule.correct === true)) {
+  if (rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
     isWin.value = true;
   }
 }
 function firePassword(length) {
-  const length2 = length;
+  let passwordLength = length;
   let index = 0;
   const fire = setInterval(function () {
     let inputArray = Array.from(userInput.value);
     inputArray[index] = "🔥";
     userInput.value = inputArray.join("");
     index++;
-    if (index >= length2) {
+    if (index >= passwordLength) {
       clearInterval(fire);
       if (passedRule.value - 1 != selectedLevel.value.rules.length) {
         gameOver();
@@ -419,7 +394,6 @@ function resetGame() {
   clearInterval(time);
   gameStartted.value = false;
   userInput.value = "";
-  sortRules.value = [];
 }
 
 function startGame() {
@@ -436,9 +410,19 @@ function gameOver() {
   showDiv.value = true;
   imgGameOver.value = true;
 }
-function Retry() {
+function retry() {
   sessionStorage.setItem("data", JSON.stringify(selectedLevel.value));
   location.reload();
+}
+
+function openModal() {
+  howToPlay.showModal();
+}
+
+function closeModal(event) {
+  if (event.target === event.currentTarget) {
+    howToPlay.close();
+  }
 }
 </script>
 
@@ -451,10 +435,10 @@ function Retry() {
     >
       <div class="relative top-40 mx-auto rounded-md bg-white-0 max-w-md">
         <div class="p-6 pt-0 text-center">
-          <img v-show="imgGameOver" src="/images/GameOver.png" />
-          <img v-show="imgCongrats" src="/images/Congrat.png" />
+          <img v-show="imgGameOver" src="/images/gameOver.png" />
+          <img v-show="imgCongrats" src="/images/congrat.png" />
           <button
-            @click="Retry()"
+            @click="retry()"
             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2"
           >
             ReStart
@@ -486,6 +470,7 @@ function Retry() {
             <input type="checkbox" />
             <!-- volume off icon -->
             <svg
+              :class="selectedLevel.soundColor"
               class="swap-on fill-current"
               xmlns="http://www.w3.org/2000/svg"
               width="48"
@@ -499,6 +484,7 @@ function Retry() {
             </svg>
             <!-- volume on icon -->
             <svg
+              :class="selectedLevel.soundColor"
               class="swap-off fill-current"
               xmlns="http://www.w3.org/2000/svg"
               width="48"
@@ -759,6 +745,10 @@ function Retry() {
   color: #ff0000;
 }
 
+.sound-color-hard {
+  color: #000;
+}
+
 .background-color-hard {
   background: linear-gradient(
     104deg,
@@ -784,6 +774,10 @@ function Retry() {
 
 .text-color-veryhard {
   color: #590ebb;
+}
+
+.sound-color-veryhard {
+  color: #fff;
 }
 
 .background-color-veryhard {
@@ -827,6 +821,10 @@ function Retry() {
 
 .text-color-hardest {
   color: #ffffff;
+}
+
+.sound-color-hardest {
+  color: #c4cfd1;
 }
 
 .background-color-hardest {
