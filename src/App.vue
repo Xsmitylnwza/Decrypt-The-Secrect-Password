@@ -6,22 +6,23 @@ import musicHard from "/music/musicHard.mp4";
 import musicHardest from "/music/musicHardest.mp3";
 import correct from "/music/correct.mp3";
 
-const passedRule = ref(1);
-const selectedLevel = ref(getRule());
-const userInput = ref("");
-const gameStartted = ref(false);
-const checkAudio = ref(null);
-const timer = ref("10:00:00");
+let passedRule = ref(1);
+let selectedLevel = ref(getRule());
+let userInput = ref("");
+let gameStartted = ref(false);
+let checkAudio = ref(null);
+let sortRules = ref([]);
+let timer = ref("10:00:00");
 let time;
-const isPlaying = ref(true);
-const ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
+let isPlaying = ref(true);
+let ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
 let IsSpread = true;
 let IsFire = true;
-const isAnimated = ref(false);
+let isAnimated = ref(false);
 const showDiv = ref(false);
 const imgGameOver = ref(false);
 const imgCongrats = ref(false);
-const isWin = ref(false);
+let isWin = ref(false);
 
 function getRule() {
   const localRule = JSON.parse(sessionStorage.getItem("data")) || data[0];
@@ -30,6 +31,18 @@ function getRule() {
   } else if (localRule.level === "Veryhard") {
     return data[1];
   } else return data[2];
+}
+
+function openModal() {
+  howToPlay.showModal();
+}
+
+function closeModal(event) {
+  console.log(event.target);
+  console.log(event.currentTarget);
+  if (event.target === event.currentTarget) {
+    howToPlay.close();
+  }
 }
 
 const toggleAnimation = () => {
@@ -71,8 +84,12 @@ const playSound = () => {
   checkAudio.value.play();
 };
 
-function sortRules(rules) {
-  return rules.slice(0, passedRule.value).sort((a, b) => {
+watchEffect(() => {
+  if (checkAudio.value !== null) {
+    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
+  }
+  ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value);
+  ruleShow.value.sort((a, b) => {
     if (a.correct && b.correct) {
       return -1;
     } else if (!a.correct && b.correct) {
@@ -81,13 +98,6 @@ function sortRules(rules) {
       return a.id - b.id;
     }
   });
-}
-
-watchEffect(() => {
-  if (checkAudio.value !== null) {
-    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
-  }
-  ruleShow.value = sortRules(selectedLevel.value.rules);
 });
 
 function updateRuleStatus(ruleIndex) {
@@ -110,65 +120,80 @@ function levelSelector(level) {
 }
 
 function checkAnswerHard() {
-  const rules = selectedLevel.value.rules;
-  if (/[aeiouAEIOU]/.test(userInput.value) && passedRule.value >= 1) {
-    updateRuleStatus(0);
+  let question = data[0];
+  if (/[aeiouAEIOU]/.test(userInput.value)) {
+    if (!question.rules[0].correct) {
+      question.rules[0].correct = true;
+      passedRule.value = 2;
+      startNewSoundCorrect();
+    }
   } else {
-    rules[0].correct = false;
+    question.rules[0].correct = false;
   }
-  if (/\d{2,}/.test(userInput.value) && passedRule.value >= 2) {
-    updateRuleStatus(1);
+
+  if (userInput.value.includes("blue") || userInput.value.includes("BLUE")) {
+    if (!question.rules[1].correct) {
+      question.rules[1].correct = true;
+      passedRule.value = 3;
+      startNewSoundCorrect();
+    }
   } else {
-    rules[1].correct = false;
+    question.rules[1].correct = false;
   }
-  if (/yes/i.test(userInput.value) && passedRule.value >= 3) {
-    updateRuleStatus(2);
+
+  if (userInput.value.includes("ฟ้า")) {
+    if (!question.rules[2].correct) {
+      question.rules[2].correct = true;
+      passedRule.value = 4;
+      startNewSoundCorrect();
+    }
   } else {
-    rules[2].correct = false;
+    question.rules[2].correct = false;
   }
-  if (/liverpool/i.test(userInput.value) && passedRule.value >= 4) {
-    updateRuleStatus(3);
+
+  if (
+    userInput.value.includes("liverpool") ||
+    userInput.value.includes("LIVERPOOL")
+  ) {
+    if (!question.rules[3].correct) {
+      question.rules[3].correct = true;
+      passedRule.value = 5;
+      startNewSoundCorrect();
+    }
   } else {
-    rules[3].correct = false;
+    question.rules[3].correct = false;
   }
-  if (userInput.value.includes("ฟ้า") && passedRule.value >= 5) {
-    updateRuleStatus(4);
+
+  if (userInput.value.includes("0")) {
+    if (!question.rules[4].correct) {
+      question.rules[4].correct = true;
+      passedRule.value = 6;
+      startNewSoundCorrect();
+    }
   } else {
-    rules[4].correct = false;
+    question.rules[4].correct = false;
   }
-  if (userInput.value.includes("BLUE") && passedRule.value >= 6) {
-    updateRuleStatus(5);
+
+  if (
+    userInput.value.includes("ronaldo") ||
+    userInput.value.includes("Ronaldo")
+  ) {
+    if (!question.rules[5].correct) {
+      question.rules[5].correct = true;
+      passedRule.value = 7;
+      startNewSoundCorrect();
+    }
   } else {
-    rules[5].correct = false;
+    question.rules[5].correct = false;
   }
-  if (userInput.value.includes("0") && passedRule.value >= 7) {
-    updateRuleStatus(6);
-  } else {
-    rules[6].correct = false;
-  }
-  if (/ronaldo/i.test(userInput.value) && passedRule.value >= 8) {
-    updateRuleStatus(7);
-  } else {
-    rules[7].correct = false;
-  }
-  if (userInput.value.includes("2547") && passedRule.value >= 9) {
-    updateRuleStatus(8);
-  } else {
-    rules[8].correct = false;
-  }
-  if (/youtube/i.test(userInput.value) && passedRule.value >= 10) {
-    updateRuleStatus(9);
-  } else {
-    rules[9].correct = false;
-  }
-  if (rules.every((rule) => rule.correct === true)) {
+  if (question.rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
     isWin.value = true;
   }
 }
 
 function checkAnswerVeryhard() {
-  const rules = selectedLevel.value.rules;
+  const rule = selectedLevel.value.rules;
   let numMatch = userInput.value.match(/\d/g);
   let multiply = numMatch.reduce(
     (acc, cur) => parseInt(acc) * parseInt(cur),
@@ -177,17 +202,17 @@ function checkAnswerVeryhard() {
   if (userInput.value.length >= 4 && passedRule.value >= 1) {
     updateRuleStatus(0);
   } else {
-    rules[0].correct = false;
+    rule[0].correct = false;
   }
   if (multiply == 20 && passedRule.value >= 2) {
     updateRuleStatus(1);
   } else {
-    rules[1].correct = false;
+    rule[1].correct = false;
   }
   if (/yellow/i.test(userInput.value) && passedRule.value >= 3) {
     updateRuleStatus(2);
   } else {
-    rules[2].correct = false;
+    rule[2].correct = false;
   }
   if (
     /ricardo/i.test(userInput.value) ||
@@ -195,12 +220,12 @@ function checkAnswerVeryhard() {
   ) {
     updateRuleStatus(3);
   } else {
-    rules[3].correct = false;
+    rule[3].correct = false;
   }
   if (/somporn/i.test(userInput.value) && passedRule.value >= 5) {
     updateRuleStatus(4);
   } else {
-    rules[4].correct = false;
+    rule[4].correct = false;
   }
   if (
     /lungtoo/i.test(userInput.value) ||
@@ -208,7 +233,7 @@ function checkAnswerVeryhard() {
   ) {
     updateRuleStatus(5);
   } else {
-    rules[5].correct = false;
+    rule[5].correct = false;
   }
   if (
     /Russia/i.test(userInput.value) ||
@@ -216,36 +241,36 @@ function checkAnswerVeryhard() {
   ) {
     updateRuleStatus(6);
   } else {
-    rules[6].correct = false;
+    rule[6].correct = false;
   }
   if (/BillRussell/i.test(userInput.value) && passedRule.value >= 8) {
     updateRuleStatus(7);
   } else {
-    rules[7].correct = false;
+    rule[7].correct = false;
   }
   if (/XIII/i.test(userInput.value) && passedRule.value >= 9) {
     updateRuleStatus(8);
   } else {
-    rules[8].correct = false;
+    rule[8].correct = false;
   }
   if (/seventeen/i.test(userInput.value) && passedRule.value >= 10) {
     updateRuleStatus(9);
   } else {
-    rules[9].correct = false;
+    rule[9].correct = false;
   }
   if (userInput.value.includes("an=a1+(n-1)d") && passedRule.value >= 11) {
     updateRuleStatus(10);
   } else {
-    rules[10].correct = false;
+    rule[10].correct = false;
   }
-  if (rules.every((rule) => rule.correct === true)) {
+  if (rule.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
     isWin.value = true;
   }
 }
 
 function checkAnswerHardest() {
-  const rules = selectedLevel.value.rules;
+  const rule = selectedLevel.value.rules;
   let numSum = userInput.value.match(/\d/g);
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
@@ -256,32 +281,32 @@ function checkAnswerHardest() {
   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
     updateRuleStatus(0);
   } else {
-    rules[0].correct = false;
+    rule[0].correct = false;
   }
   if (userInput.value.length >= 5 && passedRule.value >= 2) {
     updateRuleStatus(1);
   } else {
-    rules[1].correct = false;
+    rule[1].correct = false;
   }
   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
     updateRuleStatus(2);
   } else {
-    rules[2].correct = false;
+    rule[2].correct = false;
   }
   if (sum == 35 && passedRule.value >= 4) {
     updateRuleStatus(3);
   } else {
-    rules[3].correct = false;
+    rule[3].correct = false;
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
     updateRuleStatus(4);
   } else {
-    rules[4].correct = false;
+    rule[4].correct = false;
   }
   if (userInput.value.includes("37") && passedRule.value >= 6) {
     updateRuleStatus(5);
   } else {
-    rules[5].correct = false;
+    rule[5].correct = false;
   }
   if (userInput.value.includes("¥") && passedRule.value >= 7) {
     let index = 1;
@@ -290,29 +315,29 @@ function checkAnswerHardest() {
       IsSpread = false;
     }
     updateRuleStatus(6);
-    if (!rules[7].correct) {
+    if (!rule[7].correct) {
       const virus = setInterval(function () {
         let inputArray = Array.from(userInput.value);
         inputArray[index] = "🦠";
         userInput.value = inputArray.join("");
         index++;
-        if (rules[7].correct) {
+        if (rule[7].correct) {
           clearInterval(virus);
         }
       }, 4000);
     }
   } else {
-    rules[6].correct = false;
+    rule[6].correct = false;
   }
   if (!userInput.value.includes("🦠") && passedRule.value >= 8) {
     updateRuleStatus(7);
   } else {
-    rules[7].correct = false;
+    rule[7].correct = false;
   }
   if (/33f7m/.test(userInput.value) && passedRule.value >= 9) {
     updateRuleStatus(8);
   } else {
-    rules[8].correct = false;
+    rule[8].correct = false;
   }
   if (/cheer/i.test(userInput.value) && passedRule.value >= 10) {
     let index = 1;
@@ -321,48 +346,48 @@ function checkAnswerHardest() {
       IsFire = false;
     }
     updateRuleStatus(9);
-    if (!rules[10].correct) {
+    if (!rule[10].correct) {
       const virus = setInterval(function () {
         let inputArray = Array.from(userInput.value);
         inputArray[index] = "🔥";
         userInput.value = inputArray.join("");
         index++;
-        if (rules[10].correct) {
+        if (rule[10].correct) {
           clearInterval(virus);
         }
       }, 2000);
     }
   } else {
-    rules[9].correct = false;
+    rule[9].correct = false;
   }
   if (!userInput.value.includes("🔥") && passedRule.value >= 11) {
     updateRuleStatus(10);
   } else {
-    rules[10].correct = false;
+    rule[10].correct = false;
   }
   if (userInput.value.includes("👑") && passedRule.value >= 12) {
     updateRuleStatus(11);
   } else {
-    rules[11].correct = false;
+    rule[11].correct = false;
   }
-  if (rules.every((rule) => rule.correct === true)) {
+  if (rule.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
     isWin.value = true;
   }
 }
 function firePassword(length) {
-  let passwordLength = length;
+  const length2 = length;
   let index = 0;
   const fire = setInterval(function () {
     let inputArray = Array.from(userInput.value);
     inputArray[index] = "🔥";
     userInput.value = inputArray.join("");
     index++;
-    if (index >= passwordLength) {
+    if (index >= length2) {
       clearInterval(fire);
       if (passedRule.value - 1 != selectedLevel.value.rules.length) {
         gameOver();
-      } else Congrat();
+      } else congrat();
     }
   }, 100);
 }
@@ -394,6 +419,7 @@ function resetGame() {
   clearInterval(time);
   gameStartted.value = false;
   userInput.value = "";
+  sortRules.value = [];
 }
 
 function startGame() {
@@ -402,7 +428,7 @@ function startGame() {
     countdown(selectedLevel.value.time);
   }
 }
-function Congrat() {
+function congrat() {
   showDiv.value = true;
   imgCongrats.value = true;
 }
@@ -560,7 +586,7 @@ function Retry() {
         <!-- timer componant in row2 -->
         <div class="timer m-[auto] laptop:ml-24">
           <p class="flex font-Saira text-[14px] text-white mt-[10px]">
-            Time:&nbsp
+            Time:&nbsp;
             <span :class="selectedLevel.textColor" class="text-[14px]">
               {{ timer }}
             </span>
@@ -628,11 +654,11 @@ function Retry() {
         <div class="flex m-[auto]">
           <button
             class="btn border-0 font-Saira font-light bg-white text-black hover:text-white transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 duration-150"
-            onclick="howToPlay.showModal()"
+            @click="openModal"
           >
             HOW TO PLAY GAME 🎮
           </button>
-          <dialog id="howToPlay" class="modal">
+          <dialog id="howToPlay" class="modal" @click="closeModal">
             <div class="modal-box bg-white">
               <h3
                 class="font-bold text-3xl text-black mb-4 text-center hover:transition ease-in-out hover:-translate-y-1 hover:scale-105"
