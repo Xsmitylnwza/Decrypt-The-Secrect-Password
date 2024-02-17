@@ -9,8 +9,8 @@ The web-based game, Decrypt the password by following the difficult and creative
 ## Features
 
 - Tracking your each character that you type.
-- Rules for controlling the password's scope. (If the rule is correct, the next rule will be unlocked.)
-- Selecting the difficulty level and character to challenge youself.
+- Rules for controlling the password's scope.
+- Selecting the difficulty level to challenge youself. (The character will change following the level of difficulty.)
 - Timer to decrypt the password within the specified time.
 - Manual for beginner.
 - Animations time out and win the game.
@@ -18,12 +18,30 @@ The web-based game, Decrypt the password by following the difficult and creative
 
 ## How to play
 
+<p align="center"><img src="https://github.com/Xsmitylnwza/PROJECT1-SEC-2-WeLoveReact/blob/main/public/images/gameplay.gif"></p>
+
+### Gameplay
+
+- Type something in textbox to start the game.
+- The rule will appear when you start typing. If the rule is correct, the next rule will be unlocked.
+- The timer will be counted down after typing. If the time runs out, you will lose the game.
+- Open your mind, creativity and play.
+<br>
+
+<p align="center"><img src="https://github.com/Xsmitylnwza/PROJECT1-SEC-2-WeLoveReact/blob/main/public/images/select-mode.gif"></p>
+
+### Game mode
+
+- Game mode will be change if you click on the level of difficulty and game will be restarted.
+- Now we have 3 modes: Hard, Very Hard and Hardest.
+
 ## References
-- Image : [DeepAI](https://deepai.org/machine-learning-model/text2img)
+- Gameplay : [The Password Game](https://neal.fun/password-game/)
+- Image AI : [DeepAI](https://deepai.org/machine-learning-model/text2img)
 
 ## Member
-### นายมณฑล มักคุ้น 65130500067 😎
-### นาย ศักดิ์สิทธิ์ ตติไตรสกุล 65130500078 💵
-### นาย สรณัฐ เเสงรุ่งเรือง 65130500082 😊
-### นาย ชัยมงคล ศอกกำปัง 65130500099 😉
-### นายศักย์ศรัณย์ อัครเมธาวงศ์ 65130500118 😀
+- นายมณฑล มักคุ้น 65130500067 😎
+- นาย ศักดิ์สิทธิ์ ตติไตรสกุล 65130500078 💵
+- นาย สรณัฐ เเสงรุ่งเรือง 65130500082 😊
+- นาย ชัยมงคล ศอกกำปัง 65130500099 😉
+- นายศักย์ศรัณย์ อัครเมธาวงศ์ 65130500118 😀
