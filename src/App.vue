@@ -1,414 +1,418 @@
 <script setup>
-import { ref, watchEffect } from 'vue'
-import data from './data/data.json'
-import musicVeryHard from '/music/musicVeryHard.mp3'
-import musicHard from '/music/musicHard.mp4'
-import musicHardest from '/music/musicHardest.mp3'
-import correct from '/music/correct.mp3'
+import { ref, watchEffect } from "vue";
+import data from "./data/data.json";
+import musicVeryHard from "/music/musicVeryHard.mp3";
+import musicHard from "/music/musicHard.mp4";
+import musicHardest from "/music/musicHardest.mp3";
+import correct from "/music/correct.mp3";
 
-let passedRule = ref(1)
-let selectedLevel = ref(getRule())
-let userInput = ref('')
-let gameStartted = ref(false)
-let checkAudio = ref(null)
-let sortRules = ref([])
-let timer = ref('10:00:00')
-let time
-let isPlaying = ref(true)
-let ruleShow = ref(selectedLevel.value.rules.slice(0, 1))
-let IsSpread = true
-let IsFire = true
-let isAnimated = ref(false)
-const showDiv = ref(false)
-const imgGameOver = ref(false)
-const imgCongrats = ref(false)
-let isWin = ref(false)
+const passedRule = ref(1);
+const selectedLevel = ref(getRule());
+const userInput = ref("");
+const gameStartted = ref(false);
+const checkAudio = ref(null);
+const timer = ref("10:00:00");
+let time;
+const isPlaying = ref(true);
+const ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
+let IsSpread = true;
+let IsFire = true;
+const isAnimated = ref(false);
+const showDiv = ref(false);
+const imgGameOver = ref(false);
+const imgCongrats = ref(false);
+const isWin = ref(false);
 
 function getRule() {
-  const localRule = JSON.parse(sessionStorage.getItem('data')) || data[0]
-  if (localRule.level === 'Hard') {
-    return data[0]
-  } else if (localRule.level === 'Veryhard') {
-    return data[1]
-  } else return data[2]
+  const localRule = JSON.parse(sessionStorage.getItem("data")) || data[0];
+  if (localRule.level === "Hard") {
+    return data[0];
+  } else if (localRule.level === "Veryhard") {
+    return data[1];
+  } else return data[2];
 }
 
 const toggleAnimation = () => {
-  isAnimated.value = !isAnimated.value
-}
+  isAnimated.value = !isAnimated.value;
+};
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
   checkAnswerHardest,
-}
+};
 
 const audioMapping = {
   Hard: new Audio(musicHard),
   Veryhard: new Audio(musicVeryHard),
   Hardest: new Audio(musicHardest),
-}
+};
 
 const startNewAudio = (level) => {
-  const audio = audioMapping[level]
+  const audio = audioMapping[level];
   if (checkAudio.value !== null) {
-    checkAudio.value.pause()
-    checkAudio.value.currentTime = 0
+    checkAudio.value.pause();
+    checkAudio.value.currentTime = 0;
   }
-  audio.play()
-  checkAudio.value = audio
-}
+  audio.play();
+  checkAudio.value = audio;
+};
 
 const startNewSoundCorrect = () => {
-  const audioCorrect = new Audio(correct)
-  audioCorrect.play()
-}
+  const audioCorrect = new Audio(correct);
+  audioCorrect.play();
+};
 
 const stopSound = () => {
-  isPlaying = false
-  checkAudio.value.pause()
-}
+  isPlaying = false;
+  checkAudio.value.pause();
+};
 const playSound = () => {
-  isPlaying = true
-  checkAudio.value.play()
+  isPlaying = true;
+  checkAudio.value.play();
+};
+
+function sortRules(rules) {
+  return rules.slice(0, passedRule.value).sort((a, b) => {
+    if (a.correct && b.correct) {
+      return -1;
+    } else if (!a.correct && b.correct) {
+      return -1;
+    } else {
+      return a.id - b.id;
+    }
+  });
 }
 
 watchEffect(() => {
   if (checkAudio.value !== null) {
-    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level)
+    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
   }
-  ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value)
-  ruleShow.value.sort((a, b) => {
-    if (a.correct && b.correct) {
-      return -1
-    } else if (!a.correct && b.correct) {
-      return -1
-    } else {
-      return a.id - b.id
-    }
-  })
-})
+  ruleShow.value = sortRules(selectedLevel.value.rules);
+});
 
 function updateRuleStatus(ruleIndex) {
-  selectedLevel.value.rules[ruleIndex].correct = true
+  selectedLevel.value.rules[ruleIndex].correct = true;
   if (passedRule.value <= ruleIndex + 1) {
-    passedRule.value = passedRule.value + 1
-    startNewSoundCorrect()
-    return
+    passedRule.value = passedRule.value + 1;
+    startNewSoundCorrect();
+    return;
   }
 }
 
 function levelSelector(level) {
-  selectedLevel.value = level
-  passedRule.value = 1
-  ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value)
-  resetGame()
-  timeformat(selectedLevel.value.time)
-  startNewAudio(selectedLevel.value.level)
-  if (!isPlaying) stopSound()
+  selectedLevel.value = level;
+  passedRule.value = 1;
+  ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value);
+  resetGame();
+  timeformat(selectedLevel.value.time);
+  startNewAudio(selectedLevel.value.level);
+  if (!isPlaying) stopSound();
 }
 
 function checkAnswerHard() {
-  const rule = selectedLevel.value.rules;
+  const rules = selectedLevel.value.rules;
   if (/[aeiouAEIOU]/.test(userInput.value) && passedRule.value >= 1) {
     updateRuleStatus(0);
   } else {
-    rule[0].correct = false;
+    rules[0].correct = false;
   }
   if (/\d{2,}/.test(userInput.value) && passedRule.value >= 2) {
     updateRuleStatus(1);
   } else {
-    rule[1].correct = false;
+    rules[1].correct = false;
   }
   if (/yes/i.test(userInput.value) && passedRule.value >= 3) {
     updateRuleStatus(2);
   } else {
-    rule[2].correct = false;
+    rules[2].correct = false;
   }
   if (/liverpool/i.test(userInput.value) && passedRule.value >= 4) {
     updateRuleStatus(3);
   } else {
-    rule[3].correct = false;
+    rules[3].correct = false;
   }
-  if (userInput.value.includes('ฟ้า') && passedRule.value >= 5) {
+  if (userInput.value.includes("ฟ้า") && passedRule.value >= 5) {
     updateRuleStatus(4);
   } else {
-    rule[4].correct = false;
+    rules[4].correct = false;
   }
-  if (userInput.value.includes('BLUE') && passedRule.value >= 6) {
+  if (userInput.value.includes("BLUE") && passedRule.value >= 6) {
     updateRuleStatus(5);
   } else {
-    rule[5].correct = false;
+    rules[5].correct = false;
   }
-  if (userInput.value.includes('0') && passedRule.value >= 7) {
+  if (userInput.value.includes("0") && passedRule.value >= 7) {
     updateRuleStatus(6);
   } else {
-    rule[6].correct = false;
+    rules[6].correct = false;
   }
   if (/ronaldo/i.test(userInput.value) && passedRule.value >= 8) {
     updateRuleStatus(7);
   } else {
-    rule[7].correct = false;
+    rules[7].correct = false;
   }
-  if (userInput.value.includes('2547') && passedRule.value >= 9) {
+  if (userInput.value.includes("2547") && passedRule.value >= 9) {
     updateRuleStatus(8);
   } else {
-    rule[8].correct = false;
+    rules[8].correct = false;
   }
   if (/youtube/i.test(userInput.value) && passedRule.value >= 10) {
     updateRuleStatus(9);
   } else {
-    rule[9].correct = false;
+    rules[9].correct = false;
   }
-  if (rule.every((rule) => rule.correct === true)) {
+  if (rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
     isWin.value = true;
   }
 }
 
 function checkAnswerVeryhard() {
-  const rule = selectedLevel.value.rules
-  let numMatch = userInput.value.match(/\d/g)
-  let multiply = numMatch.reduce((acc, cur) => parseInt(acc) * parseInt(cur), 1)
+  const rules = selectedLevel.value.rules;
+  let numMatch = userInput.value.match(/\d/g);
+  let multiply = numMatch.reduce(
+    (acc, cur) => parseInt(acc) * parseInt(cur),
+    1
+  );
   if (userInput.value.length >= 4 && passedRule.value >= 1) {
-    updateRuleStatus(0)
+    updateRuleStatus(0);
   } else {
-    rule[0].correct = false
+    rules[0].correct = false;
   }
   if (multiply == 20 && passedRule.value >= 2) {
-    updateRuleStatus(1)
+    updateRuleStatus(1);
   } else {
-    rule[1].correct = false
+    rules[1].correct = false;
   }
   if (/yellow/i.test(userInput.value) && passedRule.value >= 3) {
-    updateRuleStatus(2)
+    updateRuleStatus(2);
   } else {
-    rule[2].correct = false
+    rules[2].correct = false;
   }
   if (
     /ricardo/i.test(userInput.value) ||
-    (userInput.value.includes('ริคาโด้') && passedRule.value >= 4)
+    (userInput.value.includes("ริคาโด้") && passedRule.value >= 4)
   ) {
-    updateRuleStatus(3)
+    updateRuleStatus(3);
   } else {
-    rule[3].correct = false
+    rules[3].correct = false;
   }
   if (/somporn/i.test(userInput.value) && passedRule.value >= 5) {
-    updateRuleStatus(4)
+    updateRuleStatus(4);
   } else {
-    rule[4].correct = false
+    rules[4].correct = false;
   }
   if (
     /lungtoo/i.test(userInput.value) ||
-    (userInput.value.includes('ลุงตู่') && passedRule.value >= 6)
+    (userInput.value.includes("ลุงตู่") && passedRule.value >= 6)
   ) {
-    updateRuleStatus(5)
+    updateRuleStatus(5);
   } else {
-    rule[5].correct = false
+    rules[5].correct = false;
   }
   if (
     /Russia/i.test(userInput.value) ||
-    (userInput.value.includes('รัสเซีย') && passedRule.value >= 7)
+    (userInput.value.includes("รัสเซีย") && passedRule.value >= 7)
   ) {
-    updateRuleStatus(6)
+    updateRuleStatus(6);
   } else {
-    rule[6].correct = false
+    rules[6].correct = false;
   }
   if (/BillRussell/i.test(userInput.value) && passedRule.value >= 8) {
-    updateRuleStatus(7)
+    updateRuleStatus(7);
   } else {
-    rule[7].correct = false
+    rules[7].correct = false;
   }
   if (/XIII/i.test(userInput.value) && passedRule.value >= 9) {
-    updateRuleStatus(8)
+    updateRuleStatus(8);
   } else {
-    rule[8].correct = false
+    rules[8].correct = false;
   }
   if (/seventeen/i.test(userInput.value) && passedRule.value >= 10) {
-    updateRuleStatus(9)
+    updateRuleStatus(9);
   } else {
-    rule[9].correct = false
+    rules[9].correct = false;
   }
-  if ((userInput.value.includes('an=a1+(n-1)d')) && passedRule.value >= 11) {
-    updateRuleStatus(10)
+  if (userInput.value.includes("an=a1+(n-1)d") && passedRule.value >= 11) {
+    updateRuleStatus(10);
   } else {
-    rule[10].correct = false
+    rules[10].correct = false;
   }
-  if (rule.every((rule) => rule.correct === true)) {
-    firePassword(userInput.value.length)
-    isWin.value = true
+  if (rules.every((rule) => rule.correct === true)) {
+    firePassword(userInput.value.length);
+    isWin.value = true;
   }
 }
 
 function checkAnswerHardest() {
-  const rule = selectedLevel.value.rules
-  let numSum = userInput.value.match(/\d/g)
+  const rules = selectedLevel.value.rules;
+  let numSum = userInput.value.match(/\d/g);
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
-    : 0
-  const today = new Date()
-  const month = today.toLocaleString('en-US', { month: 'short' })
+    : 0;
+  const today = new Date();
+  const month = today.toLocaleString("en-US", { month: "short" });
 
   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
-    updateRuleStatus(0)
+    updateRuleStatus(0);
   } else {
-    rule[0].correct = false
+    rules[0].correct = false;
   }
   if (userInput.value.length >= 5 && passedRule.value >= 2) {
-    updateRuleStatus(1)
+    updateRuleStatus(1);
   } else {
-    rule[1].correct = false
+    rules[1].correct = false;
   }
   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
-    updateRuleStatus(2)
+    updateRuleStatus(2);
   } else {
-    rule[2].correct = false
+    rules[2].correct = false;
   }
   if (sum == 35 && passedRule.value >= 4) {
-    updateRuleStatus(3)
+    updateRuleStatus(3);
   } else {
-    rule[3].correct = false
+    rules[3].correct = false;
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
-    updateRuleStatus(4)
+    updateRuleStatus(4);
   } else {
-    rule[4].correct = false
+    rules[4].correct = false;
   }
-  if (userInput.value.includes('37') && passedRule.value >= 6) {
-    updateRuleStatus(5)
+  if (userInput.value.includes("37") && passedRule.value >= 6) {
+    updateRuleStatus(5);
   } else {
-    rule[5].correct = false
+    rules[5].correct = false;
   }
-  if (userInput.value.includes('¥') && passedRule.value >= 7) {
-    let index = 1
+  if (userInput.value.includes("¥") && passedRule.value >= 7) {
+    let index = 1;
     if (IsSpread) {
-      userInput.value = '🦠' + userInput.value.substring(1)
-      IsSpread = false
+      userInput.value = "🦠" + userInput.value.substring(1);
+      IsSpread = false;
     }
-    updateRuleStatus(6)
-    if (!rule[7].correct) {
+    updateRuleStatus(6);
+    if (!rules[7].correct) {
       const virus = setInterval(function () {
-        let inputArray = Array.from(userInput.value)
-        inputArray[index] = '🦠'
-        userInput.value = inputArray.join('')
-        index++
-        if (rule[7].correct) {
-          clearInterval(virus)
+        let inputArray = Array.from(userInput.value);
+        inputArray[index] = "🦠";
+        userInput.value = inputArray.join("");
+        index++;
+        if (rules[7].correct) {
+          clearInterval(virus);
         }
-      }, 4000)
+      }, 4000);
     }
   } else {
-    rule[6].correct = false
+    rules[6].correct = false;
   }
-  if (!userInput.value.includes('🦠') && passedRule.value >= 8) {
-    updateRuleStatus(7)
+  if (!userInput.value.includes("🦠") && passedRule.value >= 8) {
+    updateRuleStatus(7);
   } else {
-    rule[7].correct = false
+    rules[7].correct = false;
   }
   if (/33f7m/.test(userInput.value) && passedRule.value >= 9) {
-    updateRuleStatus(8)
+    updateRuleStatus(8);
   } else {
-    rule[8].correct = false
+    rules[8].correct = false;
   }
   if (/cheer/i.test(userInput.value) && passedRule.value >= 10) {
-    let index = 1
+    let index = 1;
     if (IsFire) {
-      userInput.value = '🔥' + userInput.value.substring(1)
-      IsFire = false
+      userInput.value = "🔥" + userInput.value.substring(1);
+      IsFire = false;
     }
-    updateRuleStatus(9)
-    if (!rule[10].correct) {
+    updateRuleStatus(9);
+    if (!rules[10].correct) {
       const virus = setInterval(function () {
-        let inputArray = Array.from(userInput.value)
-        inputArray[index] = '🔥'
-        userInput.value = inputArray.join('')
-        index++
-        if (rule[10].correct) {
-          clearInterval(virus)
+        let inputArray = Array.from(userInput.value);
+        inputArray[index] = "🔥";
+        userInput.value = inputArray.join("");
+        index++;
+        if (rules[10].correct) {
+          clearInterval(virus);
         }
-      }, 2000)
+      }, 2000);
     }
   } else {
-    rule[9].correct = false
+    rules[9].correct = false;
   }
-  if (!userInput.value.includes('🔥') && passedRule.value >= 11) {
-    updateRuleStatus(10)
+  if (!userInput.value.includes("🔥") && passedRule.value >= 11) {
+    updateRuleStatus(10);
   } else {
-    rule[10].correct = false
+    rules[10].correct = false;
   }
-  if (userInput.value.includes('👑') && passedRule.value >= 12) {
-    updateRuleStatus(11)
+  if (userInput.value.includes("👑") && passedRule.value >= 12) {
+    updateRuleStatus(11);
   } else {
-    rule[11].correct = false
+    rules[11].correct = false;
   }
-  if (rule.every((rule) => rule.correct === true)) {
-    firePassword(userInput.value.length)
-    isWin.value = true
+  if (rules.every((rule) => rule.correct === true)) {
+    firePassword(userInput.value.length);
+    isWin.value = true;
   }
 }
 function firePassword(length) {
-  const length2 = length
-  let index = 0
+  let passwordLength = length;
+  let index = 0;
   const fire = setInterval(function () {
-    let inputArray = Array.from(userInput.value)
-    inputArray[index] = '🔥'
-    userInput.value = inputArray.join('')
-    index++
-    if (index >= length2) {
-      clearInterval(fire)
+    let inputArray = Array.from(userInput.value);
+    inputArray[index] = "🔥";
+    userInput.value = inputArray.join("");
+    index++;
+    if (index >= passwordLength) {
+      clearInterval(fire);
       if (passedRule.value - 1 != selectedLevel.value.rules.length) {
-        gameOver()
-      } else Congrat()
+        gameOver();
+      } else Congrat();
     }
-  }, 100)
+  }, 100);
 }
 function timeformat(seconds) {
   const minute = Math.floor(seconds / 60)
     .toString()
-    .padStart(2, '0')
+    .padStart(2, "0");
   const second = Math.floor(seconds % 60)
     .toString()
-    .padStart(2, '0')
+    .padStart(2, "0");
   const milisecond = ((seconds - Math.floor(seconds)) * 1000)
     .toFixed(0)
-    .padStart(2, '0')
-    .slice(0, 2)
-  timer.value = minute + ':' + second + ':' + milisecond
+    .padStart(2, "0")
+    .slice(0, 2);
+  timer.value = minute + ":" + second + ":" + milisecond;
 }
 
 function countdown(seconds) {
   time = setInterval(function () {
-    seconds -= 0.004
-    timeformat(seconds)
+    seconds -= 0.004;
+    timeformat(seconds);
     if (seconds < 0.001 || isWin.value) {
-      clearInterval(time)
-      firePassword(userInput.value.length)
+      clearInterval(time);
+      firePassword(userInput.value.length);
     }
-  }, 1)
+  }, 1);
 }
 function resetGame() {
-  clearInterval(time)
-  gameStartted.value = false
-  userInput.value = ''
-  sortRules.value = []
+  clearInterval(time);
+  gameStartted.value = false;
+  userInput.value = "";
 }
 
 function startGame() {
-  if (selectedLevel.value !== '' && !gameStartted.value) {
-    gameStartted.value = true
-    countdown(selectedLevel.value.time)
+  if (selectedLevel.value !== "" && !gameStartted.value) {
+    gameStartted.value = true;
+    countdown(selectedLevel.value.time);
   }
 }
 function Congrat() {
-  showDiv.value = true
-  imgCongrats.value = true
+  showDiv.value = true;
+  imgCongrats.value = true;
 }
 function gameOver() {
-  showDiv.value = true
-  imgGameOver.value = true
+  showDiv.value = true;
+  imgGameOver.value = true;
 }
 function Retry() {
-  sessionStorage.setItem('data', JSON.stringify(selectedLevel.value))
-  location.reload()
+  sessionStorage.setItem("data", JSON.stringify(selectedLevel.value));
+  location.reload();
 }
 </script>
 
@@ -545,8 +549,8 @@ function Retry() {
               class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx"
               @input="
                 () => {
-                  startGame()
-                  checkAnswer['checkAnswer' + selectedLevel.level]()
+                  startGame();
+                  checkAnswer['checkAnswer' + selectedLevel.level]();
                 }
               "
               v-model="userInput"
@@ -587,7 +591,7 @@ function Retry() {
                 <div class="flex flex-col gap-2">
                   <div class="items-start font-Saira text-white">
                     Rule {{ rule?.id }} :
-                    {{ rule?.correct ? 'Correct' : 'Incorrect' }}
+                    {{ rule?.correct ? "Correct" : "Incorrect" }}
                     <div class="border mt-2"></div>
                   </div>
                   <div class="flex flex-row">
