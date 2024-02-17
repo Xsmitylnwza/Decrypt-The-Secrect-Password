@@ -6,22 +6,22 @@ import musicHard from "/music/musicHard.mp4";
 import musicHardest from "/music/musicHardest.mp3";
 import correct from "/music/correct.mp3";
 
-const passedRule = ref(1);
-const selectedLevel = ref(getRule());
-const userInput = ref("");
-const gameStartted = ref(false);
-const checkAudio = ref(null);
-const timer = ref("10:00:00");
+let passedRule = ref(1);
+let selectedLevel = ref(getRule());
+let userInput = ref("");
+let gameStartted = ref(false);
+let checkAudio = ref(null);
+let timer = ref("10:00:00");
 let time;
-const isPlaying = ref(true);
-const ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
+let isPlaying = ref(true);
+let ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
 let IsSpread = true;
 let IsFire = true;
-const isAnimated = ref(false);
-const showDiv = ref(false);
-const imgGameOver = ref(false);
-const imgCongrats = ref(false);
-const isWin = ref(false);
+let isAnimated = ref(false);
+let showDiv = ref(false);
+let imgGameOver = ref(false);
+let imgCongrats = ref(false);
+let isWin = ref(false);
 
 function getRule() {
   const localRule = JSON.parse(sessionStorage.getItem("data")) || data[0];
