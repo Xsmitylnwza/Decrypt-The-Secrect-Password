@@ -9,42 +9,47 @@
       },
       {
         "id": 2,
-        "message": "What color is the sky?",
+        "message": "Your password must have at least 2 digit",
         "correct": false
       },
       {
         "id": 3,
-        "message": "What color is the 'Manchester'?",
+        "message": "Have you ever played football?",
         "correct": false
       },
       {
         "id": 4,
-        "message": "ชื่อทีมของเป็ดแดง",
+        "message": "Do you know the team named 'Red Duck'?",
         "correct": false
       },
       {
         "id": 5,
-        "message": "How many legs does a snake have?",
+        "message": "What color is the 'Manchester'? (Do not answer in English)",
         "correct": false
       },
       {
         "id": 6,
-        "message": "SUIII",
+        "message": "Look up, What color is the sky if it's 'BIG'☁️?",
         "correct": false
       },
       {
         "id": 7,
-        "message": "ชื่อทีมของเป็ดแดง",
+        "message": "The snake is coming!!! Please tell me how many legs is it?",
         "correct": false
       },
       {
         "id": 8,
-        "message": "ชื่อทีมของเป็ดแดง",
+        "message": "SUIII⚽️💪",
         "correct": false
       },
       {
         "id": 9,
-        "message": "ชื่อทีมของเป็ดแดง",
+        "message": "When was Facebook launched but 😎? (year)",
+        "correct": false
+      },
+      {
+        "id": 10,
+        "message": "If i want to watch 'The International 2021', Where can I go to watch it?",
         "correct": false
       }
     ],
@@ -52,29 +57,79 @@
     "character": "SPY",
     "backgroundColor": "background-color-hard",
     "boxColor": "bg-color-hard-box",
-    "textColor": "text-color-hard"
+    "textColor": "text-color-hard",
+    "soundColor": "sound-color-hard",
+    "time": 600
   },
   {
     "level": "Veryhard",
     "rules": [
       {
         "id": 1,
-        "message": "พูดว่า lungtoo",
-        "correct": false,
-        "answer": "lungtoo"
+        "message": "Your password must have atleast 4 digit",
+        "correct": false
       },
       {
         "id": 2,
-        "message": "ในภาพนี้เป็นภาพของใคร",
+        "message": "Your password must multiply to 20",
+        "correct": false
+      },
+      {
+        "id": 3,
+        "message": "มะม่วง mango เเล้วอย่างสีเหลืองละ?",
+        "correct": false,
+        "picture": "./images/yellow.jpg"
+      },
+      {
+        "id": 4,
+        "message": "What is his name?",
+        "correct": false,
+        "picture": "./images/peetho.jpg"
+      },
+      {
+        "id": 5,
+        "message": "What is this person's wife's name?",
         "correct": false,
         "picture": "./images/lungpon.png"
+      },
+      {
+        "id": 6,
+        "message": "who is President of thailand number 29",
+        "correct": false
+      },
+      {
+        "id": 7,
+        "message": "Which country has the most area?",
+        "correct": false
+      },
+      {
+        "id": 8,
+        "message": "NBA player with the most championship rings",
+        "correct": false
+      },
+      {
+        "id": 9,
+        "message": "Roman letter with value 13",
+        "correct": false
+      },
+      {
+        "id": 10,
+        "message": "The sum of all solutions to the equation |x²-72| = x answer with text ex.(fifteen)",
+        "correct": false
+      },
+      {
+        "id": 11,
+        "message": "EXTRA:arithmetic sequence formula ex.(am=am+2a+2(n+32)x)",
+        "correct": false
       }
     ],
     "logo": "./images/veryhard-pic.png",
     "character": "FBI",
     "backgroundColor": "background-color-veryhard",
     "boxColor": "bg-color-veryhard-box",
-    "textColor": "text-color-veryhard"
+    "textColor": "text-color-veryhard",
+    "soundColor": "sound-color-veryhard",
+    "time": 450
   },
   {
     "level": "Hardest",
@@ -91,7 +146,7 @@
       },
       {
         "id": 3,
-        "message": "Your password must includes speial characters",
+        "message": "Your password must includes spacial characters",
         "correct": false
       },
       {
@@ -106,7 +161,7 @@
       },
       {
         "id": 6,
-        "message": "2 + 7 * 2 + 9 / 3 + 9 * 2 = ?",
+        "message": "What is result of (2 + (7 * 2) + (9 / 3) + (9 * 2)) = ?",
         "correct": false
       },
       {
@@ -116,7 +171,28 @@
       },
       {
         "id": 8,
-        "message": "Oh no it fire burning your password!?!!",
+        "message": "Oh no! the virus is spreading 🦠🦠🦠, get rid of it quickly.",
+        "correct": false
+      },
+      {
+        "id": 9,
+        "message": "Your password must include this capcha",
+        "correct": false,
+        "picture": "./images/capcha.png"
+      },
+      {
+        "id": 10,
+        "message": "You come so far brother cheer up yourself",
+        "correct": false
+      },
+      {
+        "id": 11,
+        "message": "Oh I'm sorry the fire is burning your password 🔥🔥🔥",
+        "correct": false
+      },
+      {
+        "id": 12,
+        "message": "You made it !! you are the king !! 👑👑👑",
         "correct": false
       }
     ],
@@ -124,6 +200,8 @@
     "character": "HACKER",
     "backgroundColor": "background-color-hardest",
     "boxColor": "bg-color-hardest-box",
-    "textColor": "text-color-hardest"
+    "textColor": "text-color-hardest",
+    "soundColor": "sound-color-hardest",
+    "time": 300
   }
 ]
