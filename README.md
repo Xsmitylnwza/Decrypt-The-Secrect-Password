@@ -51,7 +51,12 @@ The web-based game, Decrypt the password by following the difficult and creative
 ## Member
 
 - 65130500067 : [Monthon Mukkun](https://github.com/carrynong2) 😎
+> 20 % Code(start audio function, sortRule function, levelSelector function, startGame function, resetGame function)
 - 65130500078 : [Saksit Tatitrisakul](https://github.com/Tiskas02)💵
+> 20 % UX/UI CSS Animation Code(StopSound,Firepassword,toggleAnimation,CheckAnswerVeryHard,lose Sound method,passAll)
 - 65130500082 : [Soranut Sangroongruang](https://github.com/c3b22) 😊
+> 20 % CSS Code(some get result function,a litte retry function,some implement burn text after win or lose function,victory sound method)
 - 65130500099 : [Chaimongkon Sokgampang](https://github.com/Xsmitylnwza)😉
+> 20 % CSS Refactor code,Clean code,Object Design,Coach,Code(timer function,check answer function)
 - 65130500118 : [Saksaran Akramethawong](https://github.com/saksaran)😀
+> 20 % CSS, Code(checkAnswerHard, Event Handling)
