@@ -50,8 +50,8 @@ The web-based game, Decrypt the password by following the difficult and creative
 
 ## Member
 
-- นายมณฑล มักคุ้น 65130500067 😎
-- นาย ศักดิ์สิทธิ์ ตติไตรสกุล 65130500078 💵
-- นาย สรณัฐ เเสงรุ่งเรือง 65130500082 😊
-- นาย ชัยมงคล ศอกกำปัง 65130500099 😉
-- นายศักย์ศรัณย์ อัครเมธาวงศ์ 65130500118 😀
+- 65130500067 : [Monthon Mukkun](https://github.com/carrynong2) 😎
+- 65130500078 : [Saksit Tatitrisakul](https://github.com/Tiskas02)💵
+- 65130500082 : [Soranut Sangroongruang](https://github.com/c3b22) 😊
+- 65130500099 : [Chaimongkon Sokgampang](https://github.com/Xsmitylnwza)😉
+- 65130500118 : [Saksaran Akramethawong](https://github.com/saksaran)😀
