@@ -12,16 +12,17 @@ const passedRule = ref(1);
 const selectedLevel = ref(getRule());
 const userInput = ref("");
 const gameStartted = ref(false);
-const timer = ref("10:00:00");
+const timer = ref(getRule().level === "Hard" ? "10:00:00" : getRule().level === "VeryHard" ? "07:30:00" : "05:00:00");
 const ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
 const isAnimated = ref(false);
 const showResult = ref(false);
 const isWin = ref(false);
 let checkAudio = ref(null);
 let isPlaying = ref(true);
+let time;
 let IsSpread = true;
 let IsFire = true;
-let time;
+
 
 function getRule() {
   const localRule = JSON.parse(sessionStorage.getItem('data')) || data[0]
@@ -123,7 +124,7 @@ function firePassword(length) {
       clearInterval(fire);
       getResult(passedRule.value - 1 == selectedLevel.value.rules.length);
     }
-  }, 100);
+  }, 50);
 }
 
 function timeformat(seconds) {
@@ -167,7 +168,7 @@ function startGame() {
 function getResult(result) {
   showResult.value = true;
   isWin.value = result;
-  if (isWin.value === true) {
+  if (isWin.value) {
     const audioWin = new Audio(victory)
     audioWin.play()
   } else {
@@ -476,7 +477,6 @@ function checkAnswerHardest() {
         </p>
       </div>
       <!-- level componant  row2-->
-
       <div class="flex flex-col items-center w-[280px] m-[auto] mobile-M:w-[375px]">
         <section id="select_level" class="text-center">
           <div>
