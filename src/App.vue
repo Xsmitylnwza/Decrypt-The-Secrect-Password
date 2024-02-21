@@ -143,6 +143,7 @@ function timeformat(seconds) {
 function countdown(seconds) {
   time = setInterval(function () {
     seconds -= 0.004;
+    seconds = parseFloat(seconds.toFixed(15));
     timeformat(seconds);
     if (seconds < 0.001 || isWin.value) {
       clearInterval(time);
