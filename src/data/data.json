@@ -59,7 +59,7 @@
     "boxColor": "bg-color-hard-box",
     "textColor": "text-color-hard",
     "soundColor": "sound-color-hard",
-    "time": 300
+    "time": 6
   },
   {
     "level": "Veryhard",
@@ -202,6 +202,6 @@
     "boxColor": "bg-color-hardest-box",
     "textColor": "text-color-hardest",
     "soundColor": "sound-color-hardest",
-    "time":300
+    "time": 300
   }
 ]

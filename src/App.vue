@@ -5,6 +5,8 @@ import musicHard from "/music/musicHard.mp3";
 import musicVeryHard from "/music/musicVeryHard.mp3";
 import musicHardest from "/music/musicHardest.mp3";
 import correct from "/music/correct.mp3";
+import victory from "/music/victoryscreech.mp3";
+import loose from "/music/lose.mp3"
 
 const passedRule = ref(1);
 const selectedLevel = ref(getRule());
@@ -164,6 +166,13 @@ function startGame() {
 function getResult(result) {
   showResult.value = true;
   isWin.value = result;
+  if (isWin.value === true){
+    const audioWin = new Audio(victory)
+    audioWin.play()
+  }else{
+    const audioLose = new Audio(loose)
+    audioLose.play()
+  }
 }
 
 function retry() {
@@ -416,7 +425,7 @@ function checkAnswerHardest() {
     <div id="modelConfirm" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
       <div class="relative top-40 mx-auto rounded-md bg-white-0 max-w-md">
         <div class="p-6 pt-0 text-center">
-          <img :src="isWin ? '/images/Congrat.png' : '/images/GameOver.png'" />
+          <img :src="isWin ? '/images/congrat.png' : '/images/game-over.png'" />
           <button @click=" retry()"
             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
             ReStart
