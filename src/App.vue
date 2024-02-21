@@ -22,12 +22,12 @@ let IsFire = true;
 let time;
 
 function getRule() {
-  const localRule = JSON.parse(sessionStorage.getItem("data")) || data[0];
-  if (localRule.level === "Hard") {
-    return data[0];
-  } else if (localRule.level === "Veryhard") {
-    return data[1];
-  } else return data[2];
+  const localRule = JSON.parse(sessionStorage.getItem('data')) || data[0]
+  if (localRule.level === 'Hard') {
+    return data[0]
+  } else if (localRule.level === 'Veryhard') {
+    return data[1]
+  } else return data[2]
 }
 
 const toggleAnimation = () => {
@@ -38,28 +38,28 @@ const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
   checkAnswerHardest,
-};
+}
 
 const audioMapping = {
   Hard: new Audio(musicHard),
   Veryhard: new Audio(musicVeryHard),
   Hardest: new Audio(musicHardest),
-};
+}
 
 const startNewAudio = (level) => {
-  const audio = audioMapping[level];
+  const audio = audioMapping[level]
   if (checkAudio.value !== null) {
-    checkAudio.value.pause();
-    checkAudio.value.currentTime = 0;
+    checkAudio.value.pause()
+    checkAudio.value.currentTime = 0
   }
-  audio.play();
-  checkAudio.value = audio;
-};
+  audio.play()
+  checkAudio.value = audio
+}
 
 const startNewSoundCorrect = () => {
-  const audioCorrect = new Audio(correct);
-  audioCorrect.play();
-};
+  const audioCorrect = new Audio(correct)
+  audioCorrect.play()
+}
 
 const stopSound = () => {
   isPlaying = false;
@@ -67,38 +67,38 @@ const stopSound = () => {
 };
 
 const playSound = () => {
-  isPlaying = true;
-  checkAudio.value.play();
-};
+  isPlaying = true
+  checkAudio.value.play()
+}
 
 function sortRules(rules) {
   return rules.slice(0, passedRule.value).sort((a, b) => {
     if (a.correct && b.correct) {
-      return -1;
+      return -1
     } else if (!a.correct && b.correct) {
-      return -1;
+      return -1
     } else {
-      return a.id - b.id;
+      return a.id - b.id
     }
-  });
+  })
 }
 
 watchEffect(() => {
   if (checkAudio.value !== null) {
-    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level);
+    checkAudio.value.onended = () => startNewAudio(selectedLevel.value.level)
   }
-  ruleShow.value = sortRules(selectedLevel.value.rules);
-});
+  ruleShow.value = sortRules(selectedLevel.value.rules)
+})
 
 
 function levelSelector(level) {
-  selectedLevel.value = level;
-  passedRule.value = 1;
-  ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value);
-  resetGame();
-  timeformat(selectedLevel.value.time);
-  startNewAudio(selectedLevel.value.level);
-  if (!isPlaying) stopSound();
+  selectedLevel.value = level
+  passedRule.value = 1
+  ruleShow.value = selectedLevel.value.rules.slice(0, passedRule.value)
+  resetGame()
+  timeformat(selectedLevel.value.time)
+  startNewAudio(selectedLevel.value.level)
+  if (!isPlaying) stopSound()
 }
 
 function updateRuleStatus(ruleIndex) {
@@ -172,56 +172,56 @@ function retry() {
 }
 
 function checkAnswerHard() {
-  const rules = selectedLevel.value.rules;
+  const rules = selectedLevel.value.rules
   if (/[aeiouAEIOU]/.test(userInput.value) && passedRule.value >= 1) {
-    updateRuleStatus(0);
+    updateRuleStatus(0)
   } else {
-    rules[0].correct = false;
+    rules[0].correct = false
   }
   if (/\d{2,}/.test(userInput.value) && passedRule.value >= 2) {
-    updateRuleStatus(1);
+    updateRuleStatus(1)
   } else {
-    rules[1].correct = false;
+    rules[1].correct = false
   }
   if (/yes/i.test(userInput.value) && passedRule.value >= 3) {
-    updateRuleStatus(2);
+    updateRuleStatus(2)
   } else {
-    rules[2].correct = false;
+    rules[2].correct = false
   }
   if (/liverpool/i.test(userInput.value) && passedRule.value >= 4) {
-    updateRuleStatus(3);
+    updateRuleStatus(3)
   } else {
-    rules[3].correct = false;
+    rules[3].correct = false
   }
-  if (userInput.value.includes("ฟ้า") && passedRule.value >= 5) {
-    updateRuleStatus(4);
+  if (userInput.value.includes('ฟ้า') && passedRule.value >= 5) {
+    updateRuleStatus(4)
   } else {
-    rules[4].correct = false;
+    rules[4].correct = false
   }
-  if (userInput.value.includes("BLUE") && passedRule.value >= 6) {
-    updateRuleStatus(5);
+  if (userInput.value.includes('BLUE') && passedRule.value >= 6) {
+    updateRuleStatus(5)
   } else {
-    rules[5].correct = false;
+    rules[5].correct = false
   }
-  if (userInput.value.includes("0") && passedRule.value >= 7) {
-    updateRuleStatus(6);
+  if (userInput.value.includes('0') && passedRule.value >= 7) {
+    updateRuleStatus(6)
   } else {
-    rules[6].correct = false;
+    rules[6].correct = false
   }
   if (/ronaldo/i.test(userInput.value) && passedRule.value >= 8) {
-    updateRuleStatus(7);
+    updateRuleStatus(7)
   } else {
-    rules[7].correct = false;
+    rules[7].correct = false
   }
-  if (userInput.value.includes("2547") && passedRule.value >= 9) {
-    updateRuleStatus(8);
+  if (userInput.value.includes('2547') && passedRule.value >= 9) {
+    updateRuleStatus(8)
   } else {
-    rules[8].correct = false;
+    rules[8].correct = false
   }
   if (/youtube/i.test(userInput.value) && passedRule.value >= 10) {
-    updateRuleStatus(9);
+    updateRuleStatus(9)
   } else {
-    rules[9].correct = false;
+    rules[9].correct = false
   }
   if (rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
@@ -229,180 +229,178 @@ function checkAnswerHard() {
 }
 
 function checkAnswerVeryhard() {
-  const rules = selectedLevel.value.rules;
-  let numMatch = userInput.value.match(/\d/g);
-  let multiply = numMatch.reduce(
-    (acc, cur) => parseInt(acc) * parseInt(cur),
-    1
-  );
+  const rules = selectedLevel.value.rules
+  let numMatch = userInput.value.match(/\d/g)
+  let multiply = numMatch.reduce((acc, cur) => parseInt(acc) * parseInt(cur), 1)
   if (userInput.value.length >= 4 && passedRule.value >= 1) {
-    updateRuleStatus(0);
+    updateRuleStatus(0)
   } else {
-    rules[0].correct = false;
+    rules[0].correct = false
   }
   if (multiply == 20 && passedRule.value >= 2) {
-    updateRuleStatus(1);
+    updateRuleStatus(1)
   } else {
-    rules[1].correct = false;
+    rules[1].correct = false
   }
   if (/yellow/i.test(userInput.value) && passedRule.value >= 3) {
-    updateRuleStatus(2);
+    updateRuleStatus(2)
   } else {
-    rules[2].correct = false;
+    rules[2].correct = false
   }
   if (
     /ricardo/i.test(userInput.value) ||
-    (userInput.value.includes("ริคาโด้") && passedRule.value >= 4)
+    (userInput.value.includes('ริคาโด้') && passedRule.value >= 4)
   ) {
-    updateRuleStatus(3);
+    updateRuleStatus(3)
   } else {
-    rules[3].correct = false;
+    rules[3].correct = false
   }
   if (/somporn/i.test(userInput.value) && passedRule.value >= 5) {
-    updateRuleStatus(4);
+    updateRuleStatus(4)
   } else {
-    rules[4].correct = false;
+    rules[4].correct = false
   }
   if (
     /lungtoo/i.test(userInput.value) ||
-    (userInput.value.includes("ลุงตู่") && passedRule.value >= 6)
+    (userInput.value.includes('ลุงตู่') && passedRule.value >= 6)
   ) {
-    updateRuleStatus(5);
+    updateRuleStatus(5)
   } else {
-    rules[5].correct = false;
+    rules[5].correct = false
   }
   if (
     /Russia/i.test(userInput.value) ||
-    (userInput.value.includes("รัสเซีย") && passedRule.value >= 7)
+    (userInput.value.includes('รัสเซีย') && passedRule.value >= 7)
   ) {
-    updateRuleStatus(6);
+    updateRuleStatus(6)
   } else {
-    rules[6].correct = false;
+    rules[6].correct = false
   }
   if (/BillRussell/i.test(userInput.value) && passedRule.value >= 8) {
-    updateRuleStatus(7);
+    updateRuleStatus(7)
   } else {
-    rules[7].correct = false;
+    rules[7].correct = false
   }
   if (/XIII/i.test(userInput.value) && passedRule.value >= 9) {
-    updateRuleStatus(8);
+    updateRuleStatus(8)
   } else {
-    rules[8].correct = false;
+    rules[8].correct = false
   }
   if (/seventeen/i.test(userInput.value) && passedRule.value >= 10) {
-    updateRuleStatus(9);
+    updateRuleStatus(9)
   } else {
-    rules[9].correct = false;
+    rules[9].correct = false
   }
-  if (userInput.value.includes("an=a1+(n-1)d") && passedRule.value >= 11) {
-    updateRuleStatus(10);
+  if (userInput.value.includes('an=a1+(n-1)d') && passedRule.value >= 11) {
+    updateRuleStatus(10)
   } else {
-    rules[10].correct = false;
+    rules[10].correct = false
   }
   if (rules.every((rule) => rule.correct === true)) {
+    firePassword(userInput.value.length);
   }
 }
 
 function checkAnswerHardest() {
-  const rules = selectedLevel.value.rules;
-  let numSum = userInput.value.match(/\d/g);
+  const rules = selectedLevel.value.rules
+  let numSum = userInput.value.match(/\d/g)
   let sum = numSum
     ? numSum.reduce((acc, cur) => parseInt(acc) + parseInt(cur), 0)
-    : 0;
-  const today = new Date();
-  const month = today.toLocaleString("en-US", { month: "short" });
+    : 0
+  const today = new Date()
+  const month = today.toLocaleString('en-US', { month: 'short' })
 
   if (/\d{3,}/.test(userInput.value) && passedRule.value >= 1) {
-    updateRuleStatus(0);
+    updateRuleStatus(0)
   } else {
-    rules[0].correct = false;
+    rules[0].correct = false
   }
   if (userInput.value.length >= 5 && passedRule.value >= 2) {
-    updateRuleStatus(1);
+    updateRuleStatus(1)
   } else {
-    rules[1].correct = false;
+    rules[1].correct = false
   }
   if (/[!@#$%]/.test(userInput.value) && passedRule.value >= 3) {
-    updateRuleStatus(2);
+    updateRuleStatus(2)
   } else {
-    rules[2].correct = false;
+    rules[2].correct = false
   }
   if (sum == 35 && passedRule.value >= 4) {
-    updateRuleStatus(3);
+    updateRuleStatus(3)
   } else {
-    rules[3].correct = false;
+    rules[3].correct = false
   }
   if (userInput.value.includes(month) && passedRule.value >= 5) {
-    updateRuleStatus(4);
+    updateRuleStatus(4)
   } else {
-    rules[4].correct = false;
+    rules[4].correct = false
   }
-  if (userInput.value.includes("37") && passedRule.value >= 6) {
-    updateRuleStatus(5);
+  if (userInput.value.includes('37') && passedRule.value >= 6) {
+    updateRuleStatus(5)
   } else {
-    rules[5].correct = false;
+    rules[5].correct = false
   }
-  if (userInput.value.includes("¥") && passedRule.value >= 7) {
-    let index = 1;
+  if (userInput.value.includes('¥') && passedRule.value >= 7) {
+    let index = 1
     if (IsSpread) {
-      userInput.value = "🦠" + userInput.value.substring(1);
-      IsSpread = false;
+      userInput.value = '🦠' + userInput.value.substring(1)
+      IsSpread = false
     }
-    updateRuleStatus(6);
+    updateRuleStatus(6)
     if (!rules[7].correct) {
       const virus = setInterval(function () {
-        let inputArray = Array.from(userInput.value);
-        inputArray[index] = "🦠";
-        userInput.value = inputArray.join("");
-        index++;
+        let inputArray = Array.from(userInput.value)
+        inputArray[index] = '🦠'
+        userInput.value = inputArray.join('')
+        index++
         if (rules[7].correct) {
-          clearInterval(virus);
+          clearInterval(virus)
         }
-      }, 4000);
+      }, 4000)
     }
   } else {
-    rules[6].correct = false;
+    rules[6].correct = false
   }
-  if (!userInput.value.includes("🦠") && passedRule.value >= 8) {
-    updateRuleStatus(7);
+  if (!userInput.value.includes('🦠') && passedRule.value >= 8) {
+    updateRuleStatus(7)
   } else {
-    rules[7].correct = false;
+    rules[7].correct = false
   }
   if (/33f7m/.test(userInput.value) && passedRule.value >= 9) {
-    updateRuleStatus(8);
+    updateRuleStatus(8)
   } else {
-    rules[8].correct = false;
+    rules[8].correct = false
   }
   if (/cheer/i.test(userInput.value) && passedRule.value >= 10) {
-    let index = 1;
+    let index = 1
     if (IsFire) {
-      userInput.value = "🔥" + userInput.value.substring(1);
-      IsFire = false;
+      userInput.value = '🔥' + userInput.value.substring(1)
+      IsFire = false
     }
-    updateRuleStatus(9);
+    updateRuleStatus(9)
     if (!rules[10].correct) {
       const virus = setInterval(function () {
-        let inputArray = Array.from(userInput.value);
-        inputArray[index] = "🔥";
-        userInput.value = inputArray.join("");
-        index++;
+        let inputArray = Array.from(userInput.value)
+        inputArray[index] = '🔥'
+        userInput.value = inputArray.join('')
+        index++
         if (rules[10].correct) {
-          clearInterval(virus);
+          clearInterval(virus)
         }
-      }, 2000);
+      }, 2000)
     }
   } else {
-    rules[9].correct = false;
+    rules[9].correct = false
   }
-  if (!userInput.value.includes("🔥") && passedRule.value >= 11) {
-    updateRuleStatus(10);
+  if (!userInput.value.includes('🔥') && passedRule.value >= 11) {
+    updateRuleStatus(10)
   } else {
-    rules[10].correct = false;
+    rules[10].correct = false
   }
-  if (userInput.value.includes("👑") && passedRule.value >= 12) {
-    updateRuleStatus(11);
+  if (userInput.value.includes('👑') && passedRule.value >= 12) {
+    updateRuleStatus(11)
   } else {
-    rules[11].correct = false;
+    rules[11].correct = false
   }
   if (rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
@@ -499,9 +497,9 @@ function checkAnswerHardest() {
             </div>
             <input type="text" placeholder="Type here"
               class="font-itim text-[14px] input input-bordered w-full max-w-xs bg-[#FAFAFA] shadow-inner-lx" @input="() => {
-                startGame();
-                checkAnswer['checkAnswer' + selectedLevel.level]();
-              }
+                  startGame()
+                  checkAnswer['checkAnswer' + selectedLevel.level]()
+                }
                 " v-model="userInput" />
           </label>
         </div>
@@ -521,13 +519,13 @@ function checkAnswerHardest() {
           <div v-if="gameStartted" class="flex flex-col">
             <div v-for="rule in ruleShow" class="min-w-[307px] sm:w-full rounded-md py-3 animate-fade-up" :key="rule.id">
               <div :class="rule?.correct
-                ? 'bg-[#22c55e] hover:bg-green-400 shadow-md shadow-green-200 animate-jump animate-ease-in'
-                : 'bg-[#e11d48] hover:bg-red-500 shadow-md shadow-red-200 animate-shake'
+                  ? 'bg-[#22c55e] hover:bg-green-400 shadow-md shadow-green-200 animate-jump animate-ease-in'
+                  : 'bg-[#e11d48] hover:bg-red-500 shadow-md shadow-red-200 animate-shake'
                 " class="py-4 px-5 flex flex-col border border-white rounded-[14px]">
                 <div class="flex flex-col gap-2">
                   <div class="items-start font-Saira text-white">
                     Rule {{ rule?.id }} :
-                    {{ rule?.correct ? "Correct" : "Incorrect" }}
+                    {{ rule?.correct ? 'Correct' : 'Incorrect' }}
                     <div class="border mt-2"></div>
                   </div>
                   <div class="flex flex-row">
@@ -568,13 +566,13 @@ function checkAnswerHardest() {
                     <div class="font-bold text-black">
                       1.Select your Power(Level)
                     </div>
-                    (Hard = noob)<br />
-                    (Very Hard =medium)<br />
-                    (Hardest = ok)
+                    (Hard = beginner)<br />
+                    (Very Hard = ok (but smart in Math))<br />
+                    (Hardest = Genius)
                   </div>
                   <img src="/images/howtoplay1.png" alt="select Level image"
                     class="rounded-box hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
-                  <p class="mt-4">
+                  <p class="mt-4 text-center">
                     Then any level it give your Character to play password game
                   </p>
                   <p class="mt-4 font-bold">Characteristic to play Game</p>
@@ -604,17 +602,58 @@ function checkAnswerHardest() {
                 <div class="flex flex-col items-center mt-3">
                   <p>**Character mean your power to play game harder**</p>
                   <p class="font-bold text-black mt-2">
-                    2.Enter password in textblock
+                    2.Enter password in textbox input
                   </p>
                   <img src="/images/enterpassword.png" alt="enterpassword"
                     class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
-                  <p class="font-bold text-black mt-3">
-                    3.Follow the rule until it done!!!
+                  <p class="text-center mt-3 mb-3">
+                    2.1 ) when you enter password in textbox input rule will
+                    generate
                   </p>
-                  <div class="mt-3 text-center">
-                    <div class="font-bold">Game tip!!!</div>
-                    Time is runing when you text in text box you can get time to
-                    challenge with your friend
+                  <div class="font-bold text-red-300 mt-3 text-center">
+                    Then : You must follow the rule
+                  </div>
+
+                  <img src="/images/correct-some-password.png" alt="corretSomePassword"
+                    class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
+                  <div class="text-center mt-3">
+                    2.2 ) When you enter password follow rule1 untill
+                    <div class="text-green-500 font-bold">correct</div>
+                    next rule will generate new rule on top of correct rule
+                  </div>
+                  <div class="font-bold text-black mt-3">
+                    3.Follow the rule until All rule
+                    <div class="text-green-500 font-bold text-center">
+                      correct!!!
+                    </div>
+                  </div>
+                  <div class="text-center">this is two way of Game finish</div>
+                  <div class="flex flex-col items-center">
+                    <img src="/images/congratulation-end.png" alt="congratulation"
+                      class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
+                    <div class="flex flex-row mt-3 hover:animate-shake">
+                      <div class="font-bold">Way 1:</div>
+                      <div class="font-bold text-green-500">
+                        WIN THIS LEVEL🎇
+                      </div>
+                    </div>
+
+                    <img src="/images/game-over-end.png" alt="gameOver"
+                      class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
+                    <div class="flex flex-row mt-3 hover:animate-shake">
+                      <div class="font-bold">Way 2:</div>
+                      <div class="font-bold text-red-500">GAME OVER🚨</div>
+                      <div class="font-bold">(loser way)</div>
+                    </div>
+                  </div>
+                  <div class="mt-3 text-center hover:text-red-500">
+                    <div class="font-bold hover:animate-shake hover:text-red-500">
+                      Game tip!!!
+                    </div>
+                    <div class="hover:text-red-500">
+                      Time is runing when you text in text box you can get time
+                      to challenge with your friend
+                    </div>
                   </div>
                 </div>
               </div>
@@ -641,7 +680,7 @@ function checkAnswerHardest() {
 }
 
 .sound-color-hard {
-  color: #000;
+  color: #f0ffff;
 }
 
 .background-color-hard {
