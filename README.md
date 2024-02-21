@@ -28,7 +28,7 @@ The web-based game, Decrypt the password by following the difficult and creative
 
 ### Gameplay
 
-- Type something in textbox to start the game.
+- After choose the level, Type something in textbox to start the game.
 - The rule will appear when you start typing. If the rule is correct, the next rule will be unlocked.
 - The timer will be counted down after typing. If the time runs out, you will lose the game.
 - If you complete all of the rules you win the game
