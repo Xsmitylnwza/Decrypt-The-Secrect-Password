@@ -1,27 +1,25 @@
 <script setup>
 import { ref, watchEffect } from "vue";
 import data from "./data/data.json";
+import musicHard from "/music/musicHard.mp3";
 import musicVeryHard from "/music/musicVeryHard.mp3";
-import musicHard from "/music/musicHard.mp4";
 import musicHardest from "/music/musicHardest.mp3";
 import correct from "/music/correct.mp3";
 
-let passedRule = ref(1);
-let selectedLevel = ref(getRule());
-let userInput = ref("");
-let gameStartted = ref(false);
+const passedRule = ref(1);
+const selectedLevel = ref(getRule());
+const userInput = ref("");
+const gameStartted = ref(false);
+const timer = ref("10:00:00");
+const ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
+const isAnimated = ref(false);
+const showResult = ref(false);
+const isWin = ref(false);
 let checkAudio = ref(null);
-let timer = ref("10:00:00");
-let time;
 let isPlaying = ref(true);
-let ruleShow = ref(selectedLevel.value.rules.slice(0, 1));
 let IsSpread = true;
 let IsFire = true;
-let isAnimated = ref(false);
-let showDiv = ref(false);
-let imgGameOver = ref(false);
-let imgCongrats = ref(false);
-let isWin = ref(false);
+let time;
 
 function getRule() {
   const localRule = JSON.parse(sessionStorage.getItem("data")) || data[0];
@@ -35,6 +33,7 @@ function getRule() {
 const toggleAnimation = () => {
   isAnimated.value = !isAnimated.value;
 };
+
 const checkAnswer = {
   checkAnswerHard,
   checkAnswerVeryhard,
@@ -66,6 +65,7 @@ const stopSound = () => {
   isPlaying = false;
   checkAudio.value.pause();
 };
+
 const playSound = () => {
   isPlaying = true;
   checkAudio.value.play();
@@ -90,14 +90,6 @@ watchEffect(() => {
   ruleShow.value = sortRules(selectedLevel.value.rules);
 });
 
-function updateRuleStatus(ruleIndex) {
-  selectedLevel.value.rules[ruleIndex].correct = true;
-  if (passedRule.value <= ruleIndex + 1) {
-    passedRule.value = passedRule.value + 1;
-    startNewSoundCorrect();
-    return;
-  }
-}
 
 function levelSelector(level) {
   selectedLevel.value = level;
@@ -107,6 +99,76 @@ function levelSelector(level) {
   timeformat(selectedLevel.value.time);
   startNewAudio(selectedLevel.value.level);
   if (!isPlaying) stopSound();
+}
+
+function updateRuleStatus(ruleIndex) {
+  selectedLevel.value.rules[ruleIndex].correct = true;
+  if (passedRule.value <= ruleIndex + 1) {
+    passedRule.value = passedRule.value + 1;
+    startNewSoundCorrect();
+    return;
+  }
+}
+function firePassword(length) {
+  let passwordLength = length;
+  let index = 0;
+  const fire = setInterval(function () {
+    let inputArray = Array.from(userInput.value);
+    inputArray[index] = "🔥";
+    userInput.value = inputArray.join("");
+    index++;
+    if (index >= passwordLength) {
+      clearInterval(fire);
+      getResult(passedRule.value - 1 == selectedLevel.value.rules.length);
+    }
+  }, 100);
+}
+
+function timeformat(seconds) {
+  const minute = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const second = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, "0");
+  const milisecond = ((seconds - Math.floor(seconds)) * 1000)
+    .toFixed(0)
+    .padStart(2, "0")
+    .slice(0, 2);
+  timer.value = minute + ":" + second + ":" + milisecond;
+}
+
+function countdown(seconds) {
+  time = setInterval(function () {
+    seconds -= 0.004;
+    timeformat(seconds);
+    if (seconds < 0.001 || isWin.value) {
+      clearInterval(time);
+      firePassword(userInput.value.length);
+    }
+  }, 1);
+}
+
+function resetGame() {
+  clearInterval(time);
+  gameStartted.value = false;
+  userInput.value = "";
+}
+
+function startGame() {
+  if (selectedLevel.value !== "" && !gameStartted.value) {
+    gameStartted.value = true;
+    countdown(selectedLevel.value.time);
+  }
+}
+function getResult(result) {
+  showResult.value = true;
+  isWin.value = result;
+}
+
+function retry() {
+  sessionStorage.setItem("data", JSON.stringify(selectedLevel.value));
+  location.reload();
 }
 
 function checkAnswerHard() {
@@ -163,7 +225,6 @@ function checkAnswerHard() {
   }
   if (rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
-    isWin.value = true;
   }
 }
 
@@ -239,8 +300,6 @@ function checkAnswerVeryhard() {
     rules[10].correct = false;
   }
   if (rules.every((rule) => rule.correct === true)) {
-    firePassword(userInput.value.length);
-    isWin.value = true;
   }
 }
 
@@ -347,94 +406,20 @@ function checkAnswerHardest() {
   }
   if (rules.every((rule) => rule.correct === true)) {
     firePassword(userInput.value.length);
-    isWin.value = true;
   }
 }
-function firePassword(length) {
-  let passwordLength = length;
-  let index = 0;
-  const fire = setInterval(function () {
-    let inputArray = Array.from(userInput.value);
-    inputArray[index] = "🔥";
-    userInput.value = inputArray.join("");
-    index++;
-    if (index >= passwordLength) {
-      clearInterval(fire);
-      if (passedRule.value - 1 != selectedLevel.value.rules.length) {
-        gameOver();
-      } else congrat();
-    }
-  }, 100);
-}
-function timeformat(seconds) {
-  const minute = Math.floor(seconds / 60)
-    .toString()
-    .padStart(2, "0");
-  const second = Math.floor(seconds % 60)
-    .toString()
-    .padStart(2, "0");
-  const milisecond = ((seconds - Math.floor(seconds)) * 1000)
-    .toFixed(0)
-    .padStart(2, "0")
-    .slice(0, 2);
-  timer.value = minute + ":" + second + ":" + milisecond;
-}
 
-function countdown(seconds) {
-  time = setInterval(function () {
-    seconds -= 0.004;
-    timeformat(seconds);
-    if (seconds < 0.001 || isWin.value) {
-      clearInterval(time);
-      firePassword(userInput.value.length);
-    }
-  }, 1);
-}
-function resetGame() {
-  clearInterval(time);
-  gameStartted.value = false;
-  userInput.value = "";
-}
 
-function startGame() {
-  if (selectedLevel.value !== "" && !gameStartted.value) {
-    gameStartted.value = true;
-    countdown(selectedLevel.value.time);
-  }
-}
-function congrat() {
-  showDiv.value = true;
-  imgCongrats.value = true;
-}
-function gameOver() {
-  showDiv.value = true;
-  imgGameOver.value = true;
-}
-function retry() {
-  sessionStorage.setItem("data", JSON.stringify(selectedLevel.value));
-  location.reload();
-}
-
-function openModal() {
-  howToPlay.showModal();
-}
-
-function closeModal(event) {
-  if (event.target === event.currentTarget) {
-    howToPlay.close();
-  }
-}
 </script>
 
 <template>
   <!-- rulebox componant -->
-  <div v-show="showDiv">
+  <div v-show="showResult">
     <div id="modelConfirm" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
       <div class="relative top-40 mx-auto rounded-md bg-white-0 max-w-md">
         <div class="p-6 pt-0 text-center">
-          <img v-show="imgGameOver" src="/images/GameOver.png" />
-          <img v-show="imgCongrats" src="/images/Congrat.png" />
-          <button @click="retry()"
+          <img :src="isWin ? '/images/Congrat.png' : '/images/GameOver.png'" />
+          <button @click=" retry()"
             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
             ReStart
           </button>
@@ -444,7 +429,7 @@ function closeModal(event) {
   </div>
   <div :class="selectedLevel.backgroundColor" class="flex flex-col w-full min-h-screen items-center">
     <div class="flex flex-row w-full">
-      <div class="m-auto invisible">www</div>
+
       <div class="grow">
         <div class="w-11/12 animate-jump-in m-auto">
           <img src="./assets/logo/IMG_5174-removebg-preview.png" class="w-[90%] m-auto laptop:w-[30%] curser-pointer"
@@ -567,10 +552,10 @@ function closeModal(event) {
         <div class="flex m-[auto]">
           <button
             class="btn border-0 font-Saira font-light bg-white text-black hover:text-white transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 duration-150"
-            @click="openModal">
+            onclick="howToPlay.showModal()">
             HOW TO PLAY GAME 🎮
           </button>
-          <dialog id="howToPlay" class="modal" @click="closeModal">
+          <dialog id="howToPlay" class="modal">
             <div class="modal-box bg-white">
               <h3
                 class="font-bold text-3xl text-black mb-4 text-center hover:transition ease-in-out hover:-translate-y-1 hover:scale-105">
