@@ -58,7 +58,8 @@
     "backgroundColor": "background-color-hard",
     "boxColor": "bg-color-hard-box",
     "textColor": "text-color-hard",
-    "time": 500
+    "soundColor": "sound-color-hard",
+    "time": 300
   },
   {
     "level": "Veryhard",
@@ -127,7 +128,8 @@
     "backgroundColor": "background-color-veryhard",
     "boxColor": "bg-color-veryhard-box",
     "textColor": "text-color-veryhard",
-    "time": 5
+    "soundColor": "sound-color-veryhard",
+    "time": 450
   },
   {
     "level": "Hardest",
@@ -199,6 +201,7 @@
     "backgroundColor": "background-color-hardest",
     "boxColor": "bg-color-hardest-box",
     "textColor": "text-color-hardest",
-    "time":600
+    "soundColor": "sound-color-hardest",
+    "time":300
   }
 ]
