@@ -5,6 +5,8 @@ import musicHard from "/music/musicHard.mp3";
 import musicVeryHard from "/music/musicVeryHard.mp3";
 import musicHardest from "/music/musicHardest.mp3";
 import correct from "/music/correct.mp3";
+import victory from "/music/victoryscreech.mp3";
+import loose from "/music/lose.mp3"
 
 const passedRule = ref(1);
 const selectedLevel = ref(getRule());
@@ -164,6 +166,13 @@ function startGame() {
 function getResult(result) {
   showResult.value = true;
   isWin.value = result;
+  if (isWin.value === true) {
+    const audioWin = new Audio(victory)
+    audioWin.play()
+  } else {
+    const audioLose = new Audio(loose)
+    audioLose.play()
+  }
 }
 
 function retry() {
@@ -416,7 +425,7 @@ function checkAnswerHardest() {
     <div id="modelConfirm" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
       <div class="relative top-40 mx-auto rounded-md bg-white-0 max-w-md">
         <div class="p-6 pt-0 text-center">
-          <img :src="isWin ? '/images/Congrat.png' : '/images/game-over.png'" />
+          <img :src="isWin ? '/images/congrat.png' : '/images/game-over.png'" />
           <button @click=" retry()"
             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
             ReStart
@@ -442,7 +451,7 @@ function checkAnswerHardest() {
           <svg :class="selectedLevel.soundColor" class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg"
             width="48" height="48" viewBox="0 0 24 24" @click="playSound">
             <path
-              d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15add.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+              d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
           </svg>
         </label>
       </div>
@@ -467,7 +476,7 @@ function checkAnswerHardest() {
       </div>
       <!-- level componant  row2-->
 
-      <div class="flex flex-col items-center w-[auto] m-[auto]">
+      <div class="flex flex-col items-center w-[280px] m-[auto] mobile-M:w-[375px]">
         <section id="select_level" class="text-center">
           <div>
             <p class="font-Saira text-white font-medium">SELECT LEVEL</p>
@@ -488,7 +497,7 @@ function checkAnswerHardest() {
           </div>
         </section>
         <!-- input component in row 2-->
-        <div id="input-password" class="items-start w-[300px]">
+        <div id="input-password" class="items-start w-[250px] mobile-M:w-[300px]">
           <label class="form-control w-full max-w-xs">
             <div class="label">
               <span class="font-Saira text-[16px] text-white">Enter Password Here...</span>
@@ -502,7 +511,7 @@ function checkAnswerHardest() {
           </label>
         </div>
         <!-- timer componant in row2 -->
-        <div class="timer m-[auto] laptop:ml-24">
+        <div class="timer m-[auto]">
           <p class="flex font-Saira text-[14px] text-white mt-[10px]">
             Time:&nbsp;
             <span :class="selectedLevel.textColor" class="text-[14px]">
@@ -515,7 +524,8 @@ function checkAnswerHardest() {
           <img v-if="selectedLevel && !gameStartted" :src="selectedLevel.logo" alt
             class="flex items-center w-4/5 h-4/5 laptop:hidden" />
           <div v-if="gameStartted" class="flex flex-col">
-            <div v-for="rule in ruleShow" class="min-w-[307px] sm:w-full rounded-md py-3 animate-fade-up" :key="rule.id">
+            <div v-for="rule in ruleShow" class="w-[270px] mobile-M:w-[307px] sm:w-full rounded-md py-3 animate-fade-up"
+              :key="rule.id">
               <div :class="rule?.correct
                 ? 'bg-[#22c55e] hover:bg-green-400 shadow-md shadow-green-200 animate-jump animate-ease-in'
                 : 'bg-[#e11d48] hover:bg-red-500 shadow-md shadow-red-200 animate-shake'

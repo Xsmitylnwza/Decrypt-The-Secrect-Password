@@ -4,6 +4,7 @@ export default {
   theme: {
     screens: {
       'mobile': '320px',
+      'mobile-M': '375px',
       'laptop': '1024px',
       'labtop-L': '1440px',
     },
