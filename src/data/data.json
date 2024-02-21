@@ -9,27 +9,47 @@
       },
       {
         "id": 2,
-        "message": "What color is the sky?",
+        "message": "Your password must have at least 2 digit",
         "correct": false
       },
       {
         "id": 3,
-        "message": "What color is the 'Manchester'?",
+        "message": "Have you ever played football?",
         "correct": false
       },
       {
         "id": 4,
-        "message": "ชื่อทีมของเป็ดแดง",
+        "message": "Do you know the team named 'Red Duck'?",
         "correct": false
       },
       {
         "id": 5,
-        "message": "How many legs does a snake have?",
+        "message": "What color is the 'Manchester'? (Do not answer in English)",
         "correct": false
       },
       {
         "id": 6,
-        "message": "SUIII",
+        "message": "Look up, What color is the sky if it's 'BIG'☁️?",
+        "correct": false
+      },
+      {
+        "id": 7,
+        "message": "The snake is coming!!! Please tell me how many legs is it?",
+        "correct": false
+      },
+      {
+        "id": 8,
+        "message": "SUIII⚽️💪",
+        "correct": false
+      },
+      {
+        "id": 9,
+        "message": "When was Facebook launched but 😎? (year)",
+        "correct": false
+      },
+      {
+        "id": 10,
+        "message": "If i want to watch 'The International 2021', Where can I go to watch it?",
         "correct": false
       }
     ],
@@ -107,7 +127,7 @@
     "backgroundColor": "background-color-veryhard",
     "boxColor": "bg-color-veryhard-box",
     "textColor": "text-color-veryhard",
-    "time": 450
+    "time": 5
   },
   {
     "level": "Hardest",
