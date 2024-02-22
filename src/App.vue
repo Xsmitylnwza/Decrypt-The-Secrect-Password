@@ -497,9 +497,15 @@ function checkAnswerHardest() {
             </div>
           </div>
         </section>
+        <div
+          class=" m-3 font-Saira text-md text-center text-white hover:transition-all hover:shadow-red-500/50 motion-safe:hover:scale-110 focus:scale-110 my-3 mx-2">
+          <p>Your Level now : <span :class="selectedLevel.textColor" class="">{{
+            selectedLevel.level
+          }}</span></p>
+        </div>
         <!-- input component in row 2-->
-        <div id="input-password" class="items-start w-[250px] mobile-M:w-[300px]">
-          <label class="form-control w-full max-w-xs">
+        <div id="input-password" class="items-start w-[250px] mobile-M:w-[300px] ">
+          <label class="form-control w-full max-w-xs  ">
             <div class="label">
               <span class="font-Saira text-[16px] text-white">Enter Password Here...</span>
             </div>
@@ -575,16 +581,18 @@ function checkAnswerHardest() {
                     <div class="font-bold text-black">
                       1.Select your Power(Level)
                     </div>
-                    (Hard = beginner)<br />
-                    (Very Hard = ok (but smart in Math))<br />
-                    (Hardest = Genius)
+                    <div class="text-black font-medium">
+                      (Hard = beginner)<br />
+                      (Very Hard = ok (but smart in Math))<br />
+                      (Hardest = Genius)
+                    </div>
                   </div>
                   <img src="/images/howtoplay1.png" alt="select Level image"
                     class="rounded-box hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
-                  <p class="mt-4 text-center">
+                  <p class="mt-4 text-center text-black font-medium">
                     Then any level it give your Character to play password game
                   </p>
-                  <p class="mt-4 font-bold">Characteristic to play Game</p>
+                  <p class="mt-4 font-bold text-black">Characteristic to play Game</p>
                 </div>
                 <div class="flex flex-row mt-3">
                   <div class="w-[100%] hover:transition ease-in-out hover:-translate-y-1 hover:scale-105">
@@ -598,36 +606,36 @@ function checkAnswerHardest() {
                   </div>
                 </div>
                 <div class="flex flex-row mt-3 mr-1">
-                  <p class="text-center text-sm font-bold mx-2">
+                  <p class="text-center text-sm font-bold mx-2 text-black ">
                     Your Character is SPY
                   </p>
-                  <p class="text-center text-sm font-bold mx-2">
+                  <p class="text-center text-sm font-bold mx-2 text-black ">
                     Your Character is FBI
                   </p>
-                  <p class="text-center text-sm font-bold mx-2">
+                  <p class="text-center text-sm font-bold mx-2 text-black ">
                     Your Character is Hacker
                   </p>
                 </div>
-                <div class="flex flex-col items-center mt-3">
-                  <p>**Character mean your power to play game harder**</p>
+                <div class="flex flex-col items-center mt-3 ">
+                  <p class="text-black font-medium">**Character mean your power to play game harder**</p>
                   <p class="font-bold text-black mt-2">
                     2.Enter password in textbox input
                   </p>
                   <img src="/images/enterpassword.png" alt="enterpassword"
                     class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
-                  <p class="text-center mt-3 mb-3">
+                  <p class="text-center mt-3 mb-3 text-black font-medium">
                     2.1 ) when you enter password in textbox input rule will
                     generate
                   </p>
-                  <div class="font-bold text-red-300 mt-3 text-center">
+                  <div class="font-bold text-red-300 mt-3 text-center ">
                     Then : You must follow the rule
                   </div>
 
                   <img src="/images/correct-some-password.png" alt="corretSomePassword"
                     class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
-                  <div class="text-center mt-3">
+                  <div class="text-center mt-3 text-black font-medium">
                     2.2 ) When you enter password follow rule1 untill
-                    <div class="text-green-500 font-bold">correct</div>
+                    <div class="text-green-500 font-bold ">correct</div>
                     next rule will generate new rule on top of correct rule
                   </div>
                   <div class="font-bold text-black mt-3">
@@ -636,7 +644,7 @@ function checkAnswerHardest() {
                       correct!!!
                     </div>
                   </div>
-                  <div class="text-center">this is two way of Game finish</div>
+                  <div class="text-center text-black font-medium">this is two way of Game finish</div>
                   <div class="flex flex-col items-center">
                     <img src="/images/congratulation-end.png" alt="congratulation"
                       class="rounded-box w-11/12 mt-3 hover:transition ease-in-out hover:-translate-y-1 hover:scale-105" />
@@ -659,7 +667,7 @@ function checkAnswerHardest() {
                     <div class="font-bold hover:animate-shake hover:text-red-500">
                       Game tip!!!
                     </div>
-                    <div class="hover:text-red-500">
+                    <div class="hover:text-red-500 text-black font-medium">
                       Time is runing when you text in text box you can get time
                       to challenge with your friend
                     </div>
@@ -695,8 +703,8 @@ function checkAnswerHardest() {
 .background-color-hard {
   background: linear-gradient(104deg,
       #6e07f0 8.15%,
-      rgba(64, 22, 131, 0.44) 68.84%,
-      rgba(29, 34, 45, 0) 89.63%);
+      rgba(77, 3, 197, 0.44) 100%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 .bg-color-hard-box {
